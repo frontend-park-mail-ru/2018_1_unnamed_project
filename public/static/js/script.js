@@ -12,20 +12,26 @@ const singleplayerSection = document.getElementById('singleplayer');
 const scoreboardSection = document.getElementById('scoreboard');
 const rulesSection = document.getElementById('rules');
 
+const signupForm = document.getElementsByClassName('js-signup-form')[0];
+const signinForm = document.getElementsByClassName('js-signin-form')[0];
+
 
 const sections = {
     menu: menuSection,
-    signin: signinSection,
     signup: signupSection,
-    multiplayer: multiplayerSection,
+    signin: signinSection,
+    multiplayer: multiplayer,
     singleplayer: singleplayerSection,
     scoreboard: scoreboardSection,
     rules: rulesSection,
 };
 
 const sectionOpeners = {
-    scoreboard: openScoreboard
+    scoreboard: openScoreboard,
+    signup: openSignup,
+    signin: openSignin
 }
+
 
 function hideAllExcept(section) {
     Object.entries(sections).forEach(
@@ -68,5 +74,48 @@ function loadScoreboard(callback){
         callback
     })
 }
+
+function openSignup(){
+    const signupBuilder = new window.AuthFormsBuilder(signupForm);
+    signupBuilder.render();
+}
+
+// function signupSubmit(){
+
+// }
+
+function signup(userData, callback){
+    httpModule.request({
+        method: 'POST',
+        url: '/signup',
+        data: userData,
+        callback
+    })
+}
+
+
+function openSignin(){
+    const signinBuilder = new window.AuthFormsBuilder(signinForm);
+    signinBuilder.render();
+}
+
+function loadMe(callback){
+    httpModule.request({
+        method: 'GET',
+        url: '/me',
+        callback
+    })
+}
+
+function checkAuth(){
+    loadMe((err, me) => {
+        if (err){
+            return;
+        }
+
+        console.log('LOGGED AS', me);
+    });
+}
+
 
 openSection('menu');

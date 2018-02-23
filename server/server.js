@@ -19,6 +19,7 @@ class User {
         this.username = username;
         this.password = password;
         this.rate = Math.round(Math.random() * 100);
+        this.uuid = uuid()
     }
 
     addToDate(value) {
@@ -33,6 +34,8 @@ const users = {
     'gabolaev': new User('gabolaev98@gmail.com', 'gabolaev', 'pswd'),
     'venger': new User('farir1408@gmail.com', 'venger', 'pswd')
 };
+
+const uuidUname = {}
 
 app.use('/static', express.static(path.join(__dirname + '/../public/static')));
 app.use(body.json());
@@ -89,11 +92,23 @@ app.post('/signup', (req, res) => {
     data = req.body
     result = validate(data);
     if (result.status === 'OK') {
-        users[data.username] = new User(data.email, data.username, data.password, data.password_confirmation);
+        const newUser = new User(data.email, data.username, data.password, data.password_confirmation);
+        users[data.username] = newUser;
+        uuidUname[newUser.uuid] = newUser.username;
+        res.cookie('ssid', newUser.uuid, {expires: new Date(Date.now() + 1000 * 60 * 10)});
         res.status(201).json(result);
     } else {
         res.status(401).json(result)
     }
+});
+
+
+app.get('/me', (req, res) => {
+
+    const ssidCookie = req.cookies['ssid'];
+    const username = uuidUname[ssidCookie];
+
+    (ssidCookie && ssidCookie) ? res.json(users[username]) : res.status(401).end();
 });
 
 app.get('/scoreboard', (req, res) => {

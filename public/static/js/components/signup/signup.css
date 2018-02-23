@@ -1,0 +1,15 @@
+.auth-form__input {
+    border: 40px;
+    color: #fffff8;
+    background: crimson;
+    display: block;
+    margin: 10px auto;
+    height: 60pt;
+    font-size: 60px;
+    text-align: center;
+    width: 320pt;
+}
+
+.auth-form__input::placeholder {
+    color: #38fff8;
+}

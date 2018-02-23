@@ -58,22 +58,6 @@ a {
     color: rgb(255, 45, 75);
 }
 
-input {
-    border: 40px;
-    color: #fffff8;
-    background: crimson;
-    display: block;
-    margin: 10px auto;
-    height: 60pt;
-    font-size: 60px;
-    text-align: center;
-    width: 320pt;
-}
-
-input::placeholder {
-    color: #38fff8;
-}
-
 .back {
     margin-top: 60px;
     color: #f9ff68;

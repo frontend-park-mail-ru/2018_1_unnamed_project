@@ -22,7 +22,6 @@
 
         render(){
             if(this._data){
-                console.log(this._data);
                 this._node.innerHTML = `
                     <table class="scoreboard__table">
                         <tbody>
