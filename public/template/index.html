@@ -6,6 +6,7 @@
     <title>Ship collision</title>
     <link rel="stylesheet" href="static/css/main.css">
     <link rel="stylesheet" href="static/js/components/scoreboard/scoreboard.css">
+    <link rel="stylesheet" href="static/js/components/signup/signup.css">
 </head>
 
 <body>
@@ -33,17 +34,14 @@
             </div>
         </section>
         <section id="signin">
-            <form class="js-signin-form">
-                <input required type="text" name="username" id="username" placeholder="Username">
-                <input required type="password" name="password" id="password" placeholder="Password">
-                <input required class="js-signin-submit" type="submit" value="SIGN IN">
-            </form>
+            <form class="js-signin-form"></form>
+            <a href="#" class="signup" data-section="signup">Sign up</a>
         </section>
         <section id="signup">
-            signup
+            <form class="js-signup-form"></form>
         </section>
         <section id="multiplayer">
-            multiplayer
+            <img src="http://i3.kym-cdn.com/photos/images/newsfeed/001/176/251/4d7.png">
         </section>
         <section id="singleplayer">
             <img src="static/media/singleplayer.jpg" style="width: 800px">
@@ -113,6 +111,7 @@
     </main>
     <script module src="static/js/modules/http.js"></script>
     <script defer src="static/js/components/scoreboard/scoreboard.js"></script>
+    <script defer src="static/js/components/signup/signup.js"></script>
     <script defer src="static/js/script.js"></script>
 </body>
 

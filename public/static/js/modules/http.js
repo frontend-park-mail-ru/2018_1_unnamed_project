@@ -3,7 +3,7 @@
     const noop = () => null;
 
     class HttpModule{
-        request({method = 'GET', url = '/', callback = noop} = {}){
+        request({method = 'GET', url = '/', data={}, callback = noop} = {}){
             const xhr = new XMLHttpRequest();
             xhr.open(method, url, true);
 
