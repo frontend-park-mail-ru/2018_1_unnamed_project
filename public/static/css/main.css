@@ -1,0 +1,66 @@
+@font-face {
+    font-family: "Sea_font";
+    src: url("/static/fonts/carbo.ttf");
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    font-family: Sea_font, serif;
+    background-image: url("/static/media/cabin.jpg");
+    box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.73);
+    background-size: cover;
+}
+
+.menu {
+    font-size: 50px;
+}
+
+ul {
+    padding: 0;
+    list-style-type: none;
+    display: block;
+    margin: 0 auto;
+}
+
+.header {
+    font-size: 150px;
+    color: #ffffff;
+}
+
+.section {
+    color: #ffffff;
+}
+
+[data-section="multiplayer"] {
+    color: #00ffa1;
+}
+
+[data-section="singleplayer"] {
+    color: #f5ff4c;
+}
+
+[data-section="scoreboard"] {
+    color: #ff874e;
+}
+
+[data-section="rules"] {
+    color: rgb(255, 45, 75);
+}
+
+input {
+    border: 40px;
+    color: #fffff8;
+    background: crimson;
+    display: block;
+    margin: 10px auto;
+    height: 60pt;
+    font-size: 60px;
+    text-align: center;
+    width: 320pt;
+}
