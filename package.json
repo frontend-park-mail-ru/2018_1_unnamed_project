@@ -1,0 +1,23 @@
+{
+  "name": "ship_collision",
+  "version": "1.0.0beta1",
+  "description": "Multi-player version of sea battle",
+  "main": "index.js",
+  "scripts": {
+    "start": "DEBUG=* node server/server.js",
+    "start:raw": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "contributors": [
+    "Artem Ikchurin",
+    "George Gabolaev",
+    "Kirill Kucherov",
+    "Oleg Venger"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "debug": "^3.1.0",
+    "express": "^4.16.2",
+    "logger": "0.0.1"
+  }
+}
