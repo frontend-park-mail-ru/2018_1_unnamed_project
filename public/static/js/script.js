@@ -1,4 +1,6 @@
 'use strict';
+const httpModule = new window.HttpModule();
+const scoreboardBuilder = new window.ScoreboardBuilder('.js-scoreboard-table');
 
 const back = document.getElementById('back');
 const application = document.getElementById('application');
@@ -21,6 +23,10 @@ const sections = {
     rules: rulesSection,
 };
 
+const sectionOpeners = {
+   scoreboard: openScoreboard
+}
+
 function hideAllExcept(section) {
     Object.entries(sections).forEach(
         ([key, value]) => value.hidden = (section !== key)
@@ -38,6 +44,29 @@ application.addEventListener('click', function (event) {
 
 function openSection(section) {
     hideAllExcept(section);
+    if (typeof sectionOpeners[section] === 'function'){
+        sectionOpeners[section]();
+    }
+}
+
+function openScoreboard(){
+
+    loadScoreboard((err, users) => {
+        if (err){
+            console.error(err);
+            return;
+        }
+        scoreboardBuilder.data = users;
+        scoreboardBuilder.render();
+    });
+}
+
+function loadScoreboard(callback){
+    httpModule.request({
+        method: 'GET',
+        url: '/scoreboard',
+        callback
+    })
 }
 
 openSection('menu');

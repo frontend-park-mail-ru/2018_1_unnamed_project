@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <title>Ship collision</title>
     <link rel="stylesheet" href="static/css/main.css">
+    <link rel="stylesheet" href="static/js/components/scoreboard/scoreboard.css">
 </head>
 
 <body>
@@ -45,7 +46,7 @@
             <img src="static/media/singleplayer.jpg" style="width: 800px">
         </section>
         <section id="scoreboard">
-            scoreboard
+            <div class="js-scoreboard-table"></div>
         </section>
         <section id="rules">
             rules
@@ -54,6 +55,8 @@
             <a href="#" class="back" data-section="menu">back to menu</a>
         </div>
     </main>
+    <script module src="static/js/modules/http.js"></script>
+    <script defer src="static/js/components/scoreboard/scoreboard.js"></script>
     <script defer src="static/js/script.js"></script>
 </body>
 
