@@ -24,7 +24,7 @@ const sections = {
 };
 
 const sectionOpeners = {
-   scoreboard: openScoreboard
+    scoreboard: openScoreboard
 }
 
 function hideAllExcept(section) {
