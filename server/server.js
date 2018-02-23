@@ -19,7 +19,6 @@ class User {
         this.username = username;
         this.password = password;
         this.rate = Math.round(Math.random() * 100);
-        this.uuid = uuid()
     }
 
     addToDate(value) {
@@ -46,35 +45,36 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(public + 'template/index.html'));
 });
 
-function validate(body) {
 
-    const regexes = {
-        username: /^([a-zA-Z0-9]{7,})+$/,
-        password: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
-        password_confirmation: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
-        email: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/
-    };
+const regexes = {
+    username: /^([a-zA-Z0-9]{7,})+$/,
+    password: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+    password_confirmation: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+    email: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/
+};
+
+function validateSignUp(fields) {
 
     for (const key of Object.keys(regexes)) {
-        if (!(key in body))
+        if (!(key in fields))
             return {
                 status: 'ERROR',
                 desc: `Not found ${key} argument`
             }
-        if (!(body[key].match(regexes[key])))
-            return{
+        if (!(fields[key].match(regexes[key])))
+            return {
                 status: 'ERROR',
                 desc: `${key} invalid format`
             }
     }
-    
-    if (body.password !== body.password_confirmation) {
+
+    if (fields.password !== fields.password_confirmation) {
         return {
             status: 'ERROR',
             desc: 'Passwords don\'t match'
         }
     }
-    if (users[body.username])
+    if (users[fields.username])
         return {
             status: 'ERROR',
             desc: 'User already exists'
@@ -87,28 +87,65 @@ function validate(body) {
     }
 };
 
+function validateSignIn(fields) {
+
+    for (const key of Object.keys(regexes).slice(0, 2))
+        if (!(key in fields))
+            return {
+                status: 'ERROR',
+                desc: `Not found ${key} argument`
+            }
+
+    if (fields.password == users[fields.username].password)
+        return {
+            status: 'OK',
+            desc: 'Successfully authorized'
+        }
+    else
+        return {
+            status: 'Error',
+            desc: 'Invalid username or password'
+        }
+}
+
+
+function ssidResponseBuilder(data, result, res) {
+    if (result.status === 'OK') {
+
+        const generatedUUID = uuid();
+        uuidUname[generatedUUID] = data.username;
+
+        res.cookie('ssid', generatedUUID, {
+            expires: new Date(Date.now() + 1000 * 60 * 10)
+        });
+        res.status(201).json(result);
+    } else {
+        res.status(401).json(result);
+    }
+}
+
 app.post('/signup', (req, res) => {
 
     data = req.body
-    result = validate(data);
-    if (result.status === 'OK') {
+    ssidResponseBuilder(data, validateSignUp(data), res);
+    if (res.statusCode === 201) {
         const newUser = new User(data.email, data.username, data.password, data.password_confirmation);
         users[data.username] = newUser;
-        uuidUname[newUser.uuid] = newUser.username;
-        res.cookie('ssid', newUser.uuid, {expires: new Date(Date.now() + 1000 * 60 * 10)});
-        res.status(201).json(result);
-    } else {
-        res.status(401).json(result)
     }
 });
 
+app.post('/signin', (req, res) => {
+
+    data = req.body;
+    ssidResponseBuilder(data, validateSignIn(data), res);
+});
 
 app.get('/me', (req, res) => {
 
     const ssidCookie = req.cookies['ssid'];
     const username = uuidUname[ssidCookie];
 
-    (ssidCookie && ssidCookie) ? res.json(users[username]) : res.status(401).end();
+    (ssidCookie && ssidCookie) ? res.json(users[username]): res.status(401).end();
 });
 
 app.get('/scoreboard', (req, res) => {
