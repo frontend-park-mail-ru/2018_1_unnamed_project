@@ -17,10 +17,6 @@ html, body {
     background-size: cover;
 }
 
-.menu {
-    font-size: 50px;
-}
-
 ul {
     padding: 0;
     list-style-type: none;
@@ -31,6 +27,15 @@ ul {
 .header {
     font-size: 150px;
     color: #ffffff;
+}
+
+a {
+    text-decoration: none;
+    text-decoration-color: black;
+}
+
+.menu {
+    font-size: 50px;
 }
 
 .section {
@@ -63,4 +68,23 @@ input {
     font-size: 60px;
     text-align: center;
     width: 320pt;
+}
+
+input::placeholder {
+    color: #38fff8;
+}
+
+.back {
+    margin-top: 60px;
+    color: #f9ff68;
+}
+
+#rules{
+    width: 60%;
+    margin: 10px auto;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
 }
