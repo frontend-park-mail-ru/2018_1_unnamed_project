@@ -10,8 +10,6 @@ const uuid = require('uuid/v4');
 const logger = debug('mylogger');
 const public = __dirname + "/../public/";
 
-
-
 class User {
 
     constructor(email, username, password) {
@@ -25,7 +23,6 @@ class User {
         this.rate += value;
     }
 }
-
 
 const users = {
     'a_ikchurin': new User('tyoma11.95@mail.ru', 'a_ikchurin', 'pswd'),
@@ -111,10 +108,8 @@ function validateSignIn(fields) {
 
 function ssidResponseBuilder(data, result, res) {
     if (result.status === 'OK') {
-
         const generatedUUID = uuid();
         uuidUname[generatedUUID] = data.username;
-
         res.cookie('ssid', generatedUUID, {
             expires: new Date(Date.now() + 1000 * 60 * 10)
         });
@@ -125,8 +120,7 @@ function ssidResponseBuilder(data, result, res) {
 }
 
 app.post('/signup', (req, res) => {
-
-    data = req.body
+    data = req.body;
     ssidResponseBuilder(data, validateSignUp(data), res);
     if (res.statusCode === 201) {
         const newUser = new User(data.email, data.username, data.password, data.password_confirmation);
@@ -135,24 +129,20 @@ app.post('/signup', (req, res) => {
 });
 
 app.post('/signin', (req, res) => {
-
     data = req.body;
     ssidResponseBuilder(data, validateSignIn(data), res);
 });
 
 app.get('/me', (req, res) => {
-
     const ssidCookie = req.cookies['ssid'];
     const username = uuidUname[ssidCookie];
 
-    (ssidCookie && ssidCookie) ? res.json(users[username]): res.status(401).end();
+    (ssidCookie && username) ? res.json(users[username]) : res.status(401).end();
 });
 
 app.get('/scoreboard', (req, res) => {
     logger(`${req.url} ${req.method}`);
-    const sorted = Object.values(users).sort((a, b) => {
-        return a.rate < b.rate;
-    })
+    const sorted = Object.values(users).sort((a, b) => a.rate < b.rate);
     res.send(JSON.stringify(sorted));
 });
 
