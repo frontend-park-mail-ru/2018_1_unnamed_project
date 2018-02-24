@@ -12,7 +12,7 @@
                     return;
                 }
     
-                if (Math.round(xhr.status / 10) == 20) {
+                if (xhr.status < 300 && xhr.status >= 200) {
                     const responseText = xhr.responseText;
                     try {
                         const response = JSON.parse(responseText);
