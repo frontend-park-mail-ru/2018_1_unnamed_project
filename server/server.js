@@ -1,6 +1,4 @@
-const fs = require('fs');
 const path = require('path');
-const http = require('http');
 const body = require('body-parser');
 const cookie = require('cookie-parser');
 const debug = require('debug');
