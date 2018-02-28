@@ -1,13 +1,48 @@
 (function () {
 
-    const noop = () => null;
+    class AuthFormsBuilder extends window.AbstractBuilder{
 
-    class AuthFormsBuilder {
-        constructor(form = noop) {
-            this._node = form
+        constructor(node = {}){
+            super();
+            this._node = node;
+        }
+
+        onSubmitAuthForm(event, func) {
+            event.preventDefault();
+            const form = event.currentTarget;
+            const formElements = form.elements;
+        
+            const formdata = {};
+        
+            Object.values(form.elements).forEach((field) => {
+                if (field.type !== 'submit') {
+                    formdata[field.name] = field.value;
+                }
+            });
+        
+            func(formdata, function (err, response) {
+                push.clear();
+                debugger;
+                if (err) {
+                    push.data = JSON.parse(err.response).desc;
+                    push.render('error');
+                    return;
+                }
+        
+                api.loadMe((err, me) => {
+                    if (err) return;
+                    header.innerText = me.username;
+                    openSection('realMultiplayer');
+                    push.data = response.desc;
+                    push.render('success');
+                })
+            });
         }
 
         render() {
+            if (!(this._node)){
+                return;
+            }
             const inorup = this._node.className.slice(7,9);
             this._node.innerHTML = `
                 <input required class="auth-form__input" type="text" name="username" placeholder="username">

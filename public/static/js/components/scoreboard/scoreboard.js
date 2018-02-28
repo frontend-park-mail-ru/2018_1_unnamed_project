@@ -1,25 +1,6 @@
 (function(){
 
-    const noop = () => null;
-
-    class ScoreboardBuilder{
-
-        constructor(selector = 'body'){
-            this._node = document.querySelector(selector);
-        }
-
-        get data(){
-            return this._data;
-        }
-
-        set data(data = []){
-            this._data = data;
-        }
-
-        clear(){
-            this._node.innerHTML = '';
-        }
-
+    class ScoreboardBuilder extends window.AbstractBuilder{
         render(){
             if(this._data){
                 this._node.innerHTML = `

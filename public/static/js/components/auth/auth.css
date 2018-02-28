@@ -9,15 +9,14 @@
     width: 222pt;
 }
 
-.auth-form__input[type="submit"]{
+.auth-form__input[type="submit"] {
     position: relative;
     background-color: transparent;
     color: #fffff8;
     border: 2px solid #fffff8;
 }
 
-
-.auth-form__input[type="submit"]:hover{
+.auth-form__input[type="submit"]:hover {
     float: left;
     border-color: #EF476F;
 }
@@ -26,7 +25,7 @@
     color: #26547C;
 }
 
-.js-signin-form{
+.js-signin-form {
     display: inline;
     width: 100%;
 }
@@ -38,12 +37,12 @@ a.signup {
     margin-top: 60px;
 }
 
-.orsignup{
+.orsignup {
     float: right;
     margin: 22px 0 22px 0;
 }
 
-table{
+table {
     width: 100%;
     border-spacing: 0;
 }

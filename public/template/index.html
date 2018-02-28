@@ -54,6 +54,9 @@
         <section id="scoreboard" hidden>
             <div class="js-scoreboard-table"></div>
         </section>
+        <section id="profile" hidden>
+            <div class="profile"></div>
+        </section>
         <section id="rules" hidden>
             <p>The game is played on four grids, two for each player. The grids are typically square – usually 10×10 – and the
                 individual squares in the grid are identified by letter and number. On one grid the player arranges ships
@@ -112,6 +115,9 @@
         </section>
     </main>
     <script module src="static/js/modules/http.js"></script>
+    <script module src="static/js/modules/API.js"></script>
+    <script defer src="static/js/components/abstractBuilder/abstractBuilder.js"></script>
+    <script defer src="static/js/components/profile/profile.js"></script>
     <script defer src="static/js/components/scoreboard/scoreboard.js"></script>
     <script defer src="static/js/components/push/push.js"></script>
     <script defer src="static/js/components/auth/auth.js"></script>

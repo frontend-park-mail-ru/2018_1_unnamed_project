@@ -106,7 +106,7 @@ function validateSignIn(fields) {
     }
 
     const candidateUser = users[fields.username];
-    if (candidateUser && (fields.password === candidateUser.password)){
+    if (candidateUser && (fields.password === candidateUser.password)) {
         return {
             status: 'OK',
             desc: 'Successfully authorized'
@@ -153,6 +153,11 @@ app.get('/me', (req, res) => {
 
     (ssidCookie && username) ? res.json(users[username]): res.status(401).end();
 });
+
+app.get('/profile', (req, res) => {
+    
+});
+
 
 app.get('/scoreboard', (req, res) => {
     logger(`${req.url} ${req.method}`);

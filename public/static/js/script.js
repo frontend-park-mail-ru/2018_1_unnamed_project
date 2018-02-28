@@ -2,7 +2,8 @@
 const httpModule = new window.HttpModule();
 const scoreboardBuilder = new window.ScoreboardBuilder('.js-scoreboard-table');
 const push = new window.Push('.msg');
-
+const api = new window.API();
+const profile = new window.Profile();
 const back = document.getElementById('back');
 const application = document.getElementById('application');
 const menuSection = document.getElementById('menu');
@@ -13,11 +14,12 @@ const singleplayerSection = document.getElementById('singleplayer');
 const scoreboardSection = document.getElementById('scoreboard');
 const rulesSection = document.getElementById('rules');
 const hrefs = document.querySelectorAll('[data-section]');
+const header = document.getElementById('auth-info');
 
 const signupForm = document.getElementsByClassName('js-signup-form')[0];
+const signupBuilder = new window.AuthFormsBuilder(signupForm);
 const signinForm = document.getElementsByClassName('js-signin-form')[0];
-
-const header = document.getElementById('auth-info');
+const signinBuilder = new window.AuthFormsBuilder(signinForm);
 
 const sections = {
     menu: menuSection,
@@ -54,10 +56,8 @@ function openSection(section) {
 
 function click(event) {
     const target = event.target;
-
     const sectionName = target.getAttribute('data-section');
     event.preventDefault();
-
     if (target.tagName.toLowerCase() === 'a') {
         openSection(sectionName);
     }
@@ -68,110 +68,32 @@ Object.entries(hrefs).forEach(([key, value]) => {
 });
 
 function openMultiplayer() {
-    loadMe((err, me) => {
-        if (err) openSection('signni');
-    })
+    api.loadMe((err, me) => { if (err) openSection('signin') })
     console.log('TODO game');
 }
 
 function openScoreboard() {
-    loadScoreboard((err, users) => {
+    api.loadScoreboard((err, users) => {
         if (err) return;
-
         scoreboardBuilder.data = users;
         scoreboardBuilder.render();
     });
 }
 
-function loadScoreboard(callback) {
-    httpModule.request({
-        method: 'GET',
-        url: '/scoreboard',
-        callback
-    })
-}
-
-function onSubmitAuthForm(event, func) {
-    event.preventDefault();
-
-    const form = event.currentTarget;
-    const formElements = form.elements;
-
-    const formdata = {};
-
-    Object.values(form.elements).forEach((field) => {
-        if (field.type !== 'submit') {
-            formdata[field.name] = field.value;
-        }
-    });
-
-    func(formdata, function (err, response) {
-        push.clear();
-        if (err) {
-            push.data = JSON.parse(err.response).desc;
-            push.render('error');
-            return;
-        }
-
-        loadMe((err, me) => {
-            if (err) return;
-            header.innerText = me.username;
-            openSection('realMultiplayer');
-            push.data = response.desc;
-            push.render('success');
-        })
-    });
-}
-
-// === SIGNUP ===
 function openSignup() {
-    const signupBuilder = new window.AuthFormsBuilder(signupForm);
     signupBuilder.render();
-
-    signupForm.addEventListener('submit', () => onSubmitAuthForm(event, loadSignup));
+    signupForm.addEventListener('submit', () => signupBuilder.onSubmitAuthForm(event, api.loadSignup));
 }
 
-
-function loadSignup(userData, callback) {
-    httpModule.request({
-        method: 'POST',
-        url: '/signup',
-        data: userData,
-        callback
-    })
-}
-
-
-// === SIGNIN === 
 function openSignin() {
-    loadMe((err, me) => {
+    api.loadMe((err, me) => {
         if (!err) openSection('realMultiplayer');
     });
-    const signinBuilder = new window.AuthFormsBuilder(signinForm);
     signinBuilder.render();
-    signinForm.addEventListener('submit', () => onSubmitAuthForm(event, loadSignin));
+    signinForm.addEventListener('submit', () => signinBuilder.onSubmitAuthForm(event, api.loadSignin));
     const generatedSignUpHref = document.getElementsByClassName('signup')[0];
     generatedSignUpHref.addEventListener('click', click);
 }
 
-function loadSignin(userData, callback) {
-    httpModule.request({
-        method: 'POST',
-        url: '/signin',
-        data: userData,
-        callback
-    })
-}
-
-function loadMe(callback) {
-    httpModule.request({
-        method: 'GET',
-        url: '/me',
-        callback
-    })
-}
-
-openSection('menu');
-loadMe((err, me) => {
-    header.innerHTML = err ? 'Unauthorized' : me.username;
-});
+openSection('menu')
+profile.setProfileBar();
