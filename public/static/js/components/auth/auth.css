@@ -1,15 +1,49 @@
 .auth-form__input {
     border: 40px;
-    color: #fffff8;
-    background: crimson;
+    background-color: #cccccc;
     display: block;
     margin: 10px auto;
-    height: 60pt;
-    font-size: 60px;
+    height: 48pt;
+    font-size: 40px;
     text-align: center;
-    width: 320pt;
+    width: 222pt;
+}
+
+.auth-form__input[type="submit"]{
+    position: relative;
+    background-color: transparent;
+    color: #fffff8;
+    border: 2px solid #fffff8;
+}
+
+
+.auth-form__input[type="submit"]:hover{
+    float: left;
+    border-color: #EF476F;
 }
 
 .auth-form__input::placeholder {
-    color: #38fff8;
+    color: #26547C;
+}
+
+.js-signin-form{
+    display: inline;
+    width: 100%;
+}
+
+a.signup {
+    font-family: system-ui;
+    font-size: 35px;
+    color: white;
+    margin-top: 60px;
+}
+
+.orsignup{
+    float: right;
+    margin: 22px 0 22px 0;
+}
+
+table{
+    width: 100%;
+    border-spacing: 0;
 }
