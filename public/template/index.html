@@ -7,14 +7,19 @@
     <link rel="stylesheet" href="static/css/main.css">
     <link rel="stylesheet" href="static/js/components/scoreboard/scoreboard.css">
     <link rel="stylesheet" href="static/js/components/auth/auth.css">
+    <link rel="stylesheet" href="static/js/components/push/push.css">
 </head>
 
 <body>
-    <div class="auth-info" id="auth-info"></div>    
+    <div class=msg></div>
+    <div class="auth-info" id="auth-info"></div>
+    <div id="back" class="back" hidden>
+        <a href="#" class="back" data-section="menu">back t↺ menu</a>
+    </div>
     <main id="application" class="application">
         <section id="menu" hidden>
             <div class="header">
-                Ship<br>collision
+                SHIP<br>COLLISION
             </div>
             <hr>
             <div class="menu">
@@ -36,7 +41,6 @@
         </section>
         <section id="signin" hidden>
             <form class="js-signin-form"></form>
-            <a href="#" class="signup" data-section="signup">Sign up</a>
         </section>
         <section id="signup" hidden>
             <form class="js-signup-form"></form>
@@ -106,12 +110,10 @@
                 wins.
             </p>
         </section>
-        <div id="back" class="back" hidden>
-            <a href="#" class="back" data-section="menu">back to menu</a>
-        </div>
     </main>
     <script module src="static/js/modules/http.js"></script>
     <script defer src="static/js/components/scoreboard/scoreboard.js"></script>
+    <script defer src="static/js/components/push/push.js"></script>
     <script defer src="static/js/components/auth/auth.js"></script>
     <script async src="static/js/script.js"></script>
 </body>

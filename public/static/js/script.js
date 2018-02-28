@@ -1,6 +1,7 @@
 'use strict';
 const httpModule = new window.HttpModule();
 const scoreboardBuilder = new window.ScoreboardBuilder('.js-scoreboard-table');
+const push = new window.Push('.msg');
 
 const back = document.getElementById('back');
 const application = document.getElementById('application');
@@ -35,7 +36,6 @@ const sectionOpeners = {
     realMultiplayer: openMultiplayer
 }
 
-
 function hideAllExcept(section) {
     Object.entries(sections).forEach(
         ([key, value]) => value.hidden = (section !== key)
@@ -49,6 +49,7 @@ function openSection(section) {
         sectionOpeners[section]();
     }
     hideAllExcept(section);
+    push.clear();
 }
 
 function click(event) {
@@ -105,9 +106,10 @@ function onSubmitAuthForm(event, func) {
     });
 
     func(formdata, function (err, response) {
+        push.clear();
         if (err) {
-            signupForm.reset();
-            alert('Access denied!');
+            push.data = JSON.parse(err.response).desc;
+            push.render('error');
             return;
         }
 
@@ -115,6 +117,8 @@ function onSubmitAuthForm(event, func) {
             if (err) return;
             header.innerText = me.username;
             openSection('realMultiplayer');
+            push.data = response.desc;
+            push.render('success');
         })
     });
 }
@@ -146,6 +150,8 @@ function openSignin() {
     const signinBuilder = new window.AuthFormsBuilder(signinForm);
     signinBuilder.render();
     signinForm.addEventListener('submit', () => onSubmitAuthForm(event, loadSignin));
+    const generatedSignUpHref = document.getElementsByClassName('signup')[0];
+    generatedSignUpHref.addEventListener('click', click);
 }
 
 function loadSignin(userData, callback) {
