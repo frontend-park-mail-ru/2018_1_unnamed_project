@@ -1,6 +1,11 @@
 @font-face {
-    font-family: "Sea_font";
-    src: url("/static/fonts/carbo.ttf");
+    font-family: "Righteous-Regular";
+    src: url("/static/fonts/Righteous-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Comfortaa-Light";
+    src: url("/static/fonts/Comfortaa-Light.ttf");
 }
 
 html,
@@ -12,9 +17,8 @@ body {
     justify-content: center;
     flex-direction: column;
     text-align: center;
-    font-family: Sea_font, serif;
-    background-image: url("/static/media/cabin.jpg");
-    box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.73);
+    font-family: Comfortaa-Light, serif;    
+    background-color: #26547C;
     background-size: cover;
     color: white;
 }
@@ -27,8 +31,9 @@ ul {
 }
 
 .header {
+    line-height: 92%;
+    font-family: Righteous-Regular, serif;
     font-size: 80px;
-    color: #ffffff;
 }
 
 .auth-info {
@@ -41,40 +46,29 @@ a {
     text-decoration: none;
 }
 
-a.signup {
-    color: white;
-    margin-top: 60px;
-    font-size: 40px;
-}
-
 .menu {
+    margin-top: 3%;
     font-size: 26px;
     text-decoration: none;
 }
 
-.section {
-    color: #ffffff;
+[data-section]{
+    color: #FFFCF9;
 }
 
-[data-section="multiplayer"] {
-    color: #00ffa1;
-}
-
-[data-section="singleplayer"] {
-    color: #f5ff4c;
-}
-
-[data-section="scoreboard"] {
-    color: #ff874e;
-}
-
-[data-section="rules"] {
-    color: rgb(255, 45, 75);
+[data-section]:hover{
+    color: #EF476F;
 }
 
 .back {
-    margin-top: 60px;
-    color: #f9ff68;
+    margin-bottom: 10px;
+    color: rgb(212, 212, 212);
+    font-size: 21px;
+}
+
+.or {
+    font-size: 15pt;
+    margin: 0 2px 0 0;
 }
 
 #rules {

@@ -1,0 +1,27 @@
+.msg_info,
+.msg_success,
+.msg_warning,
+.msg_error {
+    margin: 10px 0px;
+    padding: 12px;
+}
+
+.msg_info {
+    color: #00529B;
+    background-color: #BDE5F8;
+}
+
+.msg_success {
+    color: #4F8A10;
+    background-color: #DFF2BF;
+}
+
+.msg_warning {
+    color: #9F6000;
+    background-color: #FEEFB3;
+}
+
+.msg_error {
+    color: #D8000C;
+    background-color: #FFD2D2;
+}
