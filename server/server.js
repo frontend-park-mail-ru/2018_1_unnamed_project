@@ -42,10 +42,23 @@ app.get('/', (req, res) => {
 
 
 const regexes = {
-    username: /^([a-zA-Z0-9]{7,})+$/,
-    password: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
-    password_confirmation: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
-    email: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/
+    username: {
+        regex: /^([a-zA-Z0-9]{7,})+$/,
+        desc: "minimum lenght is 7, only digits and english symbols are allowed"
+    },
+    password: {
+        regex: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+        desc: "minimum lenght is 6, only english symbols and at least one digit"
+
+    },
+    password_confirmation: {
+        regex: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+        desc: "should be equal to the password"
+    },
+    email: {
+        regex: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/,
+        desc: "meh"
+    }
 };
 
 function validateSignUp(fields) {
@@ -56,10 +69,10 @@ function validateSignUp(fields) {
                 status: 'ERROR',
                 desc: `Not found ${key} argument`
             }
-        if (!(fields[key].match(regexes[key])))
+        if (!(fields[key].match(regexes[key].regex)))
             return {
                 status: 'ERROR',
-                desc: `${key} invalid format`
+                desc: `${key} invalid format: ${regexes[key].desc}`
             }
     }
 
@@ -84,23 +97,26 @@ function validateSignUp(fields) {
 
 function validateSignIn(fields) {
 
-    for (const key of Object.keys(regexes).slice(0, 2))
+    for (const key of Object.keys(regexes).slice(0, 2)) {
         if (!(key in fields))
             return {
                 status: 'ERROR',
                 desc: `Not found ${key} argument`
             }
+    }
 
-    if (fields.password == users[fields.username].password)
+    const candidateUser = users[fields.username];
+    if (candidateUser && (fields.password === candidateUser.password)){
         return {
             status: 'OK',
             desc: 'Successfully authorized'
         }
-    else
+    } else {
         return {
             status: 'Error',
             desc: 'Invalid username or password'
         }
+    }
 }
 
 
@@ -135,7 +151,7 @@ app.get('/me', (req, res) => {
     const ssidCookie = req.cookies['ssid'];
     const username = uuidUname[ssidCookie];
 
-    (ssidCookie && username) ? res.json(users[username]) : res.status(401).end();
+    (ssidCookie && username) ? res.json(users[username]): res.status(401).end();
 });
 
 app.get('/scoreboard', (req, res) => {
