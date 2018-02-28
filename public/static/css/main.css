@@ -18,7 +18,7 @@ body {
     flex-direction: column;
     text-align: center;
     font-family: Comfortaa-Light, serif;    
-    background-color: #26547C;
+    background: linear-gradient(to bottom right, rgb(54, 110, 158), #183953);
     background-size: cover;
     color: white;
 }

@@ -2,22 +2,13 @@
 
     const noop = () => null;
 
-    class Push {
-        constructor(selector = 'body') {
-            this._node = document.querySelector(selector);
+    class Push extends window.AbstractBuilder{
+        constructor(selector){
+            super(selector);
             this._data = [];
         }
-
-        get data(){
-            return this._data;
-        }
-
         set data(message = []){
             this._data.push(message);
-        }
-
-        clear(){
-            this._node.innerHTML = '';
         }
 
         render(level = 'info') {
@@ -32,6 +23,5 @@
     }
 
     window.Push = Push;
-
 
 })();
