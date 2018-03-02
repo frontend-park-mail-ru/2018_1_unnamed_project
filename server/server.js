@@ -29,7 +29,48 @@ const users = {
     'venger': new User('farir1408@gmail.com', 'venger', 'pswd')
 };
 
-const uuidUname = {}
+const games = [
+    {
+        'type': 'Single',
+        'active': true,
+        'users': [
+            'venger'
+        ]
+    },
+	{
+		'type': 'Single',
+		'active': false,
+		'users': [
+			'venger'
+		]
+	},
+	{
+		'type': 'Single',
+		'active': true,
+		'users': [
+			'gabolaev'
+		]
+	},
+	{
+		'type': 'Multi2',
+		'active': false,
+		'users': [
+			'venger',
+            'gabolaev'
+		]
+	},
+	{
+		'type': 'Multi3',
+		'active': true,
+		'users': [
+			'venger',
+            'cvkucherov',
+            'a_ikchurin'
+		]
+	},
+];
+
+const uuidUname = {};
 
 app.use('/static', express.static(path.join(__dirname + '/../public/static')));
 app.use(body.json());
@@ -154,10 +195,22 @@ app.get('/me', (req, res) => {
     (ssidCookie && username) ? res.json(users[username]): res.status(401).end();
 });
 
+
 app.get('/profile', (req, res) => {
     
 });
 
+
+app.get('/me/games', (req, res) => {
+   const ssidCookie = req.cookies['ssid'];
+   const username = uuidUname[ssidCookie];
+   
+   if (ssidCookie && username) {
+       return res.json(games.filter(game => game.users.includes(username)));
+   } else {
+       res.status(401).end();
+   }
+});
 
 app.get('/scoreboard', (req, res) => {
     logger(`${req.url} ${req.method}`);
@@ -165,4 +218,4 @@ app.get('/scoreboard', (req, res) => {
     res.send(JSON.stringify(sorted));
 });
 
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || 5000);
