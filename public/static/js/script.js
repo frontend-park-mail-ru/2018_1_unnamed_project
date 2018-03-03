@@ -3,7 +3,7 @@ const httpModule = new window.HttpModule();
 const scoreboardBuilder = new window.ScoreboardBuilder('.js-scoreboard-table');
 const push = new window.Push('.msg');
 const api = new window.API();
-const profile = new window.Profile();
+const profileBuilder = new window.ProfileBuilder();
 const back = document.getElementById('back');
 const application = document.getElementById('application');
 const menuSection = document.getElementById('menu');
@@ -13,8 +13,8 @@ const multiplayerSection = document.getElementById('multiplayer');
 const singleplayerSection = document.getElementById('singleplayer');
 const scoreboardSection = document.getElementById('scoreboard');
 const rulesSection = document.getElementById('rules');
+const profileSection = document.getElementById('profile');
 const hrefs = document.querySelectorAll('[data-section]');
-const header = document.getElementById('auth-info');
 
 const signupForm = document.getElementsByClassName('js-signup-form')[0];
 const signupBuilder = new window.AuthFormsBuilder(signupForm);
@@ -24,18 +24,26 @@ const signinBuilder = new window.AuthFormsBuilder(signinForm);
 const sections = {
     menu: menuSection,
     signup: signupSection,
-    realMultiplayer: multiplayerSection,
-    multiplayer: signinSection,
+    signin: signinSection,
+    multiplayer: multiplayerSection,
+    profile: profileSection,
     singleplayer: singleplayerSection,
     scoreboard: scoreboardSection,
     rules: rulesSection,
 };
 
 const sectionOpeners = {
-    multiplayer: openSignin,
+    multiplayer: () => {
+        api.loadMe((err, me) => {
+            if (err) {
+                openSection('signin');
+            }
+            resolve(response);
+        })
+    },
     scoreboard: openScoreboard,
     signup: openSignup,
-    realMultiplayer: openMultiplayer
+    signin: openSignin
 }
 
 function hideAllExcept(section) {
@@ -47,10 +55,13 @@ function hideAllExcept(section) {
 }
 
 function openSection(section) {
-    if (typeof sectionOpeners[section] === 'function') {
-        sectionOpeners[section]();
-    }
-    hideAllExcept(section);
+    debugger;
+    let stopBuilding = false;
+    if (typeof sectionOpeners[section] === 'function')
+        stopBuilding = sectionOpeners[section]();
+
+    if (!stopBuilding)
+        hideAllExcept(section);
     push.clear();
 }
 
@@ -68,7 +79,11 @@ Object.entries(hrefs).forEach(([key, value]) => {
 });
 
 function openMultiplayer() {
-    api.loadMe((err, me) => { if (err) openSection('signin') })
+    api.loadMe((err, me) => {
+        if (err) {
+            openSection('signin')
+        }
+    })
     console.log('TODO game');
 }
 
@@ -86,9 +101,6 @@ function openSignup() {
 }
 
 function openSignin() {
-    api.loadMe((err, me) => {
-        if (!err) openSection('realMultiplayer');
-    });
     signinBuilder.render();
     signinForm.addEventListener('submit', () => signinBuilder.onSubmitAuthForm(event, api.loadSignin));
     const generatedSignUpHref = document.getElementsByClassName('signup')[0];
@@ -96,4 +108,4 @@ function openSignin() {
 }
 
 openSection('menu')
-profile.setProfileBar();
+signinBuilder.checkAuth();

@@ -3,9 +3,10 @@
     const noop = () => null;
 
     class HttpModule{
-        request({method = 'GET', url = '/', data={}, callback = noop} = {}){
+        request({method = 'GET', url = '/', data={}, callback = noop, async = true} = {}){
+            debugger;
             const xhr = new XMLHttpRequest();
-            xhr.open(method, url, true);
+            xhr.open(method, url, async);
 
             xhr.onreadystatechange = function () {
                 if (xhr.readyState != 4) {

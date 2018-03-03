@@ -12,15 +12,15 @@
 
 <body>
     <div class=msg></div>
-    <div class="auth-info" id="auth-info"></div>
     <div id="back" class="back" hidden>
         <a href="#" class="back" data-section="menu">back t↺ menu</a>
     </div>
     <main id="application" class="application">
+        <section class="profile" id="profile">
+            <a href="#" data-section="barSignin"></a>
+        </section>
         <section id="menu" hidden>
-            <div class="header">
-                SHIP<br>COLLISION
-            </div>
+            <div class="header">SHIP<br>COLLISION</div>
             <hr>
             <div class="menu">
                 <ul>
@@ -40,10 +40,10 @@
             </div>
         </section>
         <section id="signin" hidden>
-            <form class="js-signin-form"></form>
+            <form class="js-signin-form" novalidate></form>
         </section>
         <section id="signup" hidden>
-            <form class="js-signup-form"></form>
+            <form class="js-signup-form" novalidate></form>
         </section>
         <section id="multiplayer" hidden>
             <img src="static/media/shingis.jpg">
