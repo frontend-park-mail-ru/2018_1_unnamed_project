@@ -9,18 +9,14 @@
 
         checkAuth(fromMultiplayer = false) {
             debugger;
-            api.loadMe((err, me) => {
-                if (err) {
-                    profile.children[0].textContent = "Unauthorized";
-                } else {
-                    profile.children[0].textContent = me.username;
-                    profile.children[0].attrs['data-section'] = 'profile';
+            api.loadMe.then((me) => {
+                profile.children[0].textContent = me.username;
+                profile.children[0].attrs['data-section'] = 'profile';
 
-                    if (fromMultiplayer) {
-                        openSection('realMultiplayer')
-                        push.data = response.desc;
-                        push.render('success');
-                    }
+                if (fromMultiplayer) {
+                    openSection('realMultiplayer')
+                    push.data = response.desc;
+                    push.render('success');
                 }
             });
         }

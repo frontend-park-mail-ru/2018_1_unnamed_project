@@ -3,38 +3,33 @@
     class API {
         constructor(){};
 
-        loadMe(callback, async = true) {
-            httpModule.request({
+        loadMe() {
+            return httpModule.request({
                 method: 'GET',
                 url: '/me',
-                callback,
-                async
             })
         }
 
-        loadSignin(userData, callback) {
-            httpModule.request({
+        loadSignin(userData) {
+            return httpModule.request({
                 method: 'POST',
                 url: '/signin',
                 data: userData,
-                callback
             })
         }
 
-        loadSignup(userData, callback) {
-            httpModule.request({
+        loadSignup(userData) {
+            return httpModule.request({
                 method: 'POST',
                 url: '/signup',
                 data: userData,
-                callback
             })
         }
 
         loadScoreboard(callback) {
-            httpModule.request({
+            return httpModule.request({
                 method: 'GET',
                 url: '/scoreboard',
-                callback
             })
         }
     };
