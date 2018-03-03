@@ -3,11 +3,12 @@
     class API {
         constructor(){};
 
-        loadMe(callback) {
+        loadMe(callback, async = true) {
             httpModule.request({
                 method: 'GET',
                 url: '/me',
-                callback
+                callback,
+                async
             })
         }
 

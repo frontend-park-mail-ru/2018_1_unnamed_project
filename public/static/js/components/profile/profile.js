@@ -2,24 +2,17 @@
 
     const noop = () => null;
 
-
-    class Profle {
+    class ProfleBuilder {
         constructor() {
-            // this._node = document.querySelector(selector);
+            // super
         }
 
-        setProfileBar() {
-            api.loadMe((err, me) => {
-                header.innerHTML = err ? 'Unauthorized' : me.username;
-            });
-        }
-
-        get data() {
-
+        render() {
+            console.log('hi shit');
         }
 
     }
 
-    window.Profile = Profle;
+    window.ProfileBuilder = ProfleBuilder;
 
 })();
