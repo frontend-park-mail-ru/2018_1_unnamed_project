@@ -55,7 +55,6 @@ function hideAllExcept(section) {
 }
 
 function openSection(section) {
-    debugger;
     let stopBuilding = false;
     if (typeof sectionOpeners[section] === 'function')
         stopBuilding = sectionOpeners[section]();
@@ -88,11 +87,12 @@ function openMultiplayer() {
 }
 
 function openScoreboard() {
-    api.loadScoreboard((err, users) => {
-        if (err) return;
-        scoreboardBuilder.data = users;
-        scoreboardBuilder.render();
-    });
+    api.loadScoreboard()
+        .then(users => {
+            scoreboardBuilder.data = users;
+            scoreboardBuilder.render();
+        }
+    );
 }
 
 function openSignup() {
@@ -108,4 +108,4 @@ function openSignin() {
 }
 
 openSection('menu')
-signinBuilder.checkAuth();
+// signinBuilder.checkAuth();

@@ -1,40 +1,34 @@
-(function(){
+(function () {
 
     const noop = () => null;
 
-    class HttpModule{
-        request({method = 'GET', url = '/', data={}, callback = noop, async = true} = {}){
-            debugger;
-            const xhr = new XMLHttpRequest();
-            xhr.open(method, url, async);
+    class HttpModule {
+        request({ HTTPmethod = 'GET', url = '/', data = {} } = {}) {
+            const options = {
+                HTTPmethod: HTTPmethod,
+                headers: {
+                    'Content-type': 'application/json',
+                    'Access-Control-Request-Method': HTTPmethod,
+                    'Cookie': this._cookie
+                },
+            };
 
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState != 4) {
-                    return;
-                }
-    
-                if (xhr.status < 300 && xhr.status >= 200) {
-                    const responseText = xhr.responseText;
-                    try {
-                        const response = JSON.parse(responseText);
-                        callback(null, response);
-                    } catch (err) {
-                        console.error(`${method} error: `, err);
-                        callback(err);
+            if (HTTPmethod === 'POST' && typeof params !== undefined)
+                options.body = JSON.stringify(params);
+
+            return fetch(url)
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        console.alert(`RESPONSE PROBLEM: ${response}`);
+                        return response;
                     }
-                } else {
-                    callback(xhr);
-                }
-            }
-
-            xhr.withCredentials = true;
-
-            if (method == 'GET'){
-                xhr.send();
-            }else{
-                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-                xhr.send(JSON.stringify(data));
-            }
+                    throw new Error('RESPONSE PROBLEM');
+                }).catch(error => {
+                    console.log('FETCH PROBLEM: ' + error.message);
+                    return error
+                });
         }
     }
 
