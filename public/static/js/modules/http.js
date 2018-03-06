@@ -5,11 +5,7 @@
 
     class HttpModule {
 
-        request({
-            HTTPmethod = 'GET',
-            url = '/',
-            data = {}
-        } = {}) {
+        request({ HTTPmethod = 'GET', url = '/', data = {}} = {}) {
             const backendURL = 'http://localhost:8080';
             const options = {
                 method: HTTPmethod,
@@ -31,6 +27,7 @@
                     return response.json();
                 })
                 .then(uresp => {
+                    debugger;
                     if ((uresp.status >= 200 && uresp.status < 300) || !(uresp.status)) {
                         return uresp;
                     } else {
