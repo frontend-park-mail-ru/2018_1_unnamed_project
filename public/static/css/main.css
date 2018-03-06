@@ -18,7 +18,8 @@ body {
     flex-direction: column;
     text-align: center;
     font-family: Comfortaa-Light, serif;    
-    background: linear-gradient(to bottom right, rgb(54, 110, 158), #183953);
+    /* background: linear-gradient(to bottom right, rgb(36, 255, 235), #002542); */
+    background: linear-gradient(to bottom right, #000000, rgb(0, 44, 58));
     background-size: cover;
     color: white;
 }
@@ -34,12 +35,6 @@ ul {
     line-height: 92%;
     font-family: Righteous-Regular, serif;
     font-size: 80px;
-}
-
-.profile {
-    position: absolute;
-    top: 2%;
-    right: 1%;
 }
 
 a {

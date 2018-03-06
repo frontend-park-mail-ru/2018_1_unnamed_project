@@ -7,12 +7,16 @@
             super(selector);
         }
 
-        loadBar(){
-            
+        updateBar(){
+            signinBuilder.checkAuth();
         }
 
         render() {
-            this._node.innerHTML = 'Oh, hi Clark';
+            this._node.innerHTML = `
+                <a href="#" id="logout" data-section="menu">LOG OUT</a>
+            `
+            document.getElementById("logout").addEventListener('click', signinBuilder.logoutMe);
+
         }
 
     }

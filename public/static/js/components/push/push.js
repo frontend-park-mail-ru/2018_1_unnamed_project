@@ -11,10 +11,13 @@
             this._data.push(message);
         }
 
+        get data(){
+            return this._data;
+        }
+
         render(level = 'info') {
             if (!(this._data && this._node)) return;
             this._node.innerHTML = '';
-            debugger;
             this._data.forEach(message => {
                 this._node.innerHTML += `
                     <div class="msg_${level}">${message}</span>
