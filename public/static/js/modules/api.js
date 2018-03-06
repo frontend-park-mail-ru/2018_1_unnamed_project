@@ -21,7 +21,7 @@
         loadSignup(userData) {
             return httpModule.request({
                 HTTPmethod: 'POST',
-                url: '/signup',
+                url: '/users',
                 data: userData,
             })
         }
