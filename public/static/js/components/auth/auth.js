@@ -7,21 +7,21 @@
             this._node = node;
         }
 
-        checkAuth(fromMultiplayer = false) {
-            debugger;
-            api.loadMe.then((me) => {
-                profile.children[0].textContent = me.username;
-                profile.children[0].attrs['data-section'] = 'profile';
-
-                if (fromMultiplayer) {
-                    openSection('realMultiplayer')
-                    push.data = response.desc;
-                    push.render('success');
-                }
-            });
+        checkAuth(buildMultiplayer = false) {
+            api.loadMe()
+                .then(response => {           
+                    if (buildMultiplayer) {
+                        openSection('multiplayer');
+                        push.data = `Welcome back, ${response.username}`;
+                        push.render('success');
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         }
 
-        onSubmitAuthForm(event, func) {
+        onSubmitAuthForm(event, func, buildOnSuccess) {
             event.preventDefault();
             const form = event.currentTarget;
             const formElements = form.elements;
@@ -34,18 +34,15 @@
                 }
             });
 
-            func(formdata, function (err, response) {
-                push.clear();
-                if (err) {
-                    push.data = JSON.parse(err.response).desc;
+            func(formdata)
+                .then(response => {
+                    this.checkAuth(true);
+                })
+                .catch(errors => {
+                    debugger;
+                    errors.forEach(error => push.data = error);
                     push.render('error');
-                    return;
-                }
-
-                checkAuth(true);
-
-                window.profileBuilder.setProfile
-            });
+                })
         }
 
         render() {
@@ -54,12 +51,12 @@
             }
             const inorup = this._node.className.slice(7, 9);
             this._node.innerHTML = `
-                <input required class="auth-form__input" type="text" name="username" placeholder="username">
+                <input required class="auth-form__input" type="email" name="email" placeholder="email">
                 <input required class="auth-form__input" type="password" name="password" placeholder="password">
                 ${
                     ((inorup === 'up') ? `
                     <input required class="auth-form__input" type="password" name="password_confirmation\" placeholder="password again">
-                    <input required class="auth-form__input" type="email" name="email" placeholder="email">
+                    <input required class="auth-form__input" type="text" name="username" placeholder="username">
                     ` : '')
                 }
                 <table class="form-buttons">

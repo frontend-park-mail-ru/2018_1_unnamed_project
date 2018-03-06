@@ -5,14 +5,14 @@
 
         loadMe() {
             return httpModule.request({
-                method: 'GET',
+                HTTPmethod: 'GET',
                 url: '/me',
             })
         }
-
+    
         loadSignin(userData) {
             return httpModule.request({
-                method: 'POST',
+                HTTPmethod: 'POST',
                 url: '/signin',
                 data: userData,
             })
@@ -20,7 +20,7 @@
 
         loadSignup(userData) {
             return httpModule.request({
-                method: 'POST',
+                HTTPmethod: 'POST',
                 url: '/signup',
                 data: userData,
             })
@@ -28,8 +28,8 @@
 
         loadScoreboard(callback) {
             return httpModule.request({
-                method: 'GET',
-                url: '/scoreboard',
+                HTTPmethod: 'GET',
+                url: '/users/scoreboard',
             })
         }
     };
