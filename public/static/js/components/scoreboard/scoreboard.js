@@ -7,12 +7,12 @@
                     <table class="scoreboard__table">
                         <tbody>
                             ${
-                                this._data.map(({email = 'example@mail.ru', username = 'durov', rate = 1488} = {}) => {
+                                this._data.users.map(({email = 'example@mail.ru', username = 'durov', rank = 1488} = {}) => {
                                     return `
                                         <tr class="scoreboard__row">
                                             <td>${email}</td> 
                                             <td>${username}</td> 
-                                            <td>${rate}</td>
+                                            <td>${rank}</td>
                                         </tr>
                                     `
                                 }).join('\n')}

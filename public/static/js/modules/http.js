@@ -2,35 +2,49 @@
 
     const noop = () => null;
 
+
     class HttpModule {
-        request({ HTTPmethod = 'GET', url = '/', data = {} } = {}) {
+
+        request({
+            HTTPmethod = 'GET',
+            url = '/',
+            data = {}
+        } = {}) {
+            const backendURL = 'http://localhost:8080';
             const options = {
-                HTTPmethod: HTTPmethod,
+                method: HTTPmethod,
+                // HTTPmethod: HTTPmethod,
                 headers: {
                     'Content-type': 'application/json',
                     'Access-Control-Request-Method': HTTPmethod,
                     'Cookie': this._cookie
                 },
+                mode: 'cors',
+                credentials: 'include'
             };
 
-            if (HTTPmethod === 'POST' && typeof params !== undefined)
-                options.body = JSON.stringify(params);
+            if (HTTPmethod === 'POST' && typeof data !== undefined)
+                options.body = JSON.stringify(data);
 
-            return fetch(url)
+            return fetch(backendURL + url, options)
                 .then(response => {
-                    if (response.ok) {
-                        return response.json();
+                    return response.json();
+                })
+                .then(uresp => {
+                    if ((uresp.status >= 200 && uresp.status < 300) || !(uresp.status)) {
+                        return uresp;
                     } else {
-                        console.alert(`RESPONSE PROBLEM: ${response}`);
-                        return response;
+                        if (uresp.errors) {
+                            throw uresp.errors.map(error => `${error.field}: ${error.defaultMessage}`)
+                        } else {
+                            throw [uresp.message];
+                        }
                     }
-                    throw new Error('RESPONSE PROBLEM');
-                }).catch(error => {
-                    console.log('FETCH PROBLEM: ' + error.message);
-                    return error
+                })
+                .catch(error => {
+                    throw error;
                 });
         }
     }
-
     window.HttpModule = HttpModule;
 })();

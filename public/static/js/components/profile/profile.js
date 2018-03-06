@@ -2,13 +2,17 @@
 
     const noop = () => null;
 
-    class ProfleBuilder {
-        constructor() {
-            // super
+    class ProfleBuilder extends window.AbstractBuilder {
+        constructor(selector) {
+            super(selector);
+        }
+
+        loadBar(){
+            
         }
 
         render() {
-            console.log('hi shit');
+            this._node.innerHTML = 'Oh, hi Clark';
         }
 
     }

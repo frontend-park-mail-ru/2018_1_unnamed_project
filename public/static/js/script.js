@@ -1,9 +1,10 @@
 'use strict';
 const httpModule = new window.HttpModule();
 const scoreboardBuilder = new window.ScoreboardBuilder('.js-scoreboard-table');
+const multiplayerBuilder = new window.Multiplayer('.multiplayer');
+const profileBuilder = new window.ProfileBuilder('.profile');
 const push = new window.Push('.msg');
 const api = new window.API();
-const profileBuilder = new window.ProfileBuilder();
 const back = document.getElementById('back');
 const application = document.getElementById('application');
 const menuSection = document.getElementById('menu');
@@ -33,14 +34,7 @@ const sections = {
 };
 
 const sectionOpeners = {
-    multiplayer: () => {
-        api.loadMe((err, me) => {
-            if (err) {
-                openSection('signin');
-            }
-            resolve(response);
-        })
-    },
+    multiplayer: openMultiplayer,
     scoreboard: openScoreboard,
     signup: openSignup,
     signin: openSignin
@@ -77,15 +71,6 @@ Object.entries(hrefs).forEach(([key, value]) => {
     value.addEventListener('click', click);
 });
 
-function openMultiplayer() {
-    api.loadMe((err, me) => {
-        if (err) {
-            openSection('signin')
-        }
-    })
-    console.log('TODO game');
-}
-
 function openScoreboard() {
     api.loadScoreboard()
         .then(users => {
@@ -100,6 +85,13 @@ function openSignup() {
     signupForm.addEventListener('submit', () => signupBuilder.onSubmitAuthForm(event, api.loadSignup));
 }
 
+function openMultiplayer(){
+    api.loadMe()
+        .then(response => multiplayerBuilder.render())
+        .catch(error => openSection('signin'))
+    
+}
+
 function openSignin() {
     signinBuilder.render();
     signinForm.addEventListener('submit', () => signinBuilder.onSubmitAuthForm(event, api.loadSignin));
@@ -108,4 +100,3 @@ function openSignin() {
 }
 
 openSection('menu')
-// signinBuilder.checkAuth();
