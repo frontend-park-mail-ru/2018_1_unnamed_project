@@ -3,6 +3,8 @@ const httpModule = new window.HttpModule();
 const scoreboardBuilder = new window.ScoreboardBuilder('.js-scoreboard-table');
 const multiplayerBuilder = new window.Multiplayer('.multiplayer');
 const profileBuilder = new window.ProfileBuilder('.profile');
+const profileSection = document.getElementById('profile');
+const profileBar = document.getElementById('bar');
 const push = new window.Push('.msg');
 const api = new window.API();
 const back = document.getElementById('back');
@@ -14,7 +16,6 @@ const multiplayerSection = document.getElementById('multiplayer');
 const singleplayerSection = document.getElementById('singleplayer');
 const scoreboardSection = document.getElementById('scoreboard');
 const rulesSection = document.getElementById('rules');
-const profileSection = document.getElementById('profile');
 const hrefs = document.querySelectorAll('[data-section]');
 
 const signupForm = document.getElementsByClassName('js-signup-form')[0];
@@ -27,17 +28,18 @@ const sections = {
     signup: signupSection,
     signin: signinSection,
     multiplayer: multiplayerSection,
-    profile: profileSection,
     singleplayer: singleplayerSection,
     scoreboard: scoreboardSection,
     rules: rulesSection,
+    profile: profileSection
 };
 
 const sectionOpeners = {
     multiplayer: openMultiplayer,
     scoreboard: openScoreboard,
     signup: openSignup,
-    signin: openSignin
+    signin: openSignin,
+    profile: openProfile
 }
 
 function hideAllExcept(section) {
@@ -72,7 +74,7 @@ Object.entries(hrefs).forEach(([key, value]) => {
 });
 
 function openScoreboard() {
-    api.loadScoreboard()
+    api.scoreboard()
         .then(users => {
             scoreboardBuilder.data = users;
             scoreboardBuilder.render();
@@ -82,11 +84,11 @@ function openScoreboard() {
 
 function openSignup() {
     signupBuilder.render();
-    signupForm.addEventListener('submit', () => signupBuilder.onSubmitAuthForm(event, api.loadSignup));
+    signupForm.addEventListener('submit', () => signupBuilder.onSubmitAuthForm(event, api.signup));
 }
 
 function openMultiplayer(){
-    api.loadMe()
+    api.me()
         .then(response => multiplayerBuilder.render())
         .catch(error => openSection('signin'))
     
@@ -94,9 +96,16 @@ function openMultiplayer(){
 
 function openSignin() {
     signinBuilder.render();
-    signinForm.addEventListener('submit', () => signinBuilder.onSubmitAuthForm(event, api.loadSignin));
+    signinForm.addEventListener('submit', () => signinBuilder.onSubmitAuthForm(event, api.signin));
     const generatedSignUpHref = document.getElementsByClassName('signup')[0];
     generatedSignUpHref.addEventListener('click', click);
 }
 
+function openProfile(){
+    api.me()
+        .then(response => profileBuilder.render())
+        .catch(error => openSection('signin'))
+}
+
 openSection('menu')
+profileBuilder.updateBar();

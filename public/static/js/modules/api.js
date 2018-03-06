@@ -3,22 +3,22 @@
     class API {
         constructor(){};
 
-        loadMe() {
+        me() {
             return httpModule.request({
                 HTTPmethod: 'GET',
                 url: '/me',
             })
         }
     
-        loadSignin(userData) {
+        signin(userData) {
             return httpModule.request({
                 HTTPmethod: 'POST',
                 url: '/signin',
                 data: userData,
             })
         }
-
-        loadSignup(userData) {
+        
+        signup(userData) {
             return httpModule.request({
                 HTTPmethod: 'POST',
                 url: '/users',
@@ -26,7 +26,14 @@
             })
         }
 
-        loadScoreboard(callback) {
+        logout(){
+            return httpModule.request({
+                HTTPmethod: 'DELETE',
+                url: '/signout',
+            })
+        }
+
+        scoreboard(callback) {
             return httpModule.request({
                 HTTPmethod: 'GET',
                 url: '/users/scoreboard',

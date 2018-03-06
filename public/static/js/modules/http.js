@@ -9,7 +9,6 @@
             const backendURL = 'http://localhost:8080';
             const options = {
                 method: HTTPmethod,
-                // HTTPmethod: HTTPmethod,
                 headers: {
                     'Content-type': 'application/json',
                     'Access-Control-Request-Method': HTTPmethod,
@@ -27,7 +26,6 @@
                     return response.json();
                 })
                 .then(uresp => {
-                    debugger;
                     if ((uresp.status >= 200 && uresp.status < 300) || !(uresp.status)) {
                         return uresp;
                     } else {
