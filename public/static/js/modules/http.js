@@ -7,14 +7,7 @@
 
     class HttpModule {
 
-        request({
-            HTTPmethod = 'GET',
-            url = '/',
-            contentType,
-            data = {}
-        } = {}) {
-
-
+        request({HTTPmethod = 'GET', url = '/', contentType, data = {}} = {}) {
             const options = {
                 method: HTTPmethod,
                 headers: {
