@@ -16,7 +16,7 @@
 			this._node.innerHTML = `
             <div class="img-with-text">
                 <img class="avatar" src="${avatarLink}"/>
-                <form action="${backendURL + '/me/avatar/'}" method="post" id="upload-avatar" enctype="multipart/form-data">
+                <form action="${backendURL + '/getMe/avatar/'}" method="post" id="upload-avatar" enctype="multipart/form-data">
                     <span class="upload-btn-wrapper">
                         <button class="btn update">Update</button>
                         <input type="file" name="avatar"/>

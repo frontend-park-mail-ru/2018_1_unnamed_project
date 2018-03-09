@@ -174,7 +174,7 @@ function ssidResponseBuilder(data, result, res) {
 	}
 }
 
-app.post('/signup', (req, res) => {
+app.post('/signUp', (req, res) => {
 	data = req.body;
 	ssidResponseBuilder(data, validateSignUp(data), res);
 	if (res.statusCode === 201) {
@@ -183,12 +183,12 @@ app.post('/signup', (req, res) => {
 	}
 });
 
-app.post('/signin', (req, res) => {
+app.post('/signIn', (req, res) => {
 	data = req.body;
 	ssidResponseBuilder(data, validateSignIn(data), res);
 });
 
-app.get('/me', (req, res) => {
+app.get('/getMe', (req, res) => {
 	const ssidCookie = req.cookies['ssid'];
 	const username = uuidUname[ssidCookie];
 
@@ -201,7 +201,7 @@ app.get('/profile', (req, res) => {
 });
 
 
-app.get('/me/games', (req, res) => {
+app.get('/getMe/games', (req, res) => {
 	const ssidCookie = req.cookies['ssid'];
 	const username = uuidUname[ssidCookie];
 

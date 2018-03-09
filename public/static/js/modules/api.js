@@ -1,64 +1,74 @@
+'use strict';
+
 (function () {
 
+	// const BACKEND_URI = 'http://localhost:8080'; // debug
+	const BACKEND_URI = 'https://dev-api-shipcollision.herokuapp.com'; // production
+
 	class API {
-		constructor() {
+
+		constructor(httpModule = window.HttpModule) {
+			this.httpModule = httpModule;
+			this.routeMappings = {
+				'me': BACKEND_URI + '/me',
+				'signIn': BACKEND_URI + '/signin',
+				'signUp': BACKEND_URI + '/signUp',
+				'logout': BACKEND_URI + '/signout',
+				'scoreboard': BACKEND_URI + '/users/scoreboard',
+				'avatar': BACKEND_URI + '/me/avatar'
+			}
 		};
 
-		me() {
-			return httpModule.request({
-				HTTPmethod: 'GET',
-				url: '/me',
-			})
+		getMe() {
+			return this.httpModule.doGet({
+				url: this.routeMappings.me
+			});
 		}
 
-		signin(userData) {
-			return httpModule.request({
-				HTTPmethod: 'POST',
-				url: '/signin',
-				contentType: 'application/json',
-				data: userData,
-			})
+		signIn(data) {
+			return this.httpModule.doPost({
+				url: this.routeMappings.signIn,
+				data
+			});
 		}
 
-		signup(userData) {
-			return httpModule.request({
-				HTTPmethod: 'POST',
-				url: '/users',
-				contentType: 'application/json',
-				data: userData,
-			})
+		signUp(data) {
+			return this.httpModule.doPost({
+				url: this.routeMappings.signUp,
+				data
+			});
 		}
 
 		logout() {
-			return httpModule.request({
-				HTTPmethod: 'DELETE',
-				url: '/signout',
-			})
+			return this.httpModule.doDelete({
+				url: this.routeMappings.logout
+			});
 		}
 
 		scoreboard() {
-			return httpModule.request({
-				HTTPmethod: 'GET',
-				url: '/users/scoreboard',
-			})
+			return this.httpModule.doGet({
+				url: this.routeMappings.scoreboard
+			});
 		}
 
-		uploadAvatar(form) {
-			return httpModule.request({
-				HTTPmethod: 'POST',
-				url: '/me/avatar',
-				data: form
-			})
+		uploadAvatar(data) {
+			/**
+			 * Content-Type выставляется в null для того, чтобы
+			 * браузер сам коректно выставил boundaries для multipart/form-data.
+			 */
+			return this.httpModule.doPost({
+				url: this.routeMappings.avatar,
+				contentType: null,
+				data
+			});
 		}
 
 		deleteAvatar() {
-			return httpModule.request({
-				HTTPmethod: 'DELETE',
-				url: '/me/avatar'
-			})
+			return this.httpModule.doDelete({
+				url: this.routeMappings.avatar
+			});
 		}
-	};
+	}
 
 	window.API = API;
-
 })();
