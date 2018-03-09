@@ -4,7 +4,7 @@ module.exports = {
         "es6": true,
         "node": true
     },
-    // "extends": "google",
+    "extends": "google",
     "rules": {
         "indent": [
             "error",
@@ -21,6 +21,13 @@ module.exports = {
         "semi": [
             "error",
             "always"
-        ]
+        ],
+        'max-len': [2, {
+            code: 120,
+            tabWidth: 2,
+            ignoreUrls: true,
+            ignorePattern: '^goog\.(module|require)',
+            ignorePattern: '.*\/.*\/'
+          }],
     }
 };

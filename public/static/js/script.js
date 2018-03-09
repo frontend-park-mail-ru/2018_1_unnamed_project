@@ -1,14 +1,11 @@
 'use strict';
-const httpModule = new window.HttpModule();
 const scoreboardBuilder = new window.ScoreboardBuilder('.js-scoreboard-table');
 const multiplayerBuilder = new window.Multiplayer('.multiplayer');
 const profileBuilder = new window.ProfileBuilder('.profile');
 const profileSection = document.getElementById('profile');
-const profileBar = document.getElementById('bar');
 const push = new window.Push('.msg');
 const api = new window.API();
 const back = document.getElementById('back');
-const application = document.getElementById('application');
 const menuSection = document.getElementById('menu');
 const signinSection = document.getElementById('signin');
 const signupSection = document.getElementById('signup');
@@ -31,7 +28,7 @@ const sections = {
     singleplayer: singleplayerSection,
     scoreboard: scoreboardSection,
     rules: rulesSection,
-    profile: profileSection
+    profile: profileSection,
 };
 
 const sectionOpeners = {
@@ -39,7 +36,7 @@ const sectionOpeners = {
     scoreboard: openScoreboard,
     signup: openSignup,
     signin: openSignin,
-    profile: openProfile
+    profile: openProfile,
 };
 
 function hideAllExcept(section) {
@@ -52,11 +49,13 @@ function hideAllExcept(section) {
 
 function openSection(section) {
     let stopBuilding = false;
-    if (typeof sectionOpeners[section] === 'function')
+    if (typeof sectionOpeners[section] === 'function') {
         stopBuilding = sectionOpeners[section]();
+    }
 
-    if (!stopBuilding)
+    if (!stopBuilding) {
         hideAllExcept(section);
+    }
     push.clear();
 }
 
@@ -75,7 +74,7 @@ Object.entries(hrefs).forEach(([key, value]) => {
 
 function openScoreboard() {
     api.scoreboard()
-        .then(users => {
+        .then((users) => {
             scoreboardBuilder.data = users;
             scoreboardBuilder.render();
         }
@@ -87,11 +86,10 @@ function openSignup() {
     signupForm.addEventListener('submit', () => signupBuilder.onSubmitAuthForm(event, api.signup));
 }
 
-function openMultiplayer(){
+function openMultiplayer() {
     api.me()
-        .then(response => multiplayerBuilder.render())
-        .catch(error => openSection('signin'));
-    
+        .then((response) => multiplayerBuilder.render())
+        .catch((error) => openSection('signin'));
 }
 
 function openSignin() {
@@ -101,13 +99,13 @@ function openSignin() {
     generatedSignUpHref.addEventListener('click', click);
 }
 
-function openProfile(){
+function openProfile() {
     api.me()
-        .then(response => {
+        .then((response) => {
             profileBuilder.data = response;
             profileBuilder.render();
         })
-        .catch(error => openSection('signin'));
+        .catch((error) => openSection('signin'));
 }
 
 openSection('menu');
