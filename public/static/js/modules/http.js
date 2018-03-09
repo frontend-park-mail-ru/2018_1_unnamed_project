@@ -2,24 +2,37 @@
 
     const noop = () => null;
 
+    // const backendURL = 'http://localhost:8080'; // debug
+    const backendURL = 'https://dev-api-shipcollision.herokuapp.com'; // production
 
     class HttpModule {
 
-        request({ HTTPmethod = 'GET', url = '/', data = {}} = {}) {
-            const backendURL = 'https://dev-api-shipcollision.herokuapp.com';
+        request({
+            HTTPmethod = 'GET',
+            url = '/',
+            contentType,
+            data = {}
+        } = {}) {
+
+
             const options = {
                 method: HTTPmethod,
                 headers: {
-                    'Content-type': 'application/json',
                     'Access-Control-Request-Method': HTTPmethod,
                     'Cookie': this._cookie
                 },
                 mode: 'cors',
-                credentials: 'include'
+                credentials: 'include',
             };
 
-            if (HTTPmethod === 'POST' && typeof data !== undefined)
-                options.body = JSON.stringify(data);
+            if (HTTPmethod !== 'GET' && typeof data !== undefined) {
+                if (contentType !== 'application/json') {
+                    options.body = new FormData(data);
+                } else {
+                    options.headers['Content-type'] = contentType;
+                    options.body = JSON.stringify(data);
+                }
+            }
 
             return fetch(backendURL + url, options)
                 .then(response => {
@@ -42,4 +55,5 @@
         }
     }
     window.HttpModule = HttpModule;
+    window.backendURL = backendURL;
 })();

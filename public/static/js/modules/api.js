@@ -14,6 +14,7 @@
             return httpModule.request({
                 HTTPmethod: 'POST',
                 url: '/signin',
+                contentType: 'application/json',
                 data: userData,
             })
         }
@@ -22,6 +23,7 @@
             return httpModule.request({
                 HTTPmethod: 'POST',
                 url: '/users',
+                contentType: 'application/json',
                 data: userData,
             })
         }
@@ -33,10 +35,25 @@
             })
         }
 
-        scoreboard(callback) {
+        scoreboard() {
             return httpModule.request({
                 HTTPmethod: 'GET',
                 url: '/users/scoreboard',
+            })
+        }
+
+        uploadAvatar(form){
+            return httpModule.request({
+                HTTPmethod: 'POST',
+                url: '/me/avatar',
+                data: form
+            })
+        }
+
+        deleteAvatar(){
+            return httpModule.request({
+                HTTPmethod: 'DELETE',
+                url: '/me/avatar'
             })
         }
     };

@@ -30,7 +30,7 @@ td.space {
 }
 
 .bordered {
-    color: #fffff8;    
+    color: #fffff8;
     border: 40px;
     font-family: system-ui;
     font-size: 27px;
@@ -47,9 +47,4 @@ input.bordered {
 .orsignup {
     float: right;
     margin: 22px 0 22px 0;
-}
-
-table {
-    width: 100%;
-    border-spacing: 0;
 }
