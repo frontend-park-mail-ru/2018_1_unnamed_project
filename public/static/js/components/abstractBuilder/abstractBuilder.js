@@ -1,27 +1,28 @@
 (function () {
-    const noop = () => null;
+	const noop = () => null;
 
-    class AbstractBuilder {
+	class AbstractBuilder {
 
-        constructor(selector = 'body') {
-            this._node = document.querySelector(selector);
-        }
+		constructor(selector = 'body') {
+			this._node = document.querySelector(selector);
+		}
 
-        get data() {
-            return this._data;
-        }
+		get data() {
+			return this._data;
+		}
 
-        set data(data = []) {
-            this._data = data;
-        }
+		set data(data) {
+			this._data = data;
+		}
 
-        clear() {
-            this._node.innerHTML = '';
-        }
+		clear() {
+			this._node.innerHTML = '';
+		}
 
-        render(){};
-    }
+		render() {
+		};
+	}
 
-    window.AbstractBuilder = AbstractBuilder;
-    window.noop = noop;
+	window.AbstractBuilder = AbstractBuilder;
+	window.noop = noop;
 })();

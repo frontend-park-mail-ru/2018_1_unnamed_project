@@ -24,90 +24,90 @@ const signinForm = document.getElementsByClassName('js-signin-form')[0];
 const signinBuilder = new window.AuthFormsBuilder(signinForm);
 
 const sections = {
-    menu: menuSection,
-    signup: signupSection,
-    signin: signinSection,
-    multiplayer: multiplayerSection,
-    singleplayer: singleplayerSection,
-    scoreboard: scoreboardSection,
-    rules: rulesSection,
-    profile: profileSection
+	menu: menuSection,
+	signup: signupSection,
+	signin: signinSection,
+	multiplayer: multiplayerSection,
+	singleplayer: singleplayerSection,
+	scoreboard: scoreboardSection,
+	rules: rulesSection,
+	profile: profileSection
 };
 
 const sectionOpeners = {
-    multiplayer: openMultiplayer,
-    scoreboard: openScoreboard,
-    signup: openSignup,
-    signin: openSignin,
-    profile: openProfile
+	multiplayer: openMultiplayer,
+	scoreboard: openScoreboard,
+	signup: openSignup,
+	signin: openSignin,
+	profile: openProfile
 }
 
 function hideAllExcept(section) {
-    Object.entries(sections).forEach(
-        ([key, value]) => value.hidden = (section !== key)
-    );
+	Object.entries(sections).forEach(
+		([key, value]) => value.hidden = (section !== key)
+	);
 
-    back.hidden = (section === 'menu');
+	back.hidden = (section === 'menu');
 }
 
 function openSection(section) {
-    let stopBuilding = false;
-    if (typeof sectionOpeners[section] === 'function')
-        stopBuilding = sectionOpeners[section]();
+	let stopBuilding = false;
+	if (typeof sectionOpeners[section] === 'function')
+		stopBuilding = sectionOpeners[section]();
 
-    if (!stopBuilding)
-        hideAllExcept(section);
-    push.clear();
+	if (!stopBuilding)
+		hideAllExcept(section);
+	push.clear();
 }
 
 function click(event) {
-    const target = event.target;
-    const sectionName = target.getAttribute('data-section');
-    event.preventDefault();
-    if (target.tagName.toLowerCase() === 'a') {
-        openSection(sectionName);
-    }
+	const target = event.target;
+	const sectionName = target.getAttribute('data-section');
+	event.preventDefault();
+	if (target.tagName.toLowerCase() === 'a') {
+		openSection(sectionName);
+	}
 }
 
 Object.entries(hrefs).forEach(([key, value]) => {
-    value.addEventListener('click', click);
+	value.addEventListener('click', click);
 });
 
 function openScoreboard() {
-    api.scoreboard()
-        .then(users => {
-            scoreboardBuilder.data = users;
-            scoreboardBuilder.render();
-        }
-    );
+	api.scoreboard()
+		.then(users => {
+				scoreboardBuilder.data = users;
+				scoreboardBuilder.render();
+			}
+		);
 }
 
 function openSignup() {
-    signupBuilder.render();
-    signupForm.addEventListener('submit', () => signupBuilder.onSubmitAuthForm(event, api.signup));
+	signupBuilder.render();
+	signupForm.addEventListener('submit', () => signupBuilder.onSubmitAuthForm(event, api.signup));
 }
 
-function openMultiplayer(){
-    api.me()
-        .then(response => multiplayerBuilder.render())
-        .catch(error => openSection('signin'))
-    
+function openMultiplayer() {
+	api.me()
+		.then(response => multiplayerBuilder.render())
+		.catch(error => openSection('signin'))
+
 }
 
 function openSignin() {
-    signinBuilder.render();
-    signinForm.addEventListener('submit', () => signinBuilder.onSubmitAuthForm(event, api.signin));
-    const generatedSignUpHref = document.getElementsByClassName('signup')[0];
-    generatedSignUpHref.addEventListener('click', click);
+	signinBuilder.render();
+	signinForm.addEventListener('submit', () => signinBuilder.onSubmitAuthForm(event, api.signin));
+	const generatedSignUpHref = document.getElementsByClassName('signup')[0];
+	generatedSignUpHref.addEventListener('click', click);
 }
 
-function openProfile(){
-    api.me()
-        .then(response => {
-            profileBuilder.data = response;
-            profileBuilder.render();
-        })
-        .catch(error => openSection('signin'))
+function openProfile() {
+	api.me()
+		.then(response => {
+			profileBuilder.data = response;
+			profileBuilder.render();
+		})
+		.catch(error => openSection('signin'))
 }
 
 openSection('menu')

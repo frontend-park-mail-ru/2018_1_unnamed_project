@@ -46,7 +46,7 @@
     cursor: pointer;
 }
 
-.update{
+.update {
     color: #62ff7c;
 }
 
@@ -63,14 +63,14 @@
     cursor: pointer;
 }
 
-.change-avatar{
+.change-avatar {
     display: inline;
 }
 
 .avatar {
     object-fit: cover;
-    width:128px;
-    height:128px;
+    width: 128px;
+    height: 128px;
     border: 2px solid #fffff8;
     border-radius: 100%;
 }
