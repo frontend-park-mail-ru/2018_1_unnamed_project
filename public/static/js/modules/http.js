@@ -1,30 +1,37 @@
-(function () {
+'use strict';
 
-	// const BACKEND_URI = 'http://localhost:8080'; // debug
-	const BACKEND_URI = 'https://dev-api-shipcollision.herokuapp.com'; // production
+(function () {
 
 	class HttpModule {
 
-		request({HTTPmethod = 'GET', url = '/', contentType, data = {}} = {}) {
+		static doRequest({method = 'GET', url = '/', contentType = 'application/json', data = null} = {}) {
 			const options = {
-				method: HTTPmethod,
+				method,
 				headers: {
-					'Access-Control-Request-Method': HTTPmethod
+					'Access-Control-Request-Method': method
 				},
 				mode: 'cors',
 				credentials: 'include',
 			};
 
-			if (HTTPmethod !== 'GET' && typeof data !== 'undefined') {
-				if (contentType !== 'application/json') {
-					options.body = new FormData(data);
-				} else {
-					options.headers['Content-type'] = contentType;
-					options.body = JSON.stringify(data);
-				}
+			switch (true) {
+				case !data:
+					break;
+				case method === 'PATCH':
+				case method === 'POST':
+				case method === 'PUT':
+					if (contentType === 'application/json') {
+						options.headers['Content-Type'] = contentType;
+						options.body = JSON.stringify(data);
+					} else {
+						options.body = new FormData(data)
+					}
+					break;
+				default:
+					break;
 			}
 
-			return fetch(BACKEND_URI + url, options)
+			return fetch(url, options)
 				.then(response => {
 					return response.json();
 				})
@@ -45,8 +52,45 @@
 					throw error;
 				});
 		}
+
+		static doDelete({url = '/'} = {}) {
+			return this.doRequest({
+				method: 'DELETE',
+				url
+			});
+		}
+
+		static doGet({url = '/'} = {}) {
+			return this.doRequest({
+				url
+			});
+		}
+
+		static doHead({url = '/'} = {}) {
+			return this.doRequest({
+				method: 'HEAD',
+				url
+			});
+		}
+
+		static doPatch({url = '/', contentType = 'application/json', data = null} = {}) {
+			return this.doRequest({
+				method: 'PATCH',
+				url,
+				contentType,
+				data
+			});
+		}
+
+		static doPost({url = '/', contentType = 'application/json', data = null} = {}) {
+			return this.doRequest({
+				method: 'POST',
+				url,
+				contentType,
+				data
+			});
+		}
 	}
 
 	window.HttpModule = HttpModule;
-	window.backendURL = BACKEND_URI;
 })();

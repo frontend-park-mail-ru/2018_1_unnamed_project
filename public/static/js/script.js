@@ -1,5 +1,4 @@
 'use strict';
-const httpModule = new window.HttpModule();
 const scoreboardBuilder = new window.ScoreboardBuilder('.js-scoreboard-table');
 const multiplayerBuilder = new window.Multiplayer('.multiplayer');
 const profileBuilder = new window.ProfileBuilder('.profile');
@@ -7,20 +6,20 @@ const profileSection = document.getElementById('profile');
 const profileBar = document.getElementById('bar');
 const push = new window.Push('.msg');
 const api = new window.API();
+
 const back = document.getElementById('back');
-const application = document.getElementById('application');
 const menuSection = document.getElementById('menu');
-const signinSection = document.getElementById('signin');
-const signupSection = document.getElementById('signup');
+const signinSection = document.getElementById('signIn');
+const signupSection = document.getElementById('signUp');
 const multiplayerSection = document.getElementById('multiplayer');
 const singleplayerSection = document.getElementById('singleplayer');
 const scoreboardSection = document.getElementById('scoreboard');
 const rulesSection = document.getElementById('rules');
 const hrefs = document.querySelectorAll('[data-section]');
 
-const signupForm = document.getElementsByClassName('js-signup-form')[0];
+const signupForm = document.getElementsByClassName('js-signUp-form')[0];
 const signupBuilder = new window.AuthFormsBuilder(signupForm);
-const signinForm = document.getElementsByClassName('js-signin-form')[0];
+const signinForm = document.getElementsByClassName('js-signIn-form')[0];
 const signinBuilder = new window.AuthFormsBuilder(signinForm);
 
 const sections = {
@@ -84,31 +83,31 @@ function openScoreboard() {
 
 function openSignup() {
 	signupBuilder.render();
-	signupForm.addEventListener('submit', () => signupBuilder.onSubmitAuthForm(event, api.signup));
+	signupForm.addEventListener('submit', () => signupBuilder.onSubmitAuthForm(event, api.signUp));
 }
 
 function openMultiplayer() {
-	api.me()
+	api.getMe()
 		.then(response => multiplayerBuilder.render())
-		.catch(error => openSection('signin'))
+		.catch(error => openSection('signIn'))
 
 }
 
 function openSignin() {
 	signinBuilder.render();
-	signinForm.addEventListener('submit', () => signinBuilder.onSubmitAuthForm(event, api.signin));
-	const generatedSignUpHref = document.getElementsByClassName('signup')[0];
+	signinForm.addEventListener('submit', () => signinBuilder.onSubmitAuthForm(event, api.signIn));
+	const generatedSignUpHref = document.getElementsByClassName('signUp')[0];
 	generatedSignUpHref.addEventListener('click', click);
 }
 
 function openProfile() {
-	api.me()
+	api.getMe()
 		.then(response => {
 			profileBuilder.data = response;
 			profileBuilder.render();
 		})
-		.catch(error => openSection('signin'))
+		.catch(error => openSection('signIn'))
 }
 
-openSection('menu')
+openSection('menu');
 profileBuilder.updateBar();

@@ -29,7 +29,7 @@
 		}
 
 		checkAuth(buildMultiplayer = false) {
-			api.me()
+			api.getMe()
 				.then(response => {
 					profileBar.innerText = response.username;
 					profileBar.setAttribute('data-section', 'profile');
@@ -41,7 +41,7 @@
 				})
 				.catch(error => {
 					profileBar.innerText = 'Unauthorised';
-					profileBar.setAttribute('data-section', 'signin');
+					profileBar.setAttribute('data-section', 'signIn');
 					console.log(error);
 				});
 		}
