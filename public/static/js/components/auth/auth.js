@@ -10,20 +10,20 @@
             this.validators = {
                 username: {
                     regex: /^([a-zA-Z0-9]{7,})+$/,
-                    desc: "minimum lenght is 7, only digits and english symbols are allowed"
+                    desc: 'minimum lenght is 7, only digits and english symbols are allowed'
                 },
                 password: {
                     regex: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
-                    desc: "minimum lenght is 6, only english symbols and at least one digit"
+                    desc: 'minimum lenght is 6, only english symbols and at least one digit'
 
                 },
                 password_confirmation: {
                     regex: /.*/,
-                    desc: "meh"
+                    desc: 'meh'
                 },
                 email: {
                     regex: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/,
-                    desc: "должен быть email-ом, а ты пашол вон"
+                    desc: 'должен быть email-ом, а ты пашол вон'
                 }
             };
         }
@@ -80,7 +80,7 @@
                 .catch(errors => {
                     errors.forEach(error => push.data = error);
                     push.render('error');
-                })
+                });
         }
 
         logoutMe(){
@@ -100,29 +100,26 @@
             this._node.innerHTML = `
                 <input required class="auth-form__input" type="email" name="email" placeholder="email">
                 <input required class="auth-form__input" type="password" name="password" placeholder="password">
-                ${
-                    (this._signup ? `
+                ${(this._signup ? `
                     <input required class="auth-form__input" type="password" name="password_confirmation\" placeholder="password again">
                     <input required class="auth-form__input" type="text" name="username" placeholder="username">
-                    ` : '')
-                }
+                    ` : '')}
                 <table class="form-buttons">
                     <tr>
                         <td class="si-td">
                             <input required type="submit" class="bordered js-sign${this._upin}-form" value="Sign ${this._upin}">
                         </td>
-                        ${ (!this._signup ? `
+                        ${(!this._signup ? `
                         <td class="space"></td>
                         <td class="su-td">
                             <div class="signup">
                                 <a href="#" data-section="signup" class="js-signup-form bordered">Sign up</a>
                             </div>
                         </td>
-                        ` : '')
-                        }
+                        ` : '')}
                     </tr>
                 </table>
-            `
+            `;
         }
     }
 

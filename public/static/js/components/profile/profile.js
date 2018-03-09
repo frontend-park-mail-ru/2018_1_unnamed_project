@@ -12,7 +12,7 @@
         }
 
         render() {
-            const avatarLink = (this._data.avatarLink ? (backendURL + this._data.avatarLink) : 'https://www.shareicon.net/data/128x128/2016/08/05/806962_user_512x512.png')
+            const avatarLink = (this._data.avatarLink ? (backendURL + this._data.avatarLink) : 'https://www.shareicon.net/data/128x128/2016/08/05/806962_user_512x512.png');
             this._node.innerHTML = `
             <div class="img-with-text">
                 <img class="avatar" src="${avatarLink}"/>
@@ -33,10 +33,10 @@
             </div>
             `;
 
-            document.getElementById("logout").addEventListener('click', signinBuilder.logoutMe);
-            const form = document.getElementById("upload-avatar");
+            document.getElementById('logout').addEventListener('click', signinBuilder.logoutMe);
+            const form = document.getElementById('upload-avatar');
             form.addEventListener('change', () => profileBuilder.setAvatar(form));
-            document.getElementById("delete-avatar").addEventListener('click', this.removeAvatar)
+            document.getElementById('delete-avatar').addEventListener('click', this.removeAvatar);
         }
 
         removeAvatar() {
@@ -49,7 +49,7 @@
                 })
                 .catch(error => {
                     console.error(error);
-                })
+                });
         }
 
         setAvatar(form) {
@@ -62,8 +62,8 @@
                 })
                 .catch(error => {
                     console.error(error);
-                })
-        };
+                });
+        }
 
     }
 

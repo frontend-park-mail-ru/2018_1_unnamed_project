@@ -11,7 +11,7 @@
             if (!this._node) return;
             this._node.innerHTML = `
                 <img src="static/media/shingis.jpg">
-            `
+            `;
         }
     }
 

@@ -19,7 +19,7 @@
             this._node.innerHTML = '';
         }
 
-        render(){};
+        render(){}
     }
 
     window.AbstractBuilder = AbstractBuilder;
