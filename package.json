@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "DEBUG=* node server/server.js",
-    "start:raw": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:raw": "node server.js"
   },
   "contributors": [
     "Artem Ikchurin",
