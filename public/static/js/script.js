@@ -40,7 +40,7 @@ const sectionOpeners = {
     signup: openSignup,
     signin: openSignin,
     profile: openProfile
-}
+};
 
 function hideAllExcept(section) {
     Object.entries(sections).forEach(
@@ -79,7 +79,7 @@ function openScoreboard() {
             scoreboardBuilder.data = users;
             scoreboardBuilder.render();
         }
-    );
+        );
 }
 
 function openSignup() {
@@ -90,7 +90,7 @@ function openSignup() {
 function openMultiplayer(){
     api.me()
         .then(response => multiplayerBuilder.render())
-        .catch(error => openSection('signin'))
+        .catch(error => openSection('signin'));
     
 }
 
@@ -107,8 +107,8 @@ function openProfile(){
             profileBuilder.data = response;
             profileBuilder.render();
         })
-        .catch(error => openSection('signin'))
+        .catch(error => openSection('signin'));
 }
 
-openSection('menu')
+openSection('menu');
 profileBuilder.updateBar();

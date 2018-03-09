@@ -36,7 +36,7 @@
                         return uresp;
                     } else {
                         if (uresp.errors) {
-                            throw uresp.errors.map(error => `${error.field}: ${error.defaultMessage}`)
+                            throw uresp.errors.map(error => `${error.field}: ${error.defaultMessage}`);
                         } else {
                             throw [uresp.message];
                         }

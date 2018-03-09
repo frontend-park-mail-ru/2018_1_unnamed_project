@@ -6,7 +6,7 @@ const express = require('express');
 const app = express();
 const uuid = require('uuid/v4');
 const logger = debug('mylogger');
-const public = __dirname + "/../public/";
+const public = __dirname + '/../public/';
 
 class User {
 
@@ -37,37 +37,37 @@ const games = [
             'venger'
         ]
     },
-	{
-		'type': 'Single',
-		'active': false,
-		'users': [
-			'venger'
-		]
-	},
-	{
-		'type': 'Single',
-		'active': true,
-		'users': [
-			'gabolaev'
-		]
-	},
-	{
-		'type': 'Multi2',
-		'active': false,
-		'users': [
-			'venger',
+    {
+        'type': 'Single',
+        'active': false,
+        'users': [
+            'venger'
+        ]
+    },
+    {
+        'type': 'Single',
+        'active': true,
+        'users': [
             'gabolaev'
-		]
-	},
-	{
-		'type': 'Multi3',
-		'active': true,
-		'users': [
-			'venger',
+        ]
+    },
+    {
+        'type': 'Multi2',
+        'active': false,
+        'users': [
+            'venger',
+            'gabolaev'
+        ]
+    },
+    {
+        'type': 'Multi3',
+        'active': true,
+        'users': [
+            'venger',
             'cvkucherov',
             'a_ikchurin'
-		]
-	},
+        ]
+    },
 ];
 
 const uuidUname = {};
@@ -85,20 +85,20 @@ app.get('/', (req, res) => {
 const regexes = {
     username: {
         regex: /^([a-zA-Z0-9]{7,})+$/,
-        desc: "minimum lenght is 7, only digits and english symbols are allowed"
+        desc: 'minimum lenght is 7, only digits and english symbols are allowed'
     },
     password: {
         regex: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
-        desc: "minimum lenght is 6, only english symbols and at least one digit"
+        desc: 'minimum lenght is 6, only english symbols and at least one digit'
 
     },
     password_confirmation: {
         regex: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
-        desc: "should be equal to the password"
+        desc: 'should be equal to the password'
     },
     email: {
         regex: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/,
-        desc: "meh"
+        desc: 'meh'
     }
 };
 
@@ -109,19 +109,19 @@ function validateSignUp(fields) {
             return {
                 status: 'ERROR',
                 desc: `Not found ${key} argument`
-            }
+            };
         if (!(fields[key].match(regexes[key].regex)))
             return {
                 status: 'ERROR',
                 desc: `${key} invalid format: ${regexes[key].desc}`
-            }
+            };
     }
 
     if (fields.password !== fields.password_confirmation) {
         return {
             status: 'ERROR',
             desc: 'Passwords don\'t match'
-        }
+        };
     }
     if (users[fields.username])
         return {
@@ -133,8 +133,8 @@ function validateSignUp(fields) {
         status: 'OK',
         desc: 'User created',
         id: Object.keys(users).length
-    }
-};
+    };
+}
 
 function validateSignIn(fields) {
 
@@ -143,7 +143,7 @@ function validateSignIn(fields) {
             return {
                 status: 'ERROR',
                 desc: `Not found ${key} argument`
-            }
+            };
     }
 
     const candidateUser = users[fields.username];
@@ -151,12 +151,12 @@ function validateSignIn(fields) {
         return {
             status: 'OK',
             desc: 'Successfully authorized'
-        }
+        };
     } else {
         return {
             status: 'Error',
             desc: 'Invalid username or password'
-        }
+        };
     }
 }
 
@@ -202,14 +202,14 @@ app.get('/profile', (req, res) => {
 
 
 app.get('/me/games', (req, res) => {
-   const ssidCookie = req.cookies['ssid'];
-   const username = uuidUname[ssidCookie];
+    const ssidCookie = req.cookies['ssid'];
+    const username = uuidUname[ssidCookie];
    
-   if (ssidCookie && username) {
-       return res.json(games.filter(game => game.users.includes(username)));
-   } else {
-       res.status(401).end();
-   }
+    if (ssidCookie && username) {
+        return res.json(games.filter(game => game.users.includes(username)));
+    } else {
+        res.status(401).end();
+    }
 });
 
 app.get('/scoreboard', (req, res) => {

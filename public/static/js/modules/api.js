@@ -1,13 +1,13 @@
 (function () {
 
     class API {
-        constructor(){};
+        constructor(){}
 
         me() {
             return httpModule.request({
                 HTTPmethod: 'GET',
                 url: '/me',
-            })
+            });
         }
     
         signin(userData) {
@@ -16,7 +16,7 @@
                 url: '/signin',
                 contentType: 'application/json',
                 data: userData,
-            })
+            });
         }
         
         signup(userData) {
@@ -25,21 +25,21 @@
                 url: '/users',
                 contentType: 'application/json',
                 data: userData,
-            })
+            });
         }
 
         logout(){
             return httpModule.request({
                 HTTPmethod: 'DELETE',
                 url: '/signout',
-            })
+            });
         }
 
         scoreboard() {
             return httpModule.request({
                 HTTPmethod: 'GET',
                 url: '/users/scoreboard',
-            })
+            });
         }
 
         uploadAvatar(form){
@@ -47,16 +47,16 @@
                 HTTPmethod: 'POST',
                 url: '/me/avatar',
                 data: form
-            })
+            });
         }
 
         deleteAvatar(){
             return httpModule.request({
                 HTTPmethod: 'DELETE',
                 url: '/me/avatar'
-            })
+            });
         }
-    };
+    }
 
     window.API = API;
 
