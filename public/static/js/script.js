@@ -103,7 +103,10 @@ function openSignin() {
 
 function openProfile(){
     api.me()
-        .then(response => profileBuilder.render())
+        .then(response => {
+            profileBuilder.data = response;
+            profileBuilder.render();
+        })
         .catch(error => openSection('signin'))
 }
 

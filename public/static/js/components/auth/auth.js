@@ -59,7 +59,7 @@
                 if (field.type !== 'submit') {
                     formdata[field.name] = field.value;
                     let validator = this.validators[field.name];
-                    if (!(field.value.match(validator.regex))) {
+                    if (validator != undefined && !field.value.match(validator.regex)) {
                         push.data = `${field.name} ${validator.desc}`;
                     }
                 }
