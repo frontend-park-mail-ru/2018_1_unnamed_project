@@ -1,8 +1,10 @@
 'use strict';
+const httpModule = new window.HttpModule();
 const scoreboardBuilder = new window.ScoreboardBuilder('.js-scoreboard-table');
 const multiplayerBuilder = new window.Multiplayer('.multiplayer');
 const profileBuilder = new window.ProfileBuilder('.profile');
 const profileSection = document.getElementById('profile');
+const profileBar = document.getElementById('bar');
 const push = new window.Push('.msg');
 const api = new window.API();
 const back = document.getElementById('back');
