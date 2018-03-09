@@ -1,19 +1,19 @@
 (function () {
 
-    const noop = () => null;
+	const noop = () => null;
 
-    class ProfleBuilder extends window.AbstractBuilder {
-        constructor(selector) {
-            super(selector);
-        }
+	class ProfleBuilder extends window.AbstractBuilder {
+		constructor(selector) {
+			super(selector);
+		}
 
-        updateBar() {
-            signinBuilder.checkAuth();
-        }
+		updateBar() {
+			signinBuilder.checkAuth();
+		}
 
-        render() {
-            const avatarLink = (this._data.avatarLink ? (backendURL + this._data.avatarLink) : 'https://www.shareicon.net/data/128x128/2016/08/05/806962_user_512x512.png')
-            this._node.innerHTML = `
+		render() {
+			const avatarLink = (this._data.avatarLink ? (backendURL + this._data.avatarLink) : 'https://www.shareicon.net/data/128x128/2016/08/05/806962_user_512x512.png')
+			this._node.innerHTML = `
             <div class="img-with-text">
                 <img class="avatar" src="${avatarLink}"/>
                 <form action="${backendURL + '/me/avatar/'}" method="post" id="upload-avatar" enctype="multipart/form-data">
@@ -33,40 +33,40 @@
             </div>
             `;
 
-            document.getElementById("logout").addEventListener('click', signinBuilder.logoutMe);
-            const form = document.getElementById("upload-avatar");
-            form.addEventListener('change', () => profileBuilder.setAvatar(form));
-            document.getElementById("delete-avatar").addEventListener('click', this.removeAvatar)
-        }
+			document.getElementById("logout").addEventListener('click', signinBuilder.logoutMe);
+			const form = document.getElementById("upload-avatar");
+			form.addEventListener('change', () => profileBuilder.setAvatar(form));
+			document.getElementById("delete-avatar").addEventListener('click', this.removeAvatar)
+		}
 
-        removeAvatar() {
-            api.deleteAvatar()
-                .then(response => {
-                    profileBuilder.data = response;
-                    profileBuilder.render();
-                    push.data = 'Avatar deleted';
-                    push.render('info');
-                })
-                .catch(error => {
-                    console.error(error);
-                })
-        }
+		removeAvatar() {
+			api.deleteAvatar()
+				.then(response => {
+					profileBuilder.data = response;
+					profileBuilder.render();
+					push.data = 'Avatar deleted';
+					push.render('info');
+				})
+				.catch(error => {
+					console.error(error);
+				})
+		}
 
-        setAvatar(form) {
-            api.uploadAvatar(form)
-                .then(response => {
-                    profileBuilder.data = response;
-                    profileBuilder.render();
-                    push.data = 'Avatar updated';
-                    push.render('success');
-                })
-                .catch(error => {
-                    console.error(error);
-                })
-        };
+		setAvatar(form) {
+			api.uploadAvatar(form)
+				.then(response => {
+					profileBuilder.data = response;
+					profileBuilder.render();
+					push.data = 'Avatar updated';
+					push.render('success');
+				})
+				.catch(error => {
+					console.error(error);
+				})
+		};
 
-    }
+	}
 
-    window.ProfileBuilder = ProfleBuilder;
+	window.ProfileBuilder = ProfleBuilder;
 
 })();

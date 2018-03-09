@@ -1,63 +1,64 @@
 (function () {
 
-    class API {
-        constructor(){};
+	class API {
+		constructor() {
+		};
 
-        me() {
-            return httpModule.request({
-                HTTPmethod: 'GET',
-                url: '/me',
-            })
-        }
-    
-        signin(userData) {
-            return httpModule.request({
-                HTTPmethod: 'POST',
-                url: '/signin',
-                contentType: 'application/json',
-                data: userData,
-            })
-        }
-        
-        signup(userData) {
-            return httpModule.request({
-                HTTPmethod: 'POST',
-                url: '/users',
-                contentType: 'application/json',
-                data: userData,
-            })
-        }
+		me() {
+			return httpModule.request({
+				HTTPmethod: 'GET',
+				url: '/me',
+			})
+		}
 
-        logout(){
-            return httpModule.request({
-                HTTPmethod: 'DELETE',
-                url: '/signout',
-            })
-        }
+		signin(userData) {
+			return httpModule.request({
+				HTTPmethod: 'POST',
+				url: '/signin',
+				contentType: 'application/json',
+				data: userData,
+			})
+		}
 
-        scoreboard() {
-            return httpModule.request({
-                HTTPmethod: 'GET',
-                url: '/users/scoreboard',
-            })
-        }
+		signup(userData) {
+			return httpModule.request({
+				HTTPmethod: 'POST',
+				url: '/users',
+				contentType: 'application/json',
+				data: userData,
+			})
+		}
 
-        uploadAvatar(form){
-            return httpModule.request({
-                HTTPmethod: 'POST',
-                url: '/me/avatar',
-                data: form
-            })
-        }
+		logout() {
+			return httpModule.request({
+				HTTPmethod: 'DELETE',
+				url: '/signout',
+			})
+		}
 
-        deleteAvatar(){
-            return httpModule.request({
-                HTTPmethod: 'DELETE',
-                url: '/me/avatar'
-            })
-        }
-    };
+		scoreboard() {
+			return httpModule.request({
+				HTTPmethod: 'GET',
+				url: '/users/scoreboard',
+			})
+		}
 
-    window.API = API;
+		uploadAvatar(form) {
+			return httpModule.request({
+				HTTPmethod: 'POST',
+				url: '/me/avatar',
+				data: form
+			})
+		}
+
+		deleteAvatar() {
+			return httpModule.request({
+				HTTPmethod: 'DELETE',
+				url: '/me/avatar'
+			})
+		}
+	};
+
+	window.API = API;
 
 })();
