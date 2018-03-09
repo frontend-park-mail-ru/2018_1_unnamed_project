@@ -1,31 +1,21 @@
 (function () {
 
-	const noop = () => null;
-
-	// const backendURL = 'http://localhost:8080'; // debug
-	const backendURL = 'https://dev-api-shipcollision.herokuapp.com'; // production
+	// const BACKEND_URI = 'http://localhost:8080'; // debug
+	const BACKEND_URI = 'https://dev-api-shipcollision.herokuapp.com'; // production
 
 	class HttpModule {
 
-		request({
-			        HTTPmethod = 'GET',
-			        url = '/',
-			        contentType,
-			        data = {}
-		        } = {}) {
-
-
+		request({HTTPmethod = 'GET', url = '/', contentType, data = {}} = {}) {
 			const options = {
 				method: HTTPmethod,
 				headers: {
-					'Access-Control-Request-Method': HTTPmethod,
-					'Cookie': this._cookie
+					'Access-Control-Request-Method': HTTPmethod
 				},
 				mode: 'cors',
 				credentials: 'include',
 			};
 
-			if (HTTPmethod !== 'GET' && typeof data !== undefined) {
+			if (HTTPmethod !== 'GET' && typeof data !== 'undefined') {
 				if (contentType !== 'application/json') {
 					options.body = new FormData(data);
 				} else {
@@ -34,18 +24,20 @@
 				}
 			}
 
-			return fetch(backendURL + url, options)
+			return fetch(BACKEND_URI + url, options)
 				.then(response => {
 					return response.json();
 				})
-				.then(uresp => {
-					if ((uresp.status >= 200 && uresp.status < 300) || !(uresp.status)) {
-						return uresp;
+				.then(response => {
+					if ((response.status >= 200 && response.status < 300) || !(response.status)) {
+						return response;
 					} else {
-						if (uresp.errors) {
-							throw uresp.errors.map(error => `${error.field}: ${error.defaultMessage}`)
+						// noinspection JSUnresolvedVariable
+						if (response.errors) {
+							// noinspection JSUnresolvedVariable
+							throw response.errors.map(error => `${error.field}: ${error.defaultMessage}`)
 						} else {
-							throw [uresp.message];
+							throw [response.message];
 						}
 					}
 				})
@@ -56,5 +48,5 @@
 	}
 
 	window.HttpModule = HttpModule;
-	window.backendURL = backendURL;
+	window.backendURL = BACKEND_URI;
 })();
