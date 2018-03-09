@@ -1,7 +1,5 @@
-(function () {
-
+(function() {
     class AuthFormsBuilder extends window.AbstractBuilder {
-
         constructor(node = {}) {
             super();
             this._node = node;
@@ -10,27 +8,27 @@
             this.validators = {
                 username: {
                     regex: /^([a-zA-Z0-9]{7,})+$/,
-                    desc: 'minimum lenght is 7, only digits and english symbols are allowed'
+                    desc: 'minimum lenght is 7, only digits and english symbols are allowed',
                 },
                 password: {
                     regex: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
-                    desc: 'minimum lenght is 6, only english symbols and at least one digit'
+                    desc: 'minimum lenght is 6, only english symbols and at least one digit',
 
                 },
                 password_confirmation: {
                     regex: /.*/,
-                    desc: 'meh'
+                    desc: 'meh',
                 },
                 email: {
                     regex: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/,
-                    desc: 'должен быть email-ом, а ты пашол вон'
-                }
+                    desc: 'должен быть email-ом, а ты пашол вон',
+                },
             };
         }
 
         checkAuth(buildMultiplayer = false) {
             api.me()
-                .then(response => {
+                .then((response) => {
                     profileBar.innerText = response.username;
                     profileBar.setAttribute('data-section', 'profile');
                     if (buildMultiplayer) {
@@ -39,7 +37,7 @@
                         push.render('success');
                     }
                 })
-                .catch(error => {
+                .catch((error) => {
                     profileBar.innerText = 'Unauthorised';
                     profileBar.setAttribute('data-section', 'signin');
                     console.log(error);
@@ -49,12 +47,7 @@
         onSubmitAuthForm(event, func, buildOnSuccess) {
             event.preventDefault();
             const form = event.currentTarget;
-            const formElements = form.elements;
-
             const formdata = {};
-
-            const errors = [];
-
             Object.values(form.elements).forEach((field) => {
                 if (field.type !== 'submit') {
                     formdata[field.name] = field.value;
@@ -64,8 +57,9 @@
                     }
                 }
             });
-            if ('password_confirmation' in formdata && formdata['password'] !== formdata['password_confirmation'])
+            if ('password_confirmation' in formdata && formdata['password'] !== formdata['password_confirmation']) {
                 push.data = 'Passwords don\'t match';
+            }
 
             if (push.data.length > 0) {
                 push.render('error');
@@ -73,24 +67,24 @@
             }
 
             func(formdata)
-                .then(response => {
+                .then((response) => {
                     this.checkAuth(true);
                     profileBuilder.updateBar();
                 })
-                .catch(errors => {
-                    errors.forEach(error => push.data = error);
+                .catch((errors) => {
+                    errors.forEach((error) => push.data = error);
                     push.render('error');
                 });
         }
 
-        logoutMe(){
+        logoutMe() {
             api.logout()
-                .then(response => {                     
+                .then((response) => {
                     profileBuilder.updateBar();
                     multiplayerBuilder.clear();
                     window.openSection('menu');
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log(error);
                 });
         }
@@ -101,9 +95,9 @@
                 <input required class="auth-form__input" type="email" name="email" placeholder="email">
                 <input required class="auth-form__input" type="password" name="password" placeholder="password">
                 ${(this._signup ? `
-                    <input required class="auth-form__input" type="password" name="password_confirmation\" placeholder="password again">
-                    <input required class="auth-form__input" type="text" name="username" placeholder="username">
-                    ` : '')}
+                <input required class="auth-form__input" type="password" name="password_confirmation\" placeholder="password again">
+                <input required class="auth-form__input" type="text" name="username" placeholder="username">
+                ` : '')}
                 <table class="form-buttons">
                     <tr>
                         <td class="si-td">
@@ -124,5 +118,4 @@
     }
 
     window.AuthFormsBuilder = AuthFormsBuilder;
-
 })();

@@ -1,5 +1,4 @@
-(function () {
-
+(function() {
     const noop = () => null;
 
     class ProfleBuilder extends window.AbstractBuilder {
@@ -41,32 +40,30 @@
 
         removeAvatar() {
             api.deleteAvatar()
-                .then(response => {
+                .then((response) => {
                     profileBuilder.data = response;
                     profileBuilder.render();
                     push.data = 'Avatar deleted';
                     push.render('info');
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.error(error);
                 });
         }
 
         setAvatar(form) {
             api.uploadAvatar(form)
-                .then(response => {
+                .then((response) => {
                     profileBuilder.data = response;
                     profileBuilder.render();
                     push.data = 'Avatar updated';
                     push.render('success');
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.error(error);
                 });
         }
-
     }
 
     window.ProfileBuilder = ProfleBuilder;
-
 })();

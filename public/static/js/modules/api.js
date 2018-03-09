@@ -1,7 +1,6 @@
-(function () {
-
+(function() {
     class API {
-        constructor(){}
+        constructor() {}
 
         me() {
             return httpModule.request({
@@ -9,7 +8,7 @@
                 url: '/me',
             });
         }
-    
+
         signin(userData) {
             return httpModule.request({
                 HTTPmethod: 'POST',
@@ -18,7 +17,7 @@
                 data: userData,
             });
         }
-        
+
         signup(userData) {
             return httpModule.request({
                 HTTPmethod: 'POST',
@@ -28,7 +27,7 @@
             });
         }
 
-        logout(){
+        logout() {
             return httpModule.request({
                 HTTPmethod: 'DELETE',
                 url: '/signout',
@@ -42,22 +41,21 @@
             });
         }
 
-        uploadAvatar(form){
+        uploadAvatar(form) {
             return httpModule.request({
                 HTTPmethod: 'POST',
                 url: '/me/avatar',
-                data: form
+                data: form,
             });
         }
 
-        deleteAvatar(){
+        deleteAvatar() {
             return httpModule.request({
                 HTTPmethod: 'DELETE',
-                url: '/me/avatar'
+                url: '/me/avatar',
             });
         }
     }
 
     window.API = API;
-
 })();

@@ -1,9 +1,6 @@
-(function(){
-
-    const noop = () => null;
-
-    class Multiplayer extends window.AbstractBuilder{
-        constructor(selector){
+(function() {
+    class Multiplayer extends window.AbstractBuilder {
+        constructor(selector) {
             super(selector);
         }
 
@@ -16,5 +13,4 @@
     }
 
     window.Multiplayer = Multiplayer;
-
 })();

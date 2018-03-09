@@ -1,18 +1,14 @@
-(function () {
-
-    const noop = () => null;
-
+(function() {
     // const backendURL = 'http://localhost:8080'; // debug
     const backendURL = 'https://dev-api-shipcollision.herokuapp.com'; // production
 
     class HttpModule {
-
         request({HTTPmethod = 'GET', url = '/', contentType, data = {}} = {}) {
             const options = {
                 method: HTTPmethod,
                 headers: {
                     'Access-Control-Request-Method': HTTPmethod,
-                    'Cookie': this._cookie
+                    'Cookie': this._cookie,
                 },
                 mode: 'cors',
                 credentials: 'include',
@@ -28,21 +24,21 @@
             }
 
             return fetch(backendURL + url, options)
-                .then(response => {
+                .then((response) => {
                     return response.json();
                 })
-                .then(uresp => {
+                .then((uresp) => {
                     if ((uresp.status >= 200 && uresp.status < 300) || !(uresp.status)) {
                         return uresp;
                     } else {
                         if (uresp.errors) {
-                            throw uresp.errors.map(error => `${error.field}: ${error.defaultMessage}`);
+                            throw uresp.errors.map((error) => `${error.field}: ${error.defaultMessage}`);
                         } else {
                             throw [uresp.message];
                         }
                     }
                 })
-                .catch(error => {
+                .catch((error) => {
                     throw error;
                 });
         }

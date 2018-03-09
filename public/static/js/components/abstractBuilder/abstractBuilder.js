@@ -1,8 +1,7 @@
-(function () {
+(function() {
     const noop = () => null;
 
     class AbstractBuilder {
-
         constructor(selector = 'body') {
             this._node = document.querySelector(selector);
         }
@@ -19,7 +18,7 @@
             this._node.innerHTML = '';
         }
 
-        render(){}
+        render() {}
     }
 
     window.AbstractBuilder = AbstractBuilder;
