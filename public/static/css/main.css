@@ -1,11 +1,11 @@
 @font-face {
     font-family: "Righteous-Regular";
-    src: url("/static/fonts/Righteous-Regular.ttf");
+    src: url("../fonts/Righteous-Regular.ttf");
 }
 
 @font-face {
     font-family: "Comfortaa-Light";
-    src: url("/static/fonts/Comfortaa-Light.ttf");
+    src: url("../fonts/Comfortaa-Light.ttf");
 }
 
 html,
