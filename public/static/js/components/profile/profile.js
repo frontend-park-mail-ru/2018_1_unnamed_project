@@ -8,6 +8,7 @@
 			super(selector);
 		}
 
+		// noinspection JSMethodCanBeStatic
 		updateBar() {
 			window.signinPage.builder.checkAuth();
 		}

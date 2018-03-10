@@ -10,6 +10,7 @@
 
 		render() {
 			if (!this.node) return;
+			// noinspection SpellCheckingInspection
 			this.node.innerHTML = `
                 <img src="static/media/shingis.jpg">
             `;
