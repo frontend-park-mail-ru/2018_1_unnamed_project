@@ -2,6 +2,9 @@
 
 (function () {
 
+	/**
+	 * Модуль для работы с сетью.
+	 */
 	class HttpModule {
 
 		static doRequest({method = 'GET', url = '/', contentType = 'application/json', data = null} = {}) {

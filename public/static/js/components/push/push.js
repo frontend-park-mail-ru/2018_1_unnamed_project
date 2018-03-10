@@ -1,5 +1,8 @@
 (function () {
 
+	/**
+	 * Компонент для рендеринга уведомлений.
+	 */
 	class Push extends window.AbstractBuilder {
 
 		constructor(selector) {

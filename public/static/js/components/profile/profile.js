@@ -2,6 +2,9 @@
 
 (function () {
 
+	/**
+	 * Компонент для орисовки профиля пользователя.
+	 */
 	class ProfileBuilder extends window.AbstractBuilder {
 
 		constructor(selector) {

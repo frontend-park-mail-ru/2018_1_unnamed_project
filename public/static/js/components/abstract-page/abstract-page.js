@@ -2,8 +2,15 @@
 
 (function () {
 
+	/**
+	 * Абстрактный компонент для представления страниц.
+	 */
 	class AbstractPage {
 
+		/**
+		 * @param parentId id родительского элемента.
+		 * @param pageId   id, который будет присвоен странице.
+		 */
 		constructor({parentId = '', pageId = ''} = {}) {
 			this._pageId = pageId;
 			this._parentId = parentId;

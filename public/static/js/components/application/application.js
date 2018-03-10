@@ -1,6 +1,13 @@
 'use strict';
 
+/**
+ * Модуль приложения.
+ */
 (function () {
+
+	/**
+	 * Установка разметки, необходимой для начала работы.
+	 */
 
 	let node = document.getElementById('application');
 	node.className += ' application';
@@ -17,6 +24,10 @@
 	<a href="#" id="bar" class="bar" data-section="profile"></a>
 	` + node.parentElement.innerHTML;
 
+	/**
+	 * Создание страниц.
+	 */
+
 	const menuPage = new window.MenuPage();
 	const multiplayerPage = new window.MultiplayerPage();
 	const profilePage = new window.ProfilePage();
@@ -25,6 +36,10 @@
 	const signinPage = new window.SignInPage();
 	const signupPage = new window.SignUpPage();
 	const singleplayerPage = new window.SingleplayerPage();
+
+	/**
+	 * Внутренние переменные для роутера.
+	 */
 
 	let currentPage = null;
 
@@ -38,7 +53,6 @@
 
 	function openPage(routerObject) {
 		backRef.hidden = routerObject.hideBackRef;
-		// console.log(backRef);
 		push.clear();
 
 		if (currentPage) {
@@ -49,20 +63,38 @@
 		currentPage.show();
 	}
 
+	/**
+	 * Роутер приложения
+	 */
 	class Router {
 
+		/**
+		 * Переключает на нужную страницу.
+		 * @param routeName Имя страницы, см. script.js.
+		 */
 		static navigateTo(routeName) {
 			if (routeName in routes) {
 				openPage(routes[routeName]);
 			}
 		}
 
+		/**
+		 * Добавляет новый маршрут
+		 * @param name Идентификатор маршрута.
+		 * @param re Регулярное выражение, по которому будет матчиться URL.
+		 * @param page Страница, которую необходимо открыть.
+		 * @param hideBackRef Флаг, показывающий, нужно ли скрывать ссылку "на главнуб страницу".
+		 * @returns {Router}
+		 */
 		static addRoute(name, {re = '', page = null, hideBackRef = false} = {}) {
 			routes[name] = {re, page, hideBackRef};
 			return this;
 		}
 	}
 
+	/**
+	 * Главный класс приложения.
+	 */
 	class Application {
 
 		constructor() {
@@ -116,6 +148,9 @@
 		}
 	}
 
+	/**
+	 * Листенер для добавления вохможности переключения между страницами.
+	 */
 	window.anchorSubmitListener = () => {
 		const target = event.target;
 		const sectionName = target.getAttribute('data-section');

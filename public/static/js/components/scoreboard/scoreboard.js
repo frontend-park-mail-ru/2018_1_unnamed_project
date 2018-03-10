@@ -1,5 +1,8 @@
 (function () {
 
+	/**
+	 * Компонент для отрисовки страницы лидеров.
+	 */
 	class ScoreboardBuilder extends window.AbstractBuilder {
 
 		render() {

@@ -5,6 +5,9 @@
 	// const BACKEND_URI = 'http://localhost:8080'; // debug
 	const BACKEND_URI = 'https://dev-api-shipcollision.herokuapp.com'; // production
 
+	/**
+	 * Модуль для работы с API.
+	 */
 	class API {
 
 		constructor(httpModule = window.HttpModule) {
