@@ -65,6 +65,20 @@
 
 	class Application {
 
+		constructor() {
+			const hrefs = document.querySelectorAll('[data-section]');
+			Object.entries(hrefs).forEach(([key, value]) => {
+				value.addEventListener('click', () => {
+					const target = event.target;
+					const sectionName = target.getAttribute('data-section');
+					event.preventDefault();
+					if (target.tagName.toLowerCase() === 'a') {
+						router.navigateTo(sectionName);
+					}
+				});
+			});
+		}
+
 		static get profileBar() {
 			if (!profileBar) {
 				profileBar = document.getElementById('bar');
@@ -106,22 +120,6 @@
 
 		static get singleplayerPage() {
 			return singleplayerPage;
-		}
-
-		constructor() {
-			this._node = node;
-
-			const hrefs = document.querySelectorAll('[data-section]');
-			Object.entries(hrefs).forEach(([key, value]) => {
-				value.addEventListener('click', () => {
-					const target = event.target;
-					const sectionName = target.getAttribute('data-section');
-					event.preventDefault();
-					if (target.tagName.toLowerCase() === 'a') {
-						router.navigateTo(sectionName);
-					}
-				});
-			});
 		}
 	}
 
