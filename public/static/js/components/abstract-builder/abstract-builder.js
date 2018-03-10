@@ -5,6 +5,7 @@
 	class AbstractBuilder {
 
 		constructor(selector = 'body') {
+			this._api = new window.API();
 			this._node = document.querySelector(selector);
 		}
 
@@ -14,6 +15,10 @@
 
 		set data(data) {
 			this._data = data;
+		}
+
+		get node() {
+			return this._node;
 		}
 
 		clear() {

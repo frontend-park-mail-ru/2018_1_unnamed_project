@@ -4,9 +4,9 @@
 
 	class SingleplayerPage extends window.AbstractPage {
 
-		constructor({parentId = 'application', pageId = 'singleplayer'}) {
+		constructor({parentId = 'application', pageId = 'singleplayer'} = {}) {
 			super({parentId, pageId});
-			this._parentNode += `
+			this._parentNode.innerHTML += `
 			<section id="${pageId}" hidden>
 		        <img src="static/media/singleplayer.jpg" style="width: 800px">
 		    </section>

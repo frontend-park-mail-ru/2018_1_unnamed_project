@@ -8,19 +8,17 @@
 			super(selector);
 		}
 
-		updateBar() {
-			signinBuilder.checkAuth();
-		}
-
 		render() {
+			const backendURI = this._api.backendURI;
+			
 			// noinspection JSUnresolvedVariable
 			const avatarLink = (this._data.avatarLink ?
-				(backendURL + this._data.avatarLink) : 'https://www.shareicon.net/data/128x128/2016/08/05/806962_user_512x512.png');
+				(backendURI + this._data.avatarLink) : 'https://www.shareicon.net/data/128x128/2016/08/05/806962_user_512x512.png');
 			// noinspection JSUnresolvedVariable
 			this._node.innerHTML = `
             <div class="img-with-text">
                 <img class="avatar" src="${avatarLink}"/>
-                <form action="${backendURL + '/me/avatar/'}" method="post" id="upload-avatar" enctype="multipart/form-data">
+                <form action="${backendURI + '/me/avatar/'}" method="post" id="upload-avatar" enctype="multipart/form-data">
                     <span class="upload-btn-wrapper">
                         <button class="btn update">Update</button>
                         <input type="file" name="avatar"/>
@@ -37,6 +35,9 @@
             </div>
             `;
 
+			const profileBuilder = window.Application.profilePage.builder;
+			const signinBuilder = window.Application.signinPage.builder;
+
 			document.getElementById("logout").addEventListener('click', signinBuilder.logoutMe);
 			const form = document.getElementById("upload-avatar");
 			form.addEventListener('change', () => profileBuilder.setAvatar(form));
@@ -44,13 +45,14 @@
 		}
 
 		removeAvatar() {
-			api.deleteAvatar()
+			const profileBuilder = window.Application.profilePage.builder;
+			const push = window.Application.push;
+
+			this._api.deleteAvatar()
 				.then(response => {
 					profileBuilder.data = response;
-					// noinspection ES6ModulesDependencies
 					profileBuilder.render();
 					push.data = 'Avatar deleted';
-					// noinspection ES6ModulesDependencies
 					push.render('info');
 				})
 				.catch(error => {
@@ -59,13 +61,14 @@
 		}
 
 		setAvatar(form) {
-			api.uploadAvatar(form)
+			const profileBuilder = window.Application.profilePage.builder;
+			const push = window.Application.push;
+
+			this._api.uploadAvatar(form)
 				.then(response => {
 					profileBuilder.data = response;
-					// noinspection ES6ModulesDependencies
 					profileBuilder.render();
 					push.data = 'Avatar updated';
-					// noinspection ES6ModulesDependencies
 					push.render('success');
 				})
 				.catch(error => {

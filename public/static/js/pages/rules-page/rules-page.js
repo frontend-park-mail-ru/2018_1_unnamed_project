@@ -4,7 +4,7 @@
 
 	class RulesPage extends window.AbstractPage {
 
-		constructor({parentId = 'application', pageId = 'rules'}) {
+		constructor({parentId = 'application', pageId = 'rules'} = {}) {
 			super({parentId, pageId});
 			this._parentNode.innerHTML += `
 			<section id="${pageId}" hidden>

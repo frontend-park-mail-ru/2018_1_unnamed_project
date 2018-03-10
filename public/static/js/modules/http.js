@@ -66,6 +66,7 @@
 			});
 		}
 
+		// noinspection JSUnusedGlobalSymbols
 		static doHead({url = '/'} = {}) {
 			return this.doRequest({
 				method: 'HEAD',
@@ -73,6 +74,7 @@
 			});
 		}
 
+		// noinspection JSUnusedGlobalSymbols
 		static doPatch({url = '/', contentType = 'application/json', data = null} = {}) {
 			return this.doRequest({
 				method: 'PATCH',

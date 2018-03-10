@@ -2,6 +2,10 @@
 
 	class ScoreboardBuilder extends window.AbstractBuilder {
 
+		constructor(selector) {
+			super(selector);
+		}
+
 		render() {
 			if (this._data) {
 				this._node.innerHTML = `
