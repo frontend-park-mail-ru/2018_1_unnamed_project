@@ -12,12 +12,12 @@
 			this.routeMappings = {
 				'me': BACKEND_URI + '/me',
 				'signIn': BACKEND_URI + '/signin',
-				'signUp': BACKEND_URI + '/signUp',
+				'signUp': BACKEND_URI + '/signup',
 				'logout': BACKEND_URI + '/signout',
 				'scoreboard': BACKEND_URI + '/users/scoreboard',
 				'avatar': BACKEND_URI + '/me/avatar'
-			}
-		};
+			};
+		}
 
 		getMe() {
 			return this.httpModule.doGet({
@@ -33,7 +33,7 @@
 		}
 
 		signUp(data) {
-			return this.httpModule.doPost({
+			return self.httpModule.doPost({
 				url: this.routeMappings.signUp,
 				data
 			});
