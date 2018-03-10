@@ -28,12 +28,11 @@
 		        </div>
 		    </section>
 			`;
-			this._builder = new window.AuthFormsBuilder();
 		}
 
 		show() {
 			super.show();
-			this._builder.checkAuth();
+			window.Application.signinPage.builder.checkAuth();
 		}
 	}
 

@@ -4,17 +4,12 @@
 
 	class AuthFormsBuilder extends window.AbstractBuilder {
 
-		constructor(node = null) {
+		constructor(nodeName = null) {
 			super();
 
-			this._nodeName = node;
-
-			if (node) {
-				this._upin = this.node.className.slice(7, 9);
-			}
-
+			this._nodeName = nodeName;
+			this._upin = this.node.className.slice(7, 9);
 			this._signup = this._upin === 'up';
-
 			this.validators = {
 				username: {
 					regex: /^([a-zA-Z0-9]{7,})+$/,
@@ -150,7 +145,7 @@
 				}
                     </tr>
                 </table>
-            `
+            `;
 		}
 	}
 

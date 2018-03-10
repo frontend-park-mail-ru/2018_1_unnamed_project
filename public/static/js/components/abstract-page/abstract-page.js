@@ -28,6 +28,10 @@
 		}
 
 		hide() {
+			if (this.builder) {
+				this._builder.clear();
+			}
+
 			this.pageNode.hidden = true;
 		}
 
