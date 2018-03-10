@@ -1,8 +1,7 @@
 (function () {
 
-	const noop = () => null;
-
 	class Push extends window.AbstractBuilder {
+
 		constructor(selector) {
 			super(selector);
 			this._data = [];
@@ -29,5 +28,4 @@
 	}
 
 	window.Push = Push;
-
 })();

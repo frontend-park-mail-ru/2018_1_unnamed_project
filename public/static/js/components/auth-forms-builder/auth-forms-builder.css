@@ -32,8 +32,7 @@ td.space {
 .bordered {
     color: #fffff8;
     border: 40px;
-    font-family: system-ui;
-    font-size: 27px;
+    font-family: system-ui, serif;
     font-size: 27px;
     text-align: center;
 }

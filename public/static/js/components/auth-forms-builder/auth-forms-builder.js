@@ -1,20 +1,25 @@
+'use strict';
+
 (function () {
 
 	class AuthFormsBuilder extends window.AbstractBuilder {
 
 		constructor(node = {}) {
 			super();
+
 			this._node = node;
+
 			this._upin = this._node.className.slice(7, 9);
-			this._signup = this._upin === 'up' ? true : false;
+			this._signup = this._upin === 'up';
+
 			this.validators = {
 				username: {
 					regex: /^([a-zA-Z0-9]{7,})+$/,
-					desc: "minimum lenght is 7, only digits and english symbols are allowed"
+					desc: "minimum length is 7, only digits and english symbols are allowed"
 				},
 				password: {
 					regex: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
-					desc: "minimum lenght is 6, only english symbols and at least one digit"
+					desc: "minimum length is 6, only english symbols and at least one digit"
 
 				},
 				password_confirmation: {
@@ -36,56 +41,58 @@
 					if (buildMultiplayer) {
 						openSection('multiplayer');
 						push.data = `Welcome back, ${response.username}`;
+						// noinspection ES6ModulesDependencies
 						push.render('success');
 					}
 				})
 				.catch(error => {
 					profileBar.innerText = 'Unauthorised';
-					profileBar.setAttribute('data-section', 'signIn');
+					profileBar.setAttribute('data-section', 'signin');
 					console.log(error);
 				});
 		}
 
-		onSubmitAuthForm(event, func, buildOnSuccess) {
+		onSubmitAuthForm(event, callback) {
 			event.preventDefault();
 			const form = event.currentTarget;
-			const formElements = form.elements;
-
-			const formdata = {};
-
-			const errors = [];
+			const formData = {};
 
 			Object.values(form.elements).forEach((field) => {
 				if (field.type !== 'submit') {
-					formdata[field.name] = field.value;
+					formData[field.name] = field.value;
+
 					let validator = this.validators[field.name];
-					if (validator != undefined && !field.value.match(validator.regex)) {
+
+					if (validator && !field.value.match(validator.regex)) {
 						push.data = `${field.name} ${validator.desc}`;
 					}
 				}
 			});
-			if ('password_confirmation' in formdata && formdata['password'] !== formdata['password_confirmation'])
+
+			if ('password_confirmation' in formData && formData['password'] !== formData['password_confirmation'])
 				push.data = 'Passwords don\'t match';
 
 			if (push.data.length > 0) {
+				// noinspection ES6ModulesDependencies
 				push.render('error');
 				return;
 			}
 
-			func(formdata)
-				.then(response => {
+			callback(formData)
+				.then(() => {
 					this.checkAuth(true);
 					profileBuilder.updateBar();
 				})
 				.catch(errors => {
 					errors.forEach(error => push.data = error);
+					// noinspection ES6ModulesDependencies
 					push.render('error');
 				})
 		}
 
 		logoutMe() {
 			api.logout()
-				.then(response => {
+				.then(() => {
 					profileBuilder.updateBar();
 					multiplayerBuilder.clear();
 					window.openSection('menu');
@@ -127,5 +134,4 @@
 	}
 
 	window.AuthFormsBuilder = AuthFormsBuilder;
-
 })();

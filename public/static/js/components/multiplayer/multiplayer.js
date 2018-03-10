@@ -1,8 +1,9 @@
+'use strict';
+
 (function () {
 
-	const noop = () => null;
-
 	class Multiplayer extends window.AbstractBuilder {
+
 		constructor(selector) {
 			super(selector);
 		}
@@ -16,5 +17,4 @@
 	}
 
 	window.Multiplayer = Multiplayer;
-
 })();
