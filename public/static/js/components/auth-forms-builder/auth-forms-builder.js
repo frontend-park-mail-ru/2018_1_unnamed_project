@@ -139,18 +139,20 @@
 				}
                 <table class="form-buttons">
                     <tr>
-                        <td class="si-td">
-                            <input required type="submit" class="bordered js-sign${this._upin}-form" value="Sign ${this._upin}">
-                        </td>
                         ${ (!this._signup ? `
-                        <td class="space"></td>
                         <td class="su-td">
                             <div class="signup">
-                                <a href="#" data-section="signup" class="js-signup-form bordered">Sign up</a>
+                                <a href="#" data-section="signup" class="js-signup-form bordered">Register</a>
                             </div>
                         </td>
+                        <td class="space"></td>
                         ` : '')
-				}
+						}
+                        
+                        <td class="si-td">
+                            <input required type="submit" class="bordered js-sign${this._upin}-form" 
+                            value="${this._upin === 'up' ? 'Register' : 'Signin'}">
+                        </td>
                     </tr>
                 </table>
             `;
