@@ -80,6 +80,14 @@
 			if ('password_confirmation' in formData && formData['password'] !== formData['password_confirmation'])
 				push.data = 'Passwords don\'t match';
 
+			// Делаем сообщения об ошибках неповторяющимися.
+			const data = [... new Set(push.data)];
+			push.clear();
+
+			for (let i = 0; i < data.length; ++i) {
+				push.data = data[i];
+			}
+
 			if (push.data.length > 0) {
 				push.render('error');
 				return;
