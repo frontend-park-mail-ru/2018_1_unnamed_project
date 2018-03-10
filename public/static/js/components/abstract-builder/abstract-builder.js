@@ -1,5 +1,6 @@
+'use strict';
+
 (function () {
-	const noop = () => null;
 
 	class AbstractBuilder {
 
@@ -24,5 +25,4 @@
 	}
 
 	window.AbstractBuilder = AbstractBuilder;
-	window.noop = noop;
 })();
