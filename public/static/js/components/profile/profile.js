@@ -8,6 +8,10 @@
 			super(selector);
 		}
 
+		updateBar() {
+			window.signinPage.builder.checkAuth();
+		}
+
 		render() {
 			const backendURI = this.api.backendURI;
 
@@ -38,10 +42,10 @@
 			const profileBuilder = window.Application.profilePage.builder;
 			const signinBuilder = window.Application.signinPage.builder;
 
-			document.getElementById("logout").addEventListener('click', signinBuilder.logoutMe);
+			document.getElementById("logout").addEventListener('click', signinBuilder.logoutMe.bind(signinBuilder));
 			const form = document.getElementById("upload-avatar");
 			form.addEventListener('change', () => profileBuilder.setAvatar(form));
-			document.getElementById("delete-avatar").addEventListener('click', this.removeAvatar)
+			document.getElementById("delete-avatar").addEventListener('click', this.removeAvatar.bind(this));
 		}
 
 		removeAvatar() {

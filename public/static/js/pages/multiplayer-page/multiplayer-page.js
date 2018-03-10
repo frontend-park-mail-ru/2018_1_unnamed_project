@@ -11,14 +11,16 @@
 		        <div class="multiplayer"></div>
 		    </section>
 			`;
-			this._builder = new window.Multiplayer('multiplayer');
+			this._builder = new window.Multiplayer('.multiplayer');
 		}
 
 		show() {
 			super.show();
 
 			const self = this;
-			this.api.getMe().then(() => self._builder.render());
+			this.api.getMe()
+				.then(() => self._builder.render())
+				.catch(() => window.Router.navigateTo('signin'));
 		}
 	}
 
