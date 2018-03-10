@@ -10,7 +10,7 @@
 
 		render() {
 			const backendURI = this.api.backendURI;
-			
+
 			// noinspection JSUnresolvedVariable
 			const avatarLink = (this._data.avatarLink ?
 				(backendURI + this._data.avatarLink) : 'https://www.shareicon.net/data/128x128/2016/08/05/806962_user_512x512.png');
