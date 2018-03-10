@@ -1,8 +1,9 @@
+'use strict';
+
 (function () {
 
-	const noop = () => null;
+	class ProfileBuilder extends window.AbstractBuilder {
 
-	class ProfleBuilder extends window.AbstractBuilder {
 		constructor(selector) {
 			super(selector);
 		}
@@ -12,11 +13,14 @@
 		}
 
 		render() {
-			const avatarLink = (this._data.avatarLink ? (backendURL + this._data.avatarLink) : 'https://www.shareicon.net/data/128x128/2016/08/05/806962_user_512x512.png')
+			// noinspection JSUnresolvedVariable
+			const avatarLink = (this._data.avatarLink ?
+				(backendURL + this._data.avatarLink) : 'https://www.shareicon.net/data/128x128/2016/08/05/806962_user_512x512.png');
+			// noinspection JSUnresolvedVariable
 			this._node.innerHTML = `
             <div class="img-with-text">
                 <img class="avatar" src="${avatarLink}"/>
-                <form action="${backendURL + '/getMe/avatar/'}" method="post" id="upload-avatar" enctype="multipart/form-data">
+                <form action="${backendURL + '/me/avatar/'}" method="post" id="upload-avatar" enctype="multipart/form-data">
                     <span class="upload-btn-wrapper">
                         <button class="btn update">Update</button>
                         <input type="file" name="avatar"/>
@@ -43,8 +47,10 @@
 			api.deleteAvatar()
 				.then(response => {
 					profileBuilder.data = response;
+					// noinspection ES6ModulesDependencies
 					profileBuilder.render();
 					push.data = 'Avatar deleted';
+					// noinspection ES6ModulesDependencies
 					push.render('info');
 				})
 				.catch(error => {
@@ -56,8 +62,10 @@
 			api.uploadAvatar(form)
 				.then(response => {
 					profileBuilder.data = response;
+					// noinspection ES6ModulesDependencies
 					profileBuilder.render();
 					push.data = 'Avatar updated';
+					// noinspection ES6ModulesDependencies
 					push.render('success');
 				})
 				.catch(error => {
@@ -67,6 +75,5 @@
 
 	}
 
-	window.ProfileBuilder = ProfleBuilder;
-
+	window.ProfileBuilder = ProfileBuilder;
 })();

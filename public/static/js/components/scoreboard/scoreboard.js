@@ -1,6 +1,7 @@
 (function () {
 
 	class ScoreboardBuilder extends window.AbstractBuilder {
+
 		render() {
 			if (this._data) {
 				this._node.innerHTML = `
@@ -24,5 +25,4 @@
 	}
 
 	window.ScoreboardBuilder = ScoreboardBuilder;
-
 })();
