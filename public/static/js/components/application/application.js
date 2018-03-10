@@ -121,7 +121,6 @@
 		const sectionName = target.getAttribute('data-section');
 		event.preventDefault();
 		if (target.tagName.toLowerCase() === 'a') {
-			push
 			window.Router.navigateTo(sectionName);
 		}
 	};

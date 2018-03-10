@@ -9,6 +9,7 @@
 
 		constructor(httpModule = window.HttpModule) {
 			this.httpModule = httpModule;
+			// noinspection SpellCheckingInspection
 			this.routeMappings = {
 				'me': BACKEND_URI + '/me',
 				'signIn': BACKEND_URI + '/signin',
