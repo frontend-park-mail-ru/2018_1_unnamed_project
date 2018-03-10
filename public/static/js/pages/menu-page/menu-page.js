@@ -4,7 +4,7 @@
 
 	class MenuPage extends window.AbstractPage {
 
-		constructor({parentId = 'application', pageId = 'menu'}) {
+		constructor({parentId = 'application', pageId = 'menu'} = {}) {
 			super({parentId, pageId});
 			this._parentNode.innerHTML += `
 			<section id="menu" hidden>
@@ -28,6 +28,12 @@
 		        </div>
 		    </section>
 			`;
+			this._builder = new window.AuthFormsBuilder();
+		}
+
+		show() {
+			super.show();
+			this._builder.checkAuth();
 		}
 	}
 

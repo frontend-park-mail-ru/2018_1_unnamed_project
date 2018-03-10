@@ -19,6 +19,11 @@
 			};
 		}
 
+		// noinspection JSMethodCanBeStatic
+		get backendURI() {
+			return BACKEND_URI;
+		}
+
 		getMe() {
 			return this.httpModule.doGet({
 				url: this.routeMappings.me

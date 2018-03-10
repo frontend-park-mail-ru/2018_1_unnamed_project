@@ -4,12 +4,14 @@
 
 	class AuthFormsBuilder extends window.AbstractBuilder {
 
-		constructor(node = {}) {
+		constructor(node = null) {
 			super();
 
-			this._node = node;
+			if (node) {
+				this._node = document.getElementsByClassName(node)[0];
+				this._upin = this._node.className.slice(7, 9);
+			}
 
-			this._upin = this._node.className.slice(7, 9);
 			this._signup = this._upin === 'up';
 
 			this.validators = {
@@ -34,14 +36,17 @@
 		}
 
 		checkAuth(buildMultiplayer = false) {
-			api.getMe()
+			const profileBar = window.Application.profileBar;
+			const push = window.Application.push;
+			const router = window.Application.router;
+
+			this._api.getMe()
 				.then(response => {
 					profileBar.innerText = response.username;
 					profileBar.setAttribute('data-section', 'profile');
 					if (buildMultiplayer) {
-						openSection('multiplayer');
+						router.navigateTo('multiplayer');
 						push.data = `Welcome back, ${response.username}`;
-						// noinspection ES6ModulesDependencies
 						push.render('success');
 					}
 				})
@@ -54,6 +59,9 @@
 
 		onSubmitAuthForm(event, callback) {
 			event.preventDefault();
+
+			const push = window.Application.push;
+
 			const form = event.currentTarget;
 			const formData = {};
 
@@ -73,29 +81,34 @@
 				push.data = 'Passwords don\'t match';
 
 			if (push.data.length > 0) {
-				// noinspection ES6ModulesDependencies
 				push.render('error');
 				return;
 			}
 
+			const signinBuilder = window.Application.signinPage.builder;
+
 			callback(formData)
 				.then(() => {
 					this.checkAuth(true);
-					profileBuilder.updateBar();
+					signinBuilder.checkAuth();
 				})
 				.catch(errors => {
 					errors.forEach(error => push.data = error);
-					// noinspection ES6ModulesDependencies
 					push.render('error');
 				})
 		}
 
 		logoutMe() {
-			api.logout()
+			const multiplayerBuilder = window.Application.multiplayerPage.builder;
+			const signinBuilder = window.Application.signinPage.builder;
+
+			const router = window.Router;
+
+			this._api.logout()
 				.then(() => {
-					profileBuilder.updateBar();
+					signinBuilder.checkAuth();
 					multiplayerBuilder.clear();
-					window.openSection('menu');
+					router.navigateTo('menu')
 				})
 				.catch(error => {
 					console.log(error);
