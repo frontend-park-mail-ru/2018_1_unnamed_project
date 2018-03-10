@@ -2,6 +2,9 @@
 
 (function () {
 
+	/**
+	 * Компонент для отрисовки формы мультплеера.
+	 */
 	class Multiplayer extends window.AbstractBuilder {
 
 		constructor(selector) {

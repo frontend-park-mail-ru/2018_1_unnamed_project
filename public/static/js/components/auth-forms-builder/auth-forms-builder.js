@@ -2,6 +2,9 @@
 
 (function () {
 
+	/**
+	 * Билдер форм регистрации и входа.
+	 */
 	class AuthFormsBuilder extends window.AbstractBuilder {
 
 		constructor(nodeName = null) {
@@ -35,6 +38,12 @@
 			return document.getElementsByClassName(this._nodeName)[0];
 		}
 
+		/**
+		 * Проверяет, автризован ли пользователь,
+		 * устанавливает значения жлементов интерфейса
+		 * и осуществляет роутинг.
+		 * @param buildMultiplayer Показывать ли страницу мультиплеера.
+		 */
 		checkAuth(buildMultiplayer = false) {
 			const profileBar = window.Application.profileBar;
 			const push = window.Application.push;
@@ -57,6 +66,11 @@
 				});
 		}
 
+		/**
+		 * Отправка запроса API.
+		 * @param event
+		 * @param callback
+		 */
 		onSubmitAuthForm(event, callback) {
 			event.preventDefault();
 
