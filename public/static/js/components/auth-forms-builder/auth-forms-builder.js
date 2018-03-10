@@ -7,9 +7,10 @@
 		constructor(node = null) {
 			super();
 
+			this._nodeName = node;
+
 			if (node) {
-				this._node = document.getElementsByClassName(node)[0];
-				this._upin = this._node.className.slice(7, 9);
+				this._upin = this.node.className.slice(7, 9);
 			}
 
 			this._signup = this._upin === 'up';
@@ -35,12 +36,16 @@
 			};
 		}
 
+		get node() {
+			return document.getElementsByClassName(this._nodeName)[0];
+		}
+
 		checkAuth(buildMultiplayer = false) {
 			const profileBar = window.Application.profileBar;
 			const push = window.Application.push;
 			const router = window.Application.router;
 
-			this._api.getMe()
+			this.api.getMe()
 				.then(response => {
 					profileBar.innerText = response.username;
 					profileBar.setAttribute('data-section', 'profile');
@@ -104,7 +109,7 @@
 
 			const router = window.Router;
 
-			this._api.logout()
+			this.api.logout()
 				.then(() => {
 					signinBuilder.checkAuth();
 					multiplayerBuilder.clear();
@@ -116,8 +121,8 @@
 		}
 
 		render() {
-			if (!this._node) return;
-			this._node.innerHTML = `
+			if (!this.node) return;
+			this.node.innerHTML = `
                 <input required class="auth-form__input" type="email" name="email" placeholder="email">
                 <input required class="auth-form__input" type="password" name="password" placeholder="password">
                 ${

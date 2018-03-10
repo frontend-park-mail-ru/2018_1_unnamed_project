@@ -9,13 +9,13 @@
 		}
 
 		render() {
-			const backendURI = this._api.backendURI;
+			const backendURI = this.api.backendURI;
 			
 			// noinspection JSUnresolvedVariable
 			const avatarLink = (this._data.avatarLink ?
 				(backendURI + this._data.avatarLink) : 'https://www.shareicon.net/data/128x128/2016/08/05/806962_user_512x512.png');
 			// noinspection JSUnresolvedVariable
-			this._node.innerHTML = `
+			this.node.innerHTML = `
             <div class="img-with-text">
                 <img class="avatar" src="${avatarLink}"/>
                 <form action="${backendURI + '/me/avatar/'}" method="post" id="upload-avatar" enctype="multipart/form-data">
@@ -48,7 +48,7 @@
 			const profileBuilder = window.Application.profilePage.builder;
 			const push = window.Application.push;
 
-			this._api.deleteAvatar()
+			this.api.deleteAvatar()
 				.then(response => {
 					profileBuilder.data = response;
 					profileBuilder.render();
@@ -64,7 +64,7 @@
 			const profileBuilder = window.Application.profilePage.builder;
 			const push = window.Application.push;
 
-			this._api.uploadAvatar(form)
+			this.api.uploadAvatar(form)
 				.then(response => {
 					profileBuilder.data = response;
 					profileBuilder.render();

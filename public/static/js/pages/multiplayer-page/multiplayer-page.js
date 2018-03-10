@@ -6,7 +6,7 @@
 
 		constructor({parentId = 'application', pageId = 'multiplayer'} = {}) {
 			super({parentId, pageId});
-			this._parentNode.innerHTML += `
+			this.parentNode.innerHTML += `
 			<section id="${pageId}" hidden>
 		        <div class="multiplayer"></div>
 		    </section>
@@ -18,8 +18,7 @@
 			super.show();
 
 			const self = this;
-			this._api.getMe()
-				.then(() => self._builder.render());
+			this.api.getMe().then(() => self._builder.render());
 		}
 	}
 

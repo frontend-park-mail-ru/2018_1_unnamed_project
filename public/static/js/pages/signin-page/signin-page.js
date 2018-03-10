@@ -6,7 +6,7 @@
 
 		constructor({parentId = 'application', pageId = 'signin'} = {}) {
 			super({parentId, pageId});
-			this._parentNode.innerHTML += `
+			this.parentNode.innerHTML += `
 			<section id="${pageId}" hidden>
 		        <form class="js-signin-form" novalidate></form>
 		    </section>
@@ -21,7 +21,7 @@
 			const self = this;
 			this._builder.node.addEventListener(
 				'submit',
-				() => self.onSubmitAuthForm(event, self._api.signIn.bind(self._api))
+				() => self.builder.onSubmitAuthForm(event, self.api.signIn.bind(self.api))
 			);
 		}
 	}

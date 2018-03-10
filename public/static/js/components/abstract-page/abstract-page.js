@@ -6,13 +6,13 @@
 
 		constructor({parentId = '', pageId = ''} = {}) {
 			this._pageId = pageId;
-
-			this._parentNode = document.getElementById(parentId);
-			this._pageNode = document.getElementById(pageId);
-
+			this._parentId = parentId;
 			this._builder = null;
-
 			this._api = new window.API();
+		}
+
+		get api() {
+			return this._api;
 		}
 
 		get builder() {
@@ -20,10 +20,11 @@
 		}
 
 		get pageNode() {
-			if (!this._pageNode) {
-				this._pageNode = document.getElementById(this._pageId);
-				return this._pageNode;
-			}
+			return document.getElementById(this._pageId);
+		}
+
+		get parentNode() {
+			return document.getElementById(this._parentId);
 		}
 
 		hide() {

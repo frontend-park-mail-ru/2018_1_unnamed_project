@@ -5,28 +5,28 @@ const router = window.Router;
 
 router.addRoute(
 	'menu',
-	{re: '', handler: () => {router.openPage({page: Application.menuPage, hideBackRef: true})}}
+	{re: '', page: Application.menuPage, hideBackRef: true}
 ).addRoute(
 	'multiplayer',
-	{re: '', handler: () => {router.openPage({page: Application.multiplayerPage})}}
+	{re: '', page: Application.multiplayerPage}
 ).addRoute(
 	'singleplayer',
-	{re: '', handler: () => {router.openPage({page: Application.singleplayerPage})}}
+	{re: '', page: Application.singleplayerPage}
 ).addRoute(
 	'scoreboard',
-	{re: '', handler: () => {router.openPage({page: Application.scoreboardPage})}}
+	{re: '', page: Application.scoreboardPage}
 ).addRoute(
 	'signin',
-	{re: '', handler: () => {router.openPage({page: Application.signinPage})}}
+	{re: '', page: Application.signinPage}
 ).addRoute(
 	'signup',
-	{re: '', handler: () => {router.openPage({page: Application.signupPage})}}
+	{re: '', page: Application.signupPage}
 ).addRoute(
 	'profile',
-	{re: '', handler: () => {router.openPage({page: Application.profilePage})}}
+	{re: '', page: Application.profilePage}
 ).addRoute(
 	'rules',
-	{re: '', handler: () => {router.openPage({page: Application.rulesPage})}}
+	{re: '', page: Application.rulesPage}
 );
 
 router.navigateTo('menu');

@@ -6,7 +6,7 @@
 
 		constructor({parentId = 'application', pageId = 'rules'} = {}) {
 			super({parentId, pageId});
-			this._parentNode.innerHTML += `
+			this.parentNode.innerHTML += `
 			<section id="${pageId}" hidden>
 		        <p>The game is played on four grids, two for each player. The grids are typically square – usually 10×10 – and
 		            the
