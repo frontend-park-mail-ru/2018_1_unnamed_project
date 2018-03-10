@@ -50,9 +50,9 @@
 					profileBar.innerText = response.username;
 					profileBar.setAttribute('data-section', 'profile');
 					if (buildMultiplayer) {
-						router.navigateTo('multiplayer');
 						push.data = `Welcome back, ${response.username}`;
 						push.render('success');
+						router.navigateTo('multiplayer');
 					}
 				})
 				.catch(error => {
@@ -90,12 +90,15 @@
 				return;
 			}
 
-			const signinBuilder = window.Application.signinPage.builder;
+			const profileBuilder = window.Application.profilePage.builder;
+
+			const router = window.Router;
 
 			callback(formData)
 				.then(() => {
 					this.checkAuth(true);
-					signinBuilder.checkAuth();
+					router.navigateTo('profile');
+					profileBuilder.updateBar();
 				})
 				.catch(errors => {
 					errors.forEach(error => push.data = error);
@@ -105,15 +108,15 @@
 
 		logoutMe() {
 			const multiplayerBuilder = window.Application.multiplayerPage.builder;
-			const signinBuilder = window.Application.signinPage.builder;
+			const profileBuilder = window.Application.profilePage.builder;
 
 			const router = window.Router;
 
 			this.api.logout()
 				.then(() => {
-					signinBuilder.checkAuth();
+					router.navigateTo('menu');
+					profileBuilder.updateBar();
 					multiplayerBuilder.clear();
-					router.navigateTo('menu')
 				})
 				.catch(error => {
 					console.log(error);

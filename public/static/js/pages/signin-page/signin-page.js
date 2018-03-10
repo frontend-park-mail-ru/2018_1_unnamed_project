@@ -18,6 +18,9 @@
 			super.show();
 			this._builder.render();
 
+			const generatedSignUpHref = document.getElementsByClassName('signup')[0];
+			generatedSignUpHref.addEventListener('click', window.anchorSubmitListener);
+
 			const self = this;
 			this._builder.node.addEventListener(
 				'submit',

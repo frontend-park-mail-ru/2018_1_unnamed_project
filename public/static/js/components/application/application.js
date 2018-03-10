@@ -68,14 +68,7 @@
 		constructor() {
 			const hrefs = document.querySelectorAll('[data-section]');
 			Object.entries(hrefs).forEach(([key, value]) => {
-				value.addEventListener('click', () => {
-					const target = event.target;
-					const sectionName = target.getAttribute('data-section');
-					event.preventDefault();
-					if (target.tagName.toLowerCase() === 'a') {
-						router.navigateTo(sectionName);
-					}
-				});
+				value.addEventListener('click', window.anchorSubmitListener);
 			});
 		}
 
@@ -122,6 +115,15 @@
 			return singleplayerPage;
 		}
 	}
+
+	window.anchorSubmitListener = () => {
+		const target = event.target;
+		const sectionName = target.getAttribute('data-section');
+		event.preventDefault();
+		if (target.tagName.toLowerCase() === 'a') {
+			window.Router.navigateTo(sectionName);
+		}
+	};
 
 	window.Application = Application;
 	window.Router = Router;

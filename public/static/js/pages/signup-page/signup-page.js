@@ -21,7 +21,7 @@
 			const self = this;
 			this._builder.node.addEventListener(
 				'submit',
-				() => self._builder.onSubmitAuthForm(event, self._api.signUp.bind(self._api))
+				() => self.builder.onSubmitAuthForm(event, self.api.signUp.bind(self.api))
 			);
 		}
 	}
