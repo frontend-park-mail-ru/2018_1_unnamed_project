@@ -17,12 +17,6 @@
 	<a href="#" id="bar" class="bar" data-section="profile"></a>
 	` + node.parentElement.innerHTML;
 
-	let backRef = document.getElementById('back');
-
-	let profileBar = document.getElementById('bar');
-
-	const push = new window.Push('.msg');
-
 	const menuPage = new window.MenuPage();
 	const multiplayerPage = new window.MultiplayerPage();
 	const profilePage = new window.ProfilePage();
@@ -36,28 +30,35 @@
 
 	const routes = {};
 
-	class Router {
+	const backRef = document.getElementById('back');
 
-		static openPage({page, hideBackRef = false}) {
-			backRef.hidden = hideBackRef;
-			push.clear();
+	let profileBar = document.getElementById('bar');
 
-			if (currentPage) {
-				currentPage.hide();
-			}
+	const push = new window.Push('.msg');
 
-			currentPage = page;
-			currentPage.show();
+	function openPage(routerObject) {
+		backRef.hidden = routerObject.hideBackRef;
+		// console.log(backRef);
+		push.clear();
+
+		if (currentPage) {
+			currentPage.hide();
 		}
+
+		currentPage = routerObject.page;
+		currentPage.show();
+	}
+
+	class Router {
 
 		static navigateTo(routeName) {
 			if (routeName in routes) {
-				routes[routeName].handler();
+				openPage(routes[routeName]);
 			}
 		}
 
-		static addRoute(name, {re = '', handler = window.noop} = {}) {
-			routes[name] = {re, handler};
+		static addRoute(name, {re = '', page = null, hideBackRef = false} = {}) {
+			routes[name] = {re, page, hideBackRef};
 			return this;
 		}
 	}
@@ -117,7 +118,7 @@
 					const sectionName = target.getAttribute('data-section');
 					event.preventDefault();
 					if (target.tagName.toLowerCase() === 'a') {
-						routes[sectionName]();
+						router.navigateTo(sectionName);
 					}
 				});
 			});

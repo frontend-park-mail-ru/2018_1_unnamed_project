@@ -9,10 +9,10 @@
 		}
 
 		render() {
-			if (!this._node) return;
-			this._node.innerHTML = `
+			if (!this.node) return;
+			this.node.innerHTML = `
                 <img src="static/media/shingis.jpg">
-            `
+            `;
 		}
 	}
 

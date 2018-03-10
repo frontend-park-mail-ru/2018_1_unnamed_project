@@ -2,13 +2,9 @@
 
 	class ScoreboardBuilder extends window.AbstractBuilder {
 
-		constructor(selector) {
-			super(selector);
-		}
-
 		render() {
 			if (this._data) {
-				this._node.innerHTML = `
+				this.node.innerHTML = `
                     <table class="scoreboard__table">
                         <tbody>
                             ${

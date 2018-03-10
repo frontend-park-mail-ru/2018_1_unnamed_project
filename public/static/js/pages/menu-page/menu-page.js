@@ -6,7 +6,7 @@
 
 		constructor({parentId = 'application', pageId = 'menu'} = {}) {
 			super({parentId, pageId});
-			this._parentNode.innerHTML += `
+			this.parentNode.innerHTML += `
 			<section id="menu" hidden>
 		        <div class="header">SHIP<br>COLLISION</div>
 		        <hr>

@@ -6,7 +6,11 @@
 
 		constructor(selector = 'body') {
 			this._api = new window.API();
-			this._node = document.querySelector(selector);
+			this._selector = selector;
+		}
+
+		get api() {
+			return this._api;
 		}
 
 		get data() {
@@ -18,11 +22,11 @@
 		}
 
 		get node() {
-			return this._node;
+			return document.querySelector(this._selector);
 		}
 
 		clear() {
-			this._node.innerHTML = '';
+			this.node.innerHTML = '';
 		}
 
 		render() {
