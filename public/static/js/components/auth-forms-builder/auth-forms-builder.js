@@ -65,12 +65,13 @@
             const push = window.application.push;
             const form = event.currentTarget;
             const result = this.validator.validateCredentials(form, push);
-
+            if (result.err){
+                return;
+            }
             const profileBuilder = window.application.profilePage.builder;
-
             const router = window.router;
 
-            callback(formData)
+            callback(result.formData)
                 .then(() => {
                     this.checkAuth(true);
                     router.navigateTo('profile');
