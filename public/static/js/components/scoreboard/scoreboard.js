@@ -8,7 +8,7 @@
          */
         render() {
             if (this._data) {
-                this.node.insertAdjacentHTML('afterbegin', scoreboardTemplate({users: this._data}));
+                this.node.insertAdjacentHTML('afterbegin', scoreboardTemplate({users: this._data.users}));
         //         this.node.innerHTML = `
         //         <table class="scoreboard__table">
         //             <tbody>
