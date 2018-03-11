@@ -26,6 +26,7 @@
             const self = this;
             this.api.getMe()
                 .then((response) => {
+                    debugger;
                     self._builder.data = response;
                     self._builder.render();
                 });
