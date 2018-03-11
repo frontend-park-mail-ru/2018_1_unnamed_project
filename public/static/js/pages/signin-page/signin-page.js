@@ -11,11 +11,9 @@
          */
         constructor({parentId = 'application', pageId = 'signin'} = {}) {
             super({parentId, pageId});
-            this.parentNode.innerHTML += `
-            <section id="${pageId}" hidden>
-                <form class="js-signin-form" novalidate></form>
-            </section>
-            `;
+
+            // noinspection JSUnresolvedFunction
+            this.parentNode.insertAdjacentHTML('beforeend', signinPageTemplate({pageId}));
             this._builder = new window.AuthFormsBuilder('js-signin-form');
         }
 

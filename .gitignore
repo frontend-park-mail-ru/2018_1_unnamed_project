@@ -63,3 +63,6 @@ typings/
 # enviroment shit
 .DS_Store
 .vscode/
+
+# Precompiled templates
+public/static/precompiled/

@@ -11,11 +11,9 @@
          */
         constructor({parentId = 'application', pageId = 'profile'} = {}) {
             super({parentId, pageId});
-            this.parentNode.innerHTML += `
-            <section id="${pageId}" hidden>
-                <div class="profile"></div>
-            </section>
-            `;
+
+            // noinspection JSUnresolvedFunction
+            this.parentNode.insertAdjacentHTML('beforeend', profilePageTemplate({pageId}));
             this._builder = new window.ProfileBuilder('.profile');
         }
 

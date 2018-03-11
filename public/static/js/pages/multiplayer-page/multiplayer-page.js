@@ -11,11 +11,9 @@
          */
         constructor({parentId = 'application', pageId = 'multiplayer'} = {}) {
             super({parentId, pageId});
-            this.parentNode.innerHTML += `
-            <section id="${pageId}" hidden>
-                <div class="multiplayer"></div>
-            </section>
-            `;
+
+            // noinspection JSUnresolvedFunction
+            this.parentNode.insertAdjacentHTML('beforeend', multiplayerPageTemplate({pageId}));
             this._builder = new window.Multiplayer('.multiplayer');
         }
 
