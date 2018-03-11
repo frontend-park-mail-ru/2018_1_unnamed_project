@@ -1,83 +1,119 @@
 'use strict';
 
-(function () {
+(function() {
+    // const BACKEND_URI = 'http://localhost:8080'; // debug
+    const BACKEND_URI = 'https://dev-api-shipcollision.herokuapp.com'; // production
 
-	// const BACKEND_URI = 'http://localhost:8080'; // debug
-	const BACKEND_URI = 'https://dev-api-shipcollision.herokuapp.com'; // production
+    /**
+     * Модуль для работы с API.
+     */
+    class API {
+        /**
+         *
+         */
+        constructor() {
+            this.httpModule = window.HttpModule;
+            // noinspection SpellCheckingInspection
+            this.routeMappings = {
+                'me': BACKEND_URI + '/me',
+                'signIn': BACKEND_URI + '/signin',
+                'signUp': BACKEND_URI + '/signup',
+                'logout': BACKEND_URI + '/signout',
+                'scoreboard': BACKEND_URI + '/users/scoreboard',
+                'avatar': BACKEND_URI + '/me/avatar',
+            };
+        }
 
-	/**
-	 * Модуль для работы с API.
-	 */
-	class API {
+        // noinspection JSMethodCanBeStatic
+        /**
+         * Возвращает текущий базовый URI бекенда.
+         * @return {string}
+         */
+        get backendURI() {
+            return BACKEND_URI;
+        }
 
-		constructor(httpModule = window.HttpModule) {
-			this.httpModule = httpModule;
-			// noinspection SpellCheckingInspection
-			this.routeMappings = {
-				'me': BACKEND_URI + '/me',
-				'signIn': BACKEND_URI + '/signin',
-				'signUp': BACKEND_URI + '/signup',
-				'logout': BACKEND_URI + '/signout',
-				'scoreboard': BACKEND_URI + '/users/scoreboard',
-				'avatar': BACKEND_URI + '/me/avatar'
-			};
-		}
+        /**
+         * GET /me
+         * @return {*}
+         */
+        getMe() {
+            return this.httpModule.doGet({
+                url: this.routeMappings.me,
+            });
+        }
 
-		// noinspection JSMethodCanBeStatic
-		get backendURI() {
-			return BACKEND_URI;
-		}
+        /**
+         * POST /signin
+         * @param {Object} data Данные пользователя.
+         * @return {*}
+         */
+        signIn(data) {
+            return this.httpModule.doPost({
+                url: this.routeMappings.signIn,
+                data,
+            });
+        }
 
-		getMe() {
-			return this.httpModule.doGet({
-				url: this.routeMappings.me
-			});
-		}
+        /**
+         * POST /users
+         * @param {Object} data Данные пользователя.
+         * @return {*}
+         */
+        signUp(data) {
+            return self.httpModule.doPost({
+                url: this.routeMappings.signUp,
+                data,
+            });
+        }
 
-		signIn(data) {
-			return this.httpModule.doPost({
-				url: this.routeMappings.signIn,
-				data
-			});
-		}
+        /**
+         * DELETE /signout
+         * @return {*}
+         */
+        logout() {
+            return this.httpModule.doDelete({
+                url: this.routeMappings.logout,
+            });
+        }
 
-		signUp(data) {
-			return self.httpModule.doPost({
-				url: this.routeMappings.signUp,
-				data
-			});
-		}
+        /**
+         * GET /users/scoreboard
+         * @return {*}
+         */
+        scoreboard() {
+            return this.httpModule.doGet({
+                url: this.routeMappings.scoreboard,
+            });
+        }
 
-		logout() {
-			return this.httpModule.doDelete({
-				url: this.routeMappings.logout
-			});
-		}
+        /**
+         * POST /me/avatar
+         * @param {Object} data Файл с картинкой.
+         * @return {*}
+         */
+        uploadAvatar(data) {
+            /**
+             * Content-Type выставляется в null для того, чтобы
+             * браузер сам коректно выставил boundaries для multipart/form-data.
+             */
+            return this.httpModule.doPost({
+                url: this.routeMappings.avatar,
+                contentType: null,
+                data,
+            });
+        }
 
-		scoreboard() {
-			return this.httpModule.doGet({
-				url: this.routeMappings.scoreboard
-			});
-		}
+        /**
+         * DELETE/me/avatar
+         * @return {*}
+         */
+        deleteAvatar() {
+            return this.httpModule.doDelete({
+                url: this.routeMappings.avatar,
+            });
+        }
+    }
 
-		uploadAvatar(data) {
-			/**
-			 * Content-Type выставляется в null для того, чтобы
-			 * браузер сам коректно выставил boundaries для multipart/form-data.
-			 */
-			return this.httpModule.doPost({
-				url: this.routeMappings.avatar,
-				contentType: null,
-				data
-			});
-		}
-
-		deleteAvatar() {
-			return this.httpModule.doDelete({
-				url: this.routeMappings.avatar
-			});
-		}
-	}
-
-	window.API = API;
+    window.API = API;
 })();

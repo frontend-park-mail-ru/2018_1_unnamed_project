@@ -1,32 +1,32 @@
 'use strict';
 
-const application = new window.Application();
-const router = window.Router;
+const application = window.application;
+const router = window.router;
 
 router.addRoute(
-	'menu',
-	{re: '', page: Application.menuPage, hideBackRef: true}
+    'menu',
+    {page: application.menuPage, hideBackRef: true}
 ).addRoute(
-	'multiplayer',
-	{re: '', page: Application.multiplayerPage}
+    'multiplayer',
+    {page: application.multiplayerPage}
 ).addRoute(
-	'singleplayer',
-	{re: '', page: Application.singleplayerPage}
+    'singleplayer',
+    {page: application.singleplayerPage}
 ).addRoute(
-	'scoreboard',
-	{re: '', page: Application.scoreboardPage}
+    'scoreboard',
+    {page: application.scoreboardPage}
 ).addRoute(
-	'signin',
-	{re: '', page: Application.signinPage}
+    'signin',
+    {page: application.signinPage}
 ).addRoute(
-	'signup',
-	{re: '', page: Application.signupPage}
+    'signup',
+    {page: application.signupPage}
 ).addRoute(
-	'profile',
-	{re: '', page: Application.profilePage}
+    'profile',
+    {page: application.profilePage}
 ).addRoute(
-	'rules',
-	{re: '', page: Application.rulesPage}
+    'rules',
+    {page: application.rulesPage}
 );
 
 router.navigateTo('menu');

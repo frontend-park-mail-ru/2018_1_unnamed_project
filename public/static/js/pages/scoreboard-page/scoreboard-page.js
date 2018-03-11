@@ -1,31 +1,39 @@
 'use strict';
 
-(function () {
+(function() {
+    /**
+     * Страница лидеров.
+     */
+    class ScoreboardPage extends window.AbstractPage {
+        /**
+         * @param {string} parentId Идентификатор родительского узла.
+         * @param {string} pageId Желаемый идентификатор страницы.
+         */
+        constructor({parentId = 'application', pageId = 'scoreboard'} = {}) {
+            super({parentId, pageId});
 
-	class ScoreboardPage extends window.AbstractPage {
+            this.parentNode.innerHTML += `
+            <section id="${pageId}" hidden>
+                <div class="js-scoreboard-table"></div>
+            </section>
+            `;
+            this._builder = new window.ScoreboardBuilder('.js-scoreboard-table');
+        }
 
-		constructor({parentId = 'application', pageId = 'scoreboard'} = {}) {
-			super({parentId, pageId});
+        /**
+         * Отображает страницу.
+         */
+        show() {
+            super.show();
 
-			this.parentNode.innerHTML += `
-			<section id="${pageId}" hidden>
-		        <div class="js-scoreboard-table"></div>
-		    </section>
-			`;
-			this._builder = new window.ScoreboardBuilder('.js-scoreboard-table');
-		}
+            const self = this;
+            this.api.scoreboard()
+                .then((users) => {
+                    self._builder.data = users;
+                    self._builder.render();
+                });
+        }
+    }
 
-		show() {
-			super.show();
-
-			const self = this;
-			this.api.scoreboard()
-				.then(users => {
-					self._builder.data = users;
-					self._builder.render();
-				});
-		}
-	}
-
-	window.ScoreboardPage = ScoreboardPage;
+    window.ScoreboardPage = ScoreboardPage;
 })();

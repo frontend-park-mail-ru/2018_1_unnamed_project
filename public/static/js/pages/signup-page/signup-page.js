@@ -1,30 +1,38 @@
 'use strict';
 
-(function () {
+(function() {
+    /**
+     * Страница регистрации.
+     */
+    class SignUpPage extends window.AbstractPage {
+        /**
+         * @param {string} parentId Идентификатор родительского узла.
+         * @param {string} pageId Желаемый идентификатор страницы.
+         */
+        constructor({parentId = 'application', pageId = 'signup'} = {}) {
+            super({parentId, pageId});
+            this.parentNode.innerHTML += `
+            <section id="${pageId}" hidden>
+                <form class="js-signup-form" novalidate></form>
+            </section>
+            `;
+            this._builder = new window.AuthFormsBuilder('js-signup-form');
+        }
 
-	class SignUpPage extends window.AbstractPage {
+        /**
+         * Отображает страницу.
+         */
+        show() {
+            super.show();
+            this._builder.render();
 
-		constructor({parentId = 'application', pageId = 'signup'} = {}) {
-			super({parentId, pageId});
-			this.parentNode.innerHTML += `
-			<section id="${pageId}" hidden>
-		        <form class="js-signup-form" novalidate></form>
-		    </section>
-			`;
-			this._builder = new window.AuthFormsBuilder('js-signup-form');
-		}
+            const self = this;
+            this._builder.node.addEventListener(
+                'submit',
+                () => self.builder.onSubmitAuthForm(event, self.api.signUp.bind(self.api))
+            );
+        }
+    }
 
-		show() {
-			super.show();
-			this._builder.render();
-
-			const self = this;
-			this._builder.node.addEventListener(
-				'submit',
-				() => self.builder.onSubmitAuthForm(event, self.api.signUp.bind(self.api))
-			);
-		}
-	}
-
-	window.SignUpPage = SignUpPage;
+    window.SignUpPage = SignUpPage;
 })();
