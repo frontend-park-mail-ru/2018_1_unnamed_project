@@ -33,28 +33,6 @@
                 email: this._data.email,
             });
             this.node.insertAdjacentHTML('afterbegin', template);
-            // this.node.innerHTML = `
-            // DEEEESIIIIIIIGGGGGGNNNNNNNNNNNN!!!!11
-            // <div class="img-with-text">
-            //     <img class="avatar" src="${avatarLink}"/>
-            //     <form action="${backendURI + '/me/avatar/'}" method="POST" id="upload-avatar" enctype="multipart/form-data">
-            //         <span class="upload-btn-wrapper">
-            //             <button class="btn update">Update</button>
-            //             <input type="file" name="avatar"/>
-            //         </span>
-            //     </form>
-            //     <button class="btn delete" id="delete-avatar">Delete</button>
-            // </div>
-            // <form action="${backendURI + '/me/'}" class="settings__form" method="PATCH" id="update-info">
-            //     <input type="text" class="settings__input" name="username" placeholder="${this.data.username}"/>
-            //     <input type="text" class="settings__input" name="email" placeholder="${this.data.email}"/>
-            //     <input type="password" class="settings__input" name="password" placeholder="new password"/>
-            //     <input type="password" class="settings__input" name="password_confirmation" placeholder="confirmation"/>
-            //     <input required class="settings__input" type="submit" value="Update">
-            // </form>
-            // <a href="#" id="logout" data-section="menu">LOG OUT</a>
-            // `;
-
 
             const signinBuilder = window.application.signinPage.builder;
 
