@@ -11,7 +11,7 @@
          */
         constructor({parentId = 'application', pageId = 'multiplayer'} = {}) {
             super({parentId, pageId});
-            this.parentNode.insertAdjacentHTML('beforeend', multiplayerTemplate({pageId}));
+            this.parentNode.insertAdjacentHTML('beforeend', multiplayerPageTemplate({pageId}));
             // this.parentNode.innerHTML += `
             // <section id="${pageId}" hidden>
             //     <div class="multiplayer"></div>

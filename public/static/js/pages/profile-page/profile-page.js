@@ -17,7 +17,7 @@
             //     <div class="profile"></div>
             // </section>
             // `;
-            // this._builder = new window.ProfileBuilder('.profile');
+            this._builder = new window.ProfileBuilder('.profile');
         }
 
         /**
