@@ -61,9 +61,9 @@
                     profileBar.innerText = response.username;
                     profileBar.setAttribute('data-section', 'profile');
                     if (buildMultiplayer) {
+                        router.navigateTo('multiplayer');
                         push.data = `Welcome back, ${response.username}`;
                         push.render('success');
-                        router.navigateTo('multiplayer');
                     }
                 })
                 .catch((error) => {
