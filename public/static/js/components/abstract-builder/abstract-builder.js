@@ -11,6 +11,7 @@
          */
         constructor(selector = 'body') {
             this._api = new window.API();
+            this._validator = new window.Validator();
             this._selector = selector;
         }
 
@@ -20,6 +21,14 @@
          */
         get api() {
             return this._api;
+        }
+
+        /**
+         * Геттер инстанса к валидатору
+         * @return {validator}
+         */
+        get validator() {
+            return this._validator;
         }
 
         /**

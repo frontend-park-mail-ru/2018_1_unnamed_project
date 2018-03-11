@@ -16,25 +16,6 @@
             this._nodeClassName = nodeClassName;
             this._upin = this.node.className.slice(7, 9);
             this._signup = this._upin === 'up';
-            this.validators = {
-                username: {
-                    regex: /^([a-zA-Z0-9]{7,})+$/,
-                    desc: 'minimum length is 7, only digits and english symbols are allowed',
-                },
-                password: {
-                    regex: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
-                    desc: 'minimum length is 6, only english symbols and at least one digit',
-
-                },
-                password_confirmation: {
-                    regex: /.*/,
-                    desc: 'meh',
-                },
-                email: {
-                    regex: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/,
-                    desc: 'должен быть email-ом, а ты пашол вон',
-                },
-            };
         }
 
         /**
@@ -82,38 +63,8 @@
             event.preventDefault();
 
             const push = window.application.push;
-
             const form = event.currentTarget;
-            const formData = {};
-
-            Object.values(form.elements).forEach((field) => {
-                if (field.type !== 'submit') {
-                    formData[field.name] = field.value;
-
-                    let validator = this.validators[field.name];
-
-                    if (validator && !field.value.match(validator.regex)) {
-                        push.data = `${field.name} ${validator.desc}`;
-                    }
-                }
-            });
-
-            if ('password_confirmation' in formData && formData['password'] !== formData['password_confirmation']) {
-                push.data = 'Passwords don\'t match';
-            }
-
-            // Делаем сообщения об ошибках неповторяющимися.
-            const data = [...new Set(push.data)];
-            push.clear();
-
-            for (let i = 0; i < data.length; ++i) {
-                push.data = data[i];
-            }
-
-            if (push.data.length > 0) {
-                push.render('error');
-                return;
-            }
+            const result = this.validator.validateCredentials(form, push);
 
             const profileBuilder = window.application.profilePage.builder;
 
