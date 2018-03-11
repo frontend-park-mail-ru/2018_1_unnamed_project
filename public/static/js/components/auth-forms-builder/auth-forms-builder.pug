@@ -1,0 +1,19 @@
+input(required=true class="auth-form__input" type="email" name="email" placeholder="email")
+input(required=true class="auth-form__input" type="password" name="password" placeholder="password")
+
+if signup
+    input(required=true class="auth-form__input" type="password" name="password_confirmation" placeholder="password again")
+    input(required=true class="auth-form__input" type="text" name="username" placeholder="username")
+
+table(class="form-buttons")
+    tr
+        unless signup
+            td(class="su-td")
+                div(class="signup")
+                    a(href="#" data-section="signup" class="js-signup-form bordered") Register
+            td(class="space")
+            td(class="si-td")
+                button(required=true type="submit" class="bordered js-signin-form" value="Sign in")
+        else
+            td(class="si-td")
+                button(required=true type="submit" class="bordered js-signup-form" value="Register")

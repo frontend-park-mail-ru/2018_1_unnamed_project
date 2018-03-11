@@ -1,0 +1,26 @@
+div(class="img-with-text")
+    img(class="avatar" src=`${avatarLink}`)
+    form(action=`${uploadAvatarLink}` method="post" id="upload-avatar" enctype="multipart/form-data")
+        span(class="upload-btn-wrapper")
+            button(class="btn update" value="Update")
+            input(type="file" name="avatar")
+    a(class="btn delete" id="delete-avatar") Delete
+    a(href="#" id="logout" data-section="menu") LOG OUT
+
+if user
+    div(class="profile-info")
+        h4
+            |
+            i Username:
+            |
+            #{user.username}
+        h4
+            |
+            i Email:
+            |
+            #{user.email}
+        h4
+            |
+            i Game rank:
+            |
+            #{user.rank}

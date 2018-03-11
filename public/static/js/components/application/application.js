@@ -8,20 +8,10 @@
      * Установка разметки, необходимой для начала работы.
      */
 
-    let node = document.getElementById('application');
+    const node = document.getElementById('application');
     node.className += ' application';
-
-    node.innerHTML += `
-    <div class=msg></div>
-    
-    <div id="back" class="back" hidden>
-        <a href="#" class="back" data-section="menu">back t↺ menu</a>
-    </div>
-    `;
-
-    node.parentElement.innerHTML = `
-    <a href="#" id="bar" class="bar" data-section="profile"></a>
-    ` + node.parentElement.innerHTML;
+    node.insertAdjacentHTML('beforebegin', parentTemplate());
+    node.insertAdjacentHTML('beforeend', applicationTemplate());
 
     /**
      * Создание страниц.
@@ -36,6 +26,12 @@
     const signupPage = new window.SignUpPage();
     const singleplayerPage = new window.SingleplayerPage();
 
+    const backRef = document.getElementById('back');
+
+    let profileBar = document.getElementById('bar');
+
+    const push = new window.Push('.msg');
+
     /**
      * Внутренние переменные для роутера.
      */
@@ -43,12 +39,6 @@
     let currentPage = null;
 
     const routes = {};
-
-    const backRef = document.getElementById('back');
-
-    let profileBar = document.getElementById('bar');
-
-    const push = new window.Push('.msg');
 
     /**
      * Вспомогательная функция открытия страниц.

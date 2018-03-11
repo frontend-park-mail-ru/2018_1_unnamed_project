@@ -4,7 +4,8 @@
   "description": "Multi-player version of sea battle",
   "main": "index.js",
   "scripts": {
-    "start": "DEBUG=* node server/server.js",
+    "build": "pug -cD --name-after-file public/static/js -o public/static/precompiled",
+    "start": "npm run build && DEBUG=* node server/server.js",
     "start:raw": "node server.js"
   },
   "contributors": [

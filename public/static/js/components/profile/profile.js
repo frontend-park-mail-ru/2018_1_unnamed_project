@@ -29,26 +29,32 @@
             // noinspection JSUnresolvedVariable
             const avatarLink = (this._data.avatarLink ?
                 (backendURI + this._data.avatarLink) : 'https://www.shareicon.net/data/128x128/2016/08/05/806962_user_512x512.png');
+            const template = profileTemplate({
+                avatarLink,
+                uploadAvatarLink: backendURI + '/me/avatar',
+                user: this._data,
+            });
+            this.node.insertAdjacentHTML('afterbegin', template);
             // noinspection JSUnresolvedVariable
-            this.node.innerHTML = `
-            <div class="img-with-text">
-                <img class="avatar" src="${avatarLink}"/>
-                <form action="${backendURI + '/me/avatar/'}" method="post" id="upload-avatar" enctype="multipart/form-data">
-                    <span class="upload-btn-wrapper">
-                        <button class="btn update">Update</button>
-                        <input type="file" name="avatar"/>
-                    </span>
-                </form>
-                <a class="btn delete" id="delete-avatar">Delete</a>
-                <hr>
-                <a href="#" id="logout" data-section="menu">LOG OUT</a>
-            </div>
-            <div class="profile-info">
-                <h4><i>Username: </i>${this._data.username}</h4>
-                <h4><i>Email: </i>${this._data.email}</h4>
-                <h4><i>Game rank: </i>${this._data.rank}</h4>
-            </div>
-            `;
+            // this.node.innerHTML = `
+            // <div class="img-with-text">
+            //     <img class="avatar" src="${avatarLink}"/>
+            //     <form action="${backendURI + '/me/avatar/'}" method="post" id="upload-avatar" enctype="multipart/form-data">
+            //         <span class="upload-btn-wrapper">
+            //             <button class="btn update">Update</button>
+            //             <input type="file" name="avatar"/>
+            //         </span>
+            //     </form>
+            //     <a class="btn delete" id="delete-avatar">Delete</a>
+            //     <hr>
+            //     <a href="#" id="logout" data-section="menu">LOG OUT</a>
+            // </div>
+            // <div class="profile-info">
+            //     <h4><i>Username: </i>${this._data.username}</h4>
+            //     <h4><i>Email: </i>${this._data.email}</h4>
+            //     <h4><i>Game rank: </i>${this._data.rank}</h4>
+            // </div>
+            // `;
 
             const profileBuilder = window.application.profilePage.builder;
             const signinBuilder = window.application.signinPage.builder;
