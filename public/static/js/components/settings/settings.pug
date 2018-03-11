@@ -1,0 +1,16 @@
+div(class="img-with-text")
+    img(class="avatar" src=`${avatarLink}`)
+    form(action=`${uploadAvatarLink}` method="post" id="upload-avatar" enctype="multipart/form-data")
+        span(class="upload-btn-wrapper")
+            button(class="btn update") Update
+            input(type="file" name="avatar")
+    button(class="btn delete" id="delete-avatar") Delete
+
+form(action=`${meLink}` class="settings__form" method="patch" id="update-info")
+    input(type="text" class="settings__input" name="username" placeholder=`${username}`)
+    input(type="text" class="settings__input" name="email" placeholder=`${email}`)
+    input(type="password" class="settings__input" name="password" placeholder="new password")
+    input(type="password" class="settings__input" name="password_confirmation" placeholder="confirmation")
+    input(required=true class="settings__input" type="submit" value="Update")
+
+a(href="#" id="logout" data-section="menu") LOG OUT

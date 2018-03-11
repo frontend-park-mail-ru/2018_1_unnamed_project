@@ -11,11 +11,8 @@
          */
         constructor({parentId = 'application', pageId = 'settings'} = {}) {
             super({parentId, pageId});
-            this.parentNode.innerHTML += `
-            <section id="${pageId}" hidden>
-                <div class="settings"></div>
-            </section>
-            `;
+
+            this.parentNode.insertAdjacentHTML('beforeend', settingsPageTemplate({pageId}));
             this._builder = new window.SettingsBuilder('.settings');
         }
 
