@@ -25,8 +25,12 @@ router.addRoute(
     'profile',
     {page: application.profilePage}
 ).addRoute(
+    'settings',
+    {page: application.settingsPage}
+).addRoute(
     'rules',
     {page: application.rulesPage}
 );
+
 
 router.navigateTo('menu');

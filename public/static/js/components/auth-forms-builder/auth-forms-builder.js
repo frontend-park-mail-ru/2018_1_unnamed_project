@@ -1,7 +1,7 @@
 /* eslint-disable */
 'use strict';
 
-(function () {
+(function() {
     /**
      * Билдер форм регистрации и входа.
      */
@@ -89,9 +89,9 @@
         logoutMe() {
             const multiplayerBuilder = window.application.multiplayerPage.builder;
             const profileBuilder = window.application.profilePage.builder;
-
+   
             const router = window.router;
-
+    
             this.api.logout()
                 .then(() => {
                     router.navigateTo('menu');

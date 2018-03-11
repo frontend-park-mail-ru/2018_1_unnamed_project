@@ -30,6 +30,7 @@
     const menuPage = new window.MenuPage();
     const multiplayerPage = new window.MultiplayerPage();
     const profilePage = new window.ProfilePage();
+    const settingsPage = new window.SettingsPage();
     const rulesPage = new window.RulesPage();
     const scoreboardPage = new window.ScoreboardPage();
     const signinPage = new window.SignInPage();
@@ -156,6 +157,15 @@
          */
         get profilePage() {
             return profilePage;
+        }
+
+        // noinspection JSMethodCanBeStatic
+        /**
+         * Возвращает страницу с настройками профиля
+         * @return {SettingsPage|*}
+         */
+        get settingsPage() {
+            return settingsPage;
         }
 
         // noinspection JSMethodCanBeStatic
