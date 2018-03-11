@@ -1,4 +1,4 @@
-(function () {
+(function() {
     /**
      * Validate fields for signin/signup/setting
      */
