@@ -17,7 +17,7 @@
             this.routeMappings = {
                 'me': BACKEND_URI + '/me',
                 'signIn': BACKEND_URI + '/signin',
-                'signUp': BACKEND_URI + '/signup',
+                'signUp': BACKEND_URI + '/users',
                 'logout': BACKEND_URI + '/signout',
                 'scoreboard': BACKEND_URI + '/users/scoreboard',
                 'avatar': BACKEND_URI + '/me/avatar',
@@ -61,7 +61,7 @@
          * @return {*}
          */
         signUp(data) {
-            return self.httpModule.doPost({
+            return this.httpModule.doPost({
                 url: this.routeMappings.signUp,
                 data,
             });

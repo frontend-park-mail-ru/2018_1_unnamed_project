@@ -24,7 +24,10 @@
          *
          */
         render() {
+            super.render();
             const backendURI = this.api.backendURI;
+
+            console.log(this._data);
 
             // noinspection JSUnresolvedVariable
             const avatarLink = (this._data.avatarLink ?
@@ -32,7 +35,9 @@
             const template = profileTemplate({
                 avatarLink,
                 uploadAvatarLink: backendURI + '/me/avatar',
-                user: this._data,
+                username: this._data.username,
+                email: this._data.email,
+                rank: this._data.rank,
             });
             this.node.insertAdjacentHTML('afterbegin', template);
             // noinspection JSUnresolvedVariable
