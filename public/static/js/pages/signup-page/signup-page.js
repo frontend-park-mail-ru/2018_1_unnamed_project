@@ -15,6 +15,8 @@
             // noinspection JSUnresolvedFunction
             this.parentNode.insertAdjacentHTML('beforeend', signupPageTemplate({pageId}));
             this._builder = new window.AuthFormsBuilder('js-signup-form');
+            const self = this;
+            this.signupSubmut = () => self.builder.onSubmitAuthForm(event, self.api.signUp.bind(self.api));
         }
 
         /**
@@ -24,10 +26,13 @@
             super.show();
             this._builder.render();
 
-            const self = this;
+            this._builder.node.removeEventListener(
+                'submit',
+                this.signupSubmut
+            );
             this._builder.node.addEventListener(
                 'submit',
-                () => self.builder.onSubmitAuthForm(event, self.api.signUp.bind(self.api))
+                this.signupSubmut
             );
         }
     }

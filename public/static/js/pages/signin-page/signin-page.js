@@ -15,6 +15,8 @@
             // noinspection JSUnresolvedFunction
             this.parentNode.insertAdjacentHTML('beforeend', signinPageTemplate({pageId}));
             this._builder = new window.AuthFormsBuilder('js-signin-form');
+            const self = this;
+            this.signinSubmit = () => self.builder.onSubmitAuthForm(event, self.api.signIn.bind(self.api));
         }
 
         // noinspection JSUnusedGlobalSymbols
@@ -28,10 +30,17 @@
             const generatedSignUpHref = document.getElementsByClassName('signup')[0];
             generatedSignUpHref.addEventListener('click', window.anchorSubmitListener);
 
-            const self = this;
-            this._builder.node.addEventListener(
+            const node = this._builder.node;
+            debugger;
+
+            node.removeEventListener(
                 'submit',
-                () => self.builder.onSubmitAuthForm(event, self.api.signIn.bind(self.api))
+                this.signinSubmit
+            );
+            node.reset();
+            node.addEventListener(
+                'submit',
+                this.signinSubmit
             );
         }
     }
