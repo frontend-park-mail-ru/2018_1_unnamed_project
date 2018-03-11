@@ -61,11 +61,13 @@ a {
     font-size: 21px;
 }
 
+/*noinspection CssUnusedSymbol*/
 .or {
     font-size: 15pt;
     margin: 0 2px 0 0;
 }
 
+/*noinspection CssUnusedSymbol*/
 #rules {
     width: 60%;
     margin: 10px auto;

@@ -105,7 +105,7 @@
         }
 
         /**
-         * DELETE/me/avatar
+         * DELETE /me/avatar
          * @return {*}
          */
         deleteAvatar() {

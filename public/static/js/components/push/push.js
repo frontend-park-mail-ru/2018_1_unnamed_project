@@ -21,7 +21,7 @@
         // noinspection JSAnnotator
         /**
          * Добавляет сообщение в конец.
-         * @param {string} message
+         * @param {Object} message
          */
         set data(message) {
             this._data.push(message);

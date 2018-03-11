@@ -1,26 +1,31 @@
+/*noinspection CssUnusedSymbol,CssUnusedSymbol,CssUnusedSymbol,CssUnusedSymbol*/
 .msg_info,
 .msg_success,
 .msg_warning,
 .msg_error {
-    margin: 10px 0px;
+    margin: 10px 0;
     padding: 12px;
 }
 
+/*noinspection CssUnusedSymbol*/
 .msg_info {
     color: #00529B;
     background-color: #BDE5F8;
 }
 
+/*noinspection CssUnusedSymbol*/
 .msg_success {
     color: #4F8A10;
     background-color: #DFF2BF;
 }
 
+/*noinspection CssUnusedSymbol*/
 .msg_warning {
     color: #9F6000;
     background-color: #FEEFB3;
 }
 
+/*noinspection CssUnusedSymbol*/
 .msg_error {
     color: #D8000C;
     background-color: #FFD2D2;

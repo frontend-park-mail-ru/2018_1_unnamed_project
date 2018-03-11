@@ -4,6 +4,7 @@
     right: 1%;
 }
 
+/*noinspection CssUnusedSymbol*/
 .field_name {
     background-color: #2aabd2;
 }
@@ -63,6 +64,7 @@
     cursor: pointer;
 }
 
+/*noinspection CssUnusedSymbol*/
 .change-avatar {
     display: inline;
 }
