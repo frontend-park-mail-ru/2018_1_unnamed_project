@@ -15,12 +15,12 @@
             this.httpModule = window.HttpModule;
             // noinspection SpellCheckingInspection
             this.routeMappings = {
-                'me': BACKEND_URI + '/me',
-                'signIn': BACKEND_URI + '/signin',
-                'signUp': BACKEND_URI + '/users',
-                'logout': BACKEND_URI + '/signout',
-                'scoreboard': BACKEND_URI + '/users/scoreboard',
-                'avatar': BACKEND_URI + '/me/avatar',
+                'me': `${BACKEND_URI}/me`,
+                'signIn': `${BACKEND_URI}/signin`,
+                'signUp': `${BACKEND_URI}/users`,
+                'logout': `${BACKEND_URI}/signout`,
+                'scoreboard': `${BACKEND_URI}/users/scoreboard`,
+                'avatar': `${BACKEND_URI}/me/avatar`,
             };
         }
 
