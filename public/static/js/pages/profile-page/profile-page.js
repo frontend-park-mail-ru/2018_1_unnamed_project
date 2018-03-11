@@ -23,11 +23,10 @@
         show() {
             super.show();
 
-            const self = this;
             this.api.getMe()
                 .then((response) => {
-                    self._builder.data = response;
-                    self._builder.render();
+                    this._builder.data = response;
+                    this._builder.render();
                 });
         }
     }
