@@ -1,3 +1,4 @@
+/* eslint-disable */
 const path = require('path');
 const body = require('body-parser');
 const cookie = require('cookie-parser');
@@ -135,7 +136,7 @@ function validateSignUp(fields) {
         desc: 'User created',
         id: Object.keys(users).length,
     };
-}
+};
 
 function validateSignIn(fields) {
     for (const key of Object.keys(regexes).slice(0, 2)) {
@@ -175,7 +176,7 @@ function ssidResponseBuilder(data, result, res) {
     }
 }
 
-app.post('/signup', (req, res) => {
+app.post('/signUp', (req, res) => {
     data = req.body;
     ssidResponseBuilder(data, validateSignUp(data), res);
     if (res.statusCode === 201) {
@@ -184,16 +185,16 @@ app.post('/signup', (req, res) => {
     }
 });
 
-app.post('/signin', (req, res) => {
+app.post('/signIn', (req, res) => {
     data = req.body;
     ssidResponseBuilder(data, validateSignIn(data), res);
 });
 
-app.get('/me', (req, res) => {
+app.get('/getMe', (req, res) => {
     const ssidCookie = req.cookies['ssid'];
     const username = uuidUname[ssidCookie];
 
-    (ssidCookie && username) ? res.json(users[username]): res.status(401).end();
+    (ssidCookie && username) ? res.json(users[username]) : res.status(401).end();
 });
 
 
@@ -202,7 +203,7 @@ app.get('/profile', (req, res) => {
 });
 
 
-app.get('/me/games', (req, res) => {
+app.get('/getMe/games', (req, res) => {
     const ssidCookie = req.cookies['ssid'];
     const username = uuidUname[ssidCookie];
 

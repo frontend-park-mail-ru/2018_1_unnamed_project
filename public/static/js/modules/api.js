@@ -1,58 +1,116 @@
+'use strict';
+
 (function() {
+    // const BACKEND_URI = 'http://localhost:8080'; // debug
+    const BACKEND_URI = 'https://dev-api-shipcollision.herokuapp.com'; // production
+
+    /**
+     * Модуль для работы с API.
+     */
     class API {
-        constructor() {}
+        /**
+         *
+         */
+        constructor() {
+            this.httpModule = window.HttpModule;
+            // noinspection SpellCheckingInspection
+            this.routeMappings = {
+                'me': BACKEND_URI + '/me',
+                'signIn': BACKEND_URI + '/signin',
+                'signUp': BACKEND_URI + '/signup',
+                'logout': BACKEND_URI + '/signout',
+                'scoreboard': BACKEND_URI + '/users/scoreboard',
+                'avatar': BACKEND_URI + '/me/avatar',
+            };
+        }
 
-        me() {
-            return httpModule.request({
-                HTTPmethod: 'GET',
-                url: '/me',
+        // noinspection JSMethodCanBeStatic
+        /**
+         * Возвращает текущий базовый URI бекенда.
+         * @return {string}
+         */
+        get backendURI() {
+            return BACKEND_URI;
+        }
+
+        /**
+         * GET /me
+         * @return {*}
+         */
+        getMe() {
+            return this.httpModule.doGet({
+                url: this.routeMappings.me,
             });
         }
 
-        signin(userData) {
-            return httpModule.request({
-                HTTPmethod: 'POST',
-                url: '/signin',
-                contentType: 'application/json',
-                data: userData,
+        /**
+         * POST /signin
+         * @param {Object} data Данные пользователя.
+         * @return {*}
+         */
+        signIn(data) {
+            return this.httpModule.doPost({
+                url: this.routeMappings.signIn,
+                data,
             });
         }
 
-        signup(userData) {
-            return httpModule.request({
-                HTTPmethod: 'POST',
-                url: '/users',
-                contentType: 'application/json',
-                data: userData,
+        /**
+         * POST /users
+         * @param {Object} data Данные пользователя.
+         * @return {*}
+         */
+        signUp(data) {
+            return self.httpModule.doPost({
+                url: this.routeMappings.signUp,
+                data,
             });
         }
 
+        /**
+         * DELETE /signout
+         * @return {*}
+         */
         logout() {
-            return httpModule.request({
-                HTTPmethod: 'DELETE',
-                url: '/signout',
+            return this.httpModule.doDelete({
+                url: this.routeMappings.logout,
             });
         }
 
+        /**
+         * GET /users/scoreboard
+         * @return {*}
+         */
         scoreboard() {
-            return httpModule.request({
-                HTTPmethod: 'GET',
-                url: '/users/scoreboard',
+            return this.httpModule.doGet({
+                url: this.routeMappings.scoreboard,
             });
         }
 
-        uploadAvatar(form) {
-            return httpModule.request({
-                HTTPmethod: 'POST',
-                url: '/me/avatar',
-                data: form,
+        /**
+         * POST /me/avatar
+         * @param {Object} data Файл с картинкой.
+         * @return {*}
+         */
+        uploadAvatar(data) {
+            /**
+             * Content-Type выставляется в null для того, чтобы
+             * браузер сам коректно выставил boundaries для multipart/form-data.
+             */
+            return this.httpModule.doPost({
+                url: this.routeMappings.avatar,
+                contentType: null,
+                data,
             });
         }
 
+        /**
+         * DELETE/me/avatar
+         * @return {*}
+         */
         deleteAvatar() {
-            return httpModule.request({
-                HTTPmethod: 'DELETE',
-                url: '/me/avatar',
+            return this.httpModule.doDelete({
+                url: this.routeMappings.avatar,
             });
         }
     }
