@@ -19,6 +19,7 @@
             this._builder = new window.AuthFormsBuilder('js-signin-form');
         }
 
+        // noinspection JSUnusedGlobalSymbols
         /**
          * Отображает страницу.
          */

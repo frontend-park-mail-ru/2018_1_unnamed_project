@@ -7,9 +7,9 @@
     class HttpModule {
         /**
          * Базовый метод запроса.
-         * @param {string} method Метод запроса.
-         * @param {string} url URL запроса.
-         * @param {string} contentType MIME-Type.
+         * @param {string | *} method Метод запроса.
+         * @param {string | *} url URL запроса.
+         * @param {string | *} contentType MIME-Type.
          * @param {Object | HTMLFormElement} data Данные.
          * @return {Promise<Response>}
          */
@@ -65,7 +65,7 @@
 
         /**
          * Метод DELETE.
-         * @param {string} url
+         * @param {string | *} url
          * @return {Promise<Response>}
          */
         static doDelete({url = '/'} = {}) {
@@ -77,7 +77,7 @@
 
         /**
          * Метод GET.
-         * @param {string} url
+         * @param {string | *} url
          * @return {Promise<Response>}
          */
         static doGet({url = '/'} = {}) {
@@ -89,7 +89,7 @@
         // noinspection JSUnusedGlobalSymbols
         /**
          * Метод HEAD.
-         * @param {string}  url
+         * @param {string | *}  url
          * @return {Promise<Response>}
          */
         static doHead({url = '/'} = {}) {
@@ -102,8 +102,8 @@
         // noinspection JSUnusedGlobalSymbols
         /**
          * Метод PATCH.
-         * @param {string} url
-         * @param {string} contentType
+         * @param {string | *} url
+         * @param {string | *} contentType
          * @param {Object} data
          * @return {Promise<Response>}
          */
@@ -118,8 +118,8 @@
 
         /**
          * Метод POST.
-         * @param {string} url
-         * @param {string} contentType
+         * @param {string | *} url
+         * @param {string | *} contentType
          * @param {Object} data
          * @return {Promise<Response>}
          */
