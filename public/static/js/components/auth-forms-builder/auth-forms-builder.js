@@ -1,156 +1,170 @@
+/* eslint-disable */
 'use strict';
 
 (function () {
+    /**
+     * Билдер форм регистрации и входа.
+     */
+    class AuthFormsBuilder extends window.AbstractBuilder {
+        /**
+         * Имя класса узла, в котором необходимо строить форму.
+         * @param {string} nodeClassName
+         */
+        constructor(nodeClassName) {
+            super();
 
-	/**
-	 * Билдер форм регистрации и входа.
-	 */
-	class AuthFormsBuilder extends window.AbstractBuilder {
+            this._nodeClassName = nodeClassName;
+            this._upin = this.node.className.slice(7, 9);
+            this._signup = this._upin === 'up';
+            this.validators = {
+                username: {
+                    regex: /^([a-zA-Z0-9]{7,})+$/,
+                    desc: 'minimum length is 7, only digits and english symbols are allowed',
+                },
+                password: {
+                    regex: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+                    desc: 'minimum length is 6, only english symbols and at least one digit',
 
-		constructor(nodeName = null) {
-			super();
+                },
+                password_confirmation: {
+                    regex: /.*/,
+                    desc: 'meh',
+                },
+                email: {
+                    regex: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/,
+                    desc: 'должен быть email-ом, а ты пашол вон',
+                },
+            };
+        }
 
-			this._nodeName = nodeName;
-			this._upin = this.node.className.slice(7, 9);
-			this._signup = this._upin === 'up';
-			this.validators = {
-				username: {
-					regex: /^([a-zA-Z0-9]{7,})+$/,
-					desc: "minimum length is 7, only digits and english symbols are allowed"
-				},
-				password: {
-					regex: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
-					desc: "minimum length is 6, only english symbols and at least one digit"
+        /**
+         * Возвращает элемент для вставки разметки.
+         * @return {Element}
+         */
+        get node() {
+            return document.getElementsByClassName(this._nodeClassName)[0];
+        }
 
-				},
-				password_confirmation: {
-					regex: /.*/,
-					desc: "meh"
-				},
-				email: {
-					regex: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/,
-					desc: "должен быть email-ом, а ты пашол вон"
-				}
-			};
-		}
+        /**
+         * Проверяет, автризован ли пользователь,
+         * устанавливает значения жлементов интерфейса
+         * и осуществляет роутинг.
+         * @param {boolean} buildMultiplayer Показывать ли страницу мультиплеера.
+         */
+        checkAuth(buildMultiplayer = false) {
+            const profileBar = window.application.profileBar;
+            const push = window.application.push;
+            const router = window.router;
 
-		get node() {
-			return document.getElementsByClassName(this._nodeName)[0];
-		}
+            this.api.getMe()
+                .then((response) => {
+                    profileBar.innerText = response.username;
+                    profileBar.setAttribute('data-section', 'profile');
+                    if (buildMultiplayer) {
+                        push.data = `Welcome back, ${response.username}`;
+                        push.render('success');
+                        router.navigateTo('multiplayer');
+                    }
+                })
+                .catch((error) => {
+                    profileBar.innerText = 'Unauthorised';
+                    profileBar.setAttribute('data-section', 'signin');
+                    console.log(error);
+                });
+        }
 
-		/**
-		 * Проверяет, автризован ли пользователь,
-		 * устанавливает значения жлементов интерфейса
-		 * и осуществляет роутинг.
-		 * @param buildMultiplayer Показывать ли страницу мультиплеера.
-		 */
-		checkAuth(buildMultiplayer = false) {
-			const profileBar = window.Application.profileBar;
-			const push = window.Application.push;
-			const router = window.Application.router;
+        /**
+         * Отправка запроса API.
+         * @param {Object} event
+         * @param {function} callback
+         */
+        onSubmitAuthForm(event, callback) {
+            event.preventDefault();
 
-			this.api.getMe()
-				.then(response => {
-					profileBar.innerText = response.username;
-					profileBar.setAttribute('data-section', 'profile');
-					if (buildMultiplayer) {
-						push.data = `Welcome back, ${response.username}`;
-						push.render('success');
-						router.navigateTo('multiplayer');
-					}
-				})
-				.catch(error => {
-					profileBar.innerText = 'Unauthorised';
-					profileBar.setAttribute('data-section', 'signin');
-					console.log(error);
-				});
-		}
+            const push = window.application.push;
 
-		/**
-		 * Отправка запроса API.
-		 * @param event
-		 * @param callback
-		 */
-		onSubmitAuthForm(event, callback) {
-			event.preventDefault();
+            const form = event.currentTarget;
+            const formData = {};
 
-			const push = window.Application.push;
+            Object.values(form.elements).forEach((field) => {
+                if (field.type !== 'submit') {
+                    formData[field.name] = field.value;
 
-			const form = event.currentTarget;
-			const formData = {};
+                    let validator = this.validators[field.name];
 
-			Object.values(form.elements).forEach((field) => {
-				if (field.type !== 'submit') {
-					formData[field.name] = field.value;
+                    if (validator && !field.value.match(validator.regex)) {
+                        push.data = `${field.name} ${validator.desc}`;
+                    }
+                }
+            });
 
-					let validator = this.validators[field.name];
+            if ('password_confirmation' in formData && formData['password'] !== formData['password_confirmation']) {
+                push.data = 'Passwords don\'t match';
+            }
 
-					if (validator && !field.value.match(validator.regex)) {
-						push.data = `${field.name} ${validator.desc}`;
-					}
-				}
-			});
+            // Делаем сообщения об ошибках неповторяющимися.
+            const data = [...new Set(push.data)];
+            push.clear();
 
-			if ('password_confirmation' in formData && formData['password'] !== formData['password_confirmation'])
-				push.data = 'Passwords don\'t match';
+            for (let i = 0; i < data.length; ++i) {
+                push.data = data[i];
+            }
 
-			// Делаем сообщения об ошибках неповторяющимися.
-			const data = [... new Set(push.data)];
-			push.clear();
+            if (push.data.length > 0) {
+                push.render('error');
+                return;
+            }
 
-			for (let i = 0; i < data.length; ++i) {
-				push.data = data[i];
-			}
+            const profileBuilder = window.application.profilePage.builder;
 
-			if (push.data.length > 0) {
-				push.render('error');
-				return;
-			}
+            const router = window.router;
 
-			const profileBuilder = window.Application.profilePage.builder;
+            callback(formData)
+                .then(() => {
+                    this.checkAuth(true);
+                    router.navigateTo('profile');
+                    profileBuilder.updateBar();
+                })
+                .catch((errors) => {
+                    errors.forEach((error) => push.data = error);
+                    push.render('error');
+                });
+        }
 
-			const router = window.Router;
+        /**
+         * Выход из приложения.
+         */
+        logoutMe() {
+            const multiplayerBuilder = window.application.multiplayerPage.builder;
+            const profileBuilder = window.application.profilePage.builder;
 
-			callback(formData)
-				.then(() => {
-					this.checkAuth(true);
-					router.navigateTo('profile');
-					profileBuilder.updateBar();
-				})
-				.catch(errors => {
-					errors.forEach(error => push.data = error);
-					push.render('error');
-				})
-		}
+            const router = window.router;
 
-		logoutMe() {
-			const multiplayerBuilder = window.Application.multiplayerPage.builder;
-			const profileBuilder = window.Application.profilePage.builder;
+            this.api.logout()
+                .then(() => {
+                    router.navigateTo('menu');
+                    profileBuilder.updateBar();
+                    multiplayerBuilder.clear();
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
 
-			const router = window.Router;
-
-			this.api.logout()
-				.then(() => {
-					router.navigateTo('menu');
-					profileBuilder.updateBar();
-					multiplayerBuilder.clear();
-				})
-				.catch(error => {
-					console.log(error);
-				});
-		}
-
-		render() {
-			if (!this.node) return;
-			this.node.innerHTML = `
+        /**
+         * Отрисовывает форму.
+         */
+        render() {
+            if (!this.node) return;
+            this.node.innerHTML = `
                 <input required class="auth-form__input" type="email" name="email" placeholder="email">
                 <input required class="auth-form__input" type="password" name="password" placeholder="password">
                 ${
-				(this._signup ? `
+                (this._signup ? `
                     <input required class="auth-form__input" type="password" name="password_confirmation\" placeholder="password again">
                     <input required class="auth-form__input" type="text" name="username" placeholder="username">
                     ` : '')
-				}
+                }
                 <table class="form-buttons">
                     <tr>
                         ${ (!this._signup ? `
@@ -161,7 +175,7 @@
                         </td>
                         <td class="space"></td>
                         ` : '')
-						}
+                }
                         
                         <td class="si-td">
                             <input required type="submit" class="bordered js-sign${this._upin}-form" 
@@ -170,8 +184,8 @@
                     </tr>
                 </table>
             `;
-		}
-	}
+        }
+    }
 
-	window.AuthFormsBuilder = AuthFormsBuilder;
+    window.AuthFormsBuilder = AuthFormsBuilder;
 })();

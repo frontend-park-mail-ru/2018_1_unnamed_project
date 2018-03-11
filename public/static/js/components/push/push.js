@@ -1,39 +1,56 @@
-(function () {
+(function() {
+    /**
+     * Компонент для рендеринга уведомлений.
+     */
+    class Push extends window.AbstractBuilder {
+        /**
+         * @param {string} selector CSS-селектор для выбора элемента.
+         */
+        constructor(selector) {
+            super(selector);
+            this._data = [];
+        }
 
-	/**
-	 * Компонент для рендеринга уведомлений.
-	 */
-	class Push extends window.AbstractBuilder {
+        /**
+         * @return {Array}
+         */
+        get data() {
+            return this._data;
+        }
 
-		constructor(selector) {
-			super(selector);
-			this._data = [];
-		}
+        // noinspection JSAnnotator
+        /**
+         * Добавляет сообщение в конец.
+         * @param {string} message
+         */
+        set data(message) {
+            this._data.push(message);
+        }
 
-		get data() {
-			return this._data;
-		}
+        /**
+         * Очищает список сообщений.
+         */
+        clear() {
+            super.clear();
+            this._data = [];
+        }
 
-		set data(message) {
-			this._data.push(message);
-		}
-
-		clear() {
-			super.clear();
-			this._data = [];
-		}
-
-		render(level = 'info') {
-			if (!(this._data && this.node)) return;
-			this.node.innerHTML = '';
-			this._data.forEach(message => {
-				this.node.innerHTML += `
+        /**
+         * Отрисовывает список сообщений соответствующим цветом
+         * в зависимости от уровня.
+         * @param {string} level Уровень сообщений.
+         */
+        render(level = 'info') {
+            if (!(this._data && this.node)) return;
+            this.node.innerHTML = '';
+            this._data.forEach((message) => {
+                this.node.innerHTML += `
                     <div class="msg_${level}">${message}</span>
                 `;
-			});
-			this._data = [];
-		}
-	}
+            });
+            this._data = [];
+        }
+    }
 
-	window.Push = Push;
+    window.Push = Push;
 })();

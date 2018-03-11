@@ -1,29 +1,36 @@
 'use strict';
 
-(function () {
+(function() {
+    /**
+     * Компонент для орисовки профиля пользователя.
+     */
+    class ProfileBuilder extends window.AbstractBuilder {
+        /**
+         * @param {string} selector
+         */
+        constructor(selector) {
+            super(selector);
+        }
 
-	/**
-	 * Компонент для орисовки профиля пользователя.
-	 */
-	class ProfileBuilder extends window.AbstractBuilder {
+        // noinspection JSMethodCanBeStatic
+        /**
+         * Метод для обновления строки с аватаром пользователя.
+         */
+        updateBar() {
+            window.signinPage.builder.checkAuth();
+        }
 
-		constructor(selector) {
-			super(selector);
-		}
+        /**
+         *
+         */
+        render() {
+            const backendURI = this.api.backendURI;
 
-		// noinspection JSMethodCanBeStatic
-		updateBar() {
-			window.signinPage.builder.checkAuth();
-		}
-
-		render() {
-			const backendURI = this.api.backendURI;
-
-			// noinspection JSUnresolvedVariable
-			const avatarLink = (this._data.avatarLink ?
-				(backendURI + this._data.avatarLink) : 'https://www.shareicon.net/data/128x128/2016/08/05/806962_user_512x512.png');
-			// noinspection JSUnresolvedVariable
-			this.node.innerHTML = `
+            // noinspection JSUnresolvedVariable
+            const avatarLink = (this._data.avatarLink ?
+                (backendURI + this._data.avatarLink) : 'https://www.shareicon.net/data/128x128/2016/08/05/806962_user_512x512.png');
+            // noinspection JSUnresolvedVariable
+            this.node.innerHTML = `
             <div class="img-with-text">
                 <img class="avatar" src="${avatarLink}"/>
                 <form action="${backendURI + '/me/avatar/'}" method="post" id="upload-avatar" enctype="multipart/form-data">
@@ -43,48 +50,54 @@
             </div>
             `;
 
-			const profileBuilder = window.Application.profilePage.builder;
-			const signinBuilder = window.Application.signinPage.builder;
+            const profileBuilder = window.application.profilePage.builder;
+            const signinBuilder = window.application.signinPage.builder;
 
-			document.getElementById("logout").addEventListener('click', signinBuilder.logoutMe.bind(signinBuilder));
-			const form = document.getElementById("upload-avatar");
-			form.addEventListener('change', () => profileBuilder.setAvatar(form));
-			document.getElementById("delete-avatar").addEventListener('click', this.removeAvatar.bind(this));
-		}
+            document.getElementById('logout').addEventListener('click', signinBuilder.logoutMe.bind(signinBuilder));
+            const form = document.getElementById('upload-avatar');
+            form.addEventListener('change', () => profileBuilder.setAvatar(form));
+            document.getElementById('delete-avatar').addEventListener('click', this.removeAvatar.bind(this));
+        }
 
-		removeAvatar() {
-			const profileBuilder = window.Application.profilePage.builder;
-			const push = window.Application.push;
+        /**
+         * Удаляет аватар пользователя.
+         */
+        removeAvatar() {
+            const profileBuilder = window.application.profilePage.builder;
+            const push = window.application.push;
 
-			this.api.deleteAvatar()
-				.then(response => {
-					profileBuilder.data = response;
-					profileBuilder.render();
-					push.data = 'Avatar deleted';
-					push.render('info');
-				})
-				.catch(error => {
-					console.error(error);
-				})
-		}
+            this.api.deleteAvatar()
+                .then((response) => {
+                    profileBuilder.data = response;
+                    profileBuilder.render();
+                    push.data = 'Avatar deleted';
+                    push.render('info');
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
 
-		setAvatar(form) {
-			const profileBuilder = window.Application.profilePage.builder;
-			const push = window.Application.push;
+        /**
+         * Устанавливает аватар пользователя.
+         * @param {Object} form
+         */
+        setAvatar(form) {
+            const profileBuilder = window.application.profilePage.builder;
+            const push = window.application.push;
 
-			this.api.uploadAvatar(form)
-				.then(response => {
-					profileBuilder.data = response;
-					profileBuilder.render();
-					push.data = 'Avatar updated';
-					push.render('success');
-				})
-				.catch(error => {
-					console.error(error);
-				})
-		};
+            this.api.uploadAvatar(form)
+                .then((response) => {
+                    profileBuilder.data = response;
+                    profileBuilder.render();
+                    push.data = 'Avatar updated';
+                    push.render('success');
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        };
+    }
 
-	}
-
-	window.ProfileBuilder = ProfileBuilder;
+    window.ProfileBuilder = ProfileBuilder;
 })();

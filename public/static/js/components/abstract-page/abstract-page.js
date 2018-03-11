@@ -1,51 +1,72 @@
 'use strict';
 
-(function () {
+(function() {
+    /**
+     * Абстрактный компонент для представления страниц.
+     */
+    class AbstractPage {
+        /**
+         * @param {string} parentId Идентификатор родительского узла.
+         * @param {string} pageId Желаемый идентификатор страницы.
+         */
+        constructor({parentId = '', pageId = ''} = {}) {
+            this._pageId = pageId;
+            this._parentId = parentId;
+            this._builder = null;
+            this._api = new window.API();
+        }
 
-	/**
-	 * Абстрактный компонент для представления страниц.
-	 */
-	class AbstractPage {
+        /**
+         * Геттер инстанса для доступа к API.
+         * @return {API|*}
+         */
+        get api() {
+            return this._api;
+        }
 
-		/**
-		 * @param parentId id родительского элемента.
-		 * @param pageId   id, который будет присвоен странице.
-		 */
-		constructor({parentId = '', pageId = ''} = {}) {
-			this._pageId = pageId;
-			this._parentId = parentId;
-			this._builder = null;
-			this._api = new window.API();
-		}
+        /**
+         * Возвращает связанный со страницей наследник window.AbstractBuilder.
+         * @see AbstractBuilder
+         * @return {AbstractBuilder | null}
+         */
+        get builder() {
+            return this._builder;
+        }
 
-		get api() {
-			return this._api;
-		}
+        /**
+         * Возвращает элемент страницы.
+         * @return {HTMLElement | null}
+         */
+        get pageNode() {
+            return document.getElementById(this._pageId);
+        }
 
-		get builder() {
-			return this._builder;
-		}
+        /**
+         * Возвращает родительский элемент страницы.
+         * @return {HTMLElement | null}
+         */
+        get parentNode() {
+            return document.getElementById(this._parentId);
+        }
 
-		get pageNode() {
-			return document.getElementById(this._pageId);
-		}
+        /**
+         * Скрывает страницу.
+         */
+        hide() {
+            if (this.builder) {
+                this._builder.clear();
+            }
 
-		get parentNode() {
-			return document.getElementById(this._parentId);
-		}
+            this.pageNode.hidden = true;
+        }
 
-		hide() {
-			if (this.builder) {
-				this._builder.clear();
-			}
+        /**
+         * Показывает страницу.
+         */
+        show() {
+            this.pageNode.hidden = false;
+        }
+    }
 
-			this.pageNode.hidden = true;
-		}
-
-		show() {
-			this.pageNode.hidden = false;
-		}
-	}
-
-	window.AbstractPage = AbstractPage;
+    window.AbstractPage = AbstractPage;
 })();
