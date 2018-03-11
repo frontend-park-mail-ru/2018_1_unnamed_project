@@ -43,7 +43,6 @@
         render(level = 'info') {
             if (!(this._data && this.node)) return;
 
-            super.render();
             // noinspection JSUnresolvedFunction
             const template = pushTemplate({
                 level,
