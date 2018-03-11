@@ -22,6 +22,7 @@
 
 .form-buttons td:hover {
     border-color: #EF476F;
+    cursor: pointer;
 }
 
 td.space {

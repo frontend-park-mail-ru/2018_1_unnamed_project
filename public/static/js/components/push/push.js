@@ -48,6 +48,7 @@
                 level,
                 messages: this._data,
             });
+            this.clear();
             this.node.insertAdjacentHTML('afterbegin', template);
             this._data = [];
         }
