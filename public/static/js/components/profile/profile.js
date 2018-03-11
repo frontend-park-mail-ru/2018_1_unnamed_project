@@ -35,11 +35,13 @@
 
             // noinspection JSUnresolvedVariable
             const avatarLink = (this._data.avatarLink ?
-                (backendURI + this._data.avatarLink) : 'https://www.shareicon.net/data/128x128/2016/08/05/806962_user_512x512.png');
+                (backendURI + this._data.avatarLink)
+                :
+                'https://www.shareicon.net/data/128x128/2016/08/05/806962_user_512x512.png');
             // noinspection JSUnresolvedFunction
             const template = profileTemplate({
                 avatarLink,
-                uploadAvatarLink: backendURI + '/me/avatar',
+                uploadAvatarLink: `${backendURI}/me/avatar`,
                 username: this._data.username,
                 email: this._data.email,
                 rank: this._data.rank,
