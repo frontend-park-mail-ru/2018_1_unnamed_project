@@ -113,6 +113,18 @@
                 url: this.routeMappings.avatar,
             });
         }
+
+        /**
+         * PATCH /me
+         * @param {Object} data Изменённые поля
+         * @return {*}
+         */
+        updateProfile(data) {
+            return this.httpModule.doPatch({
+                url: this.routeMappings.me,
+                data,
+            });
+        }
     }
 
     window.API = API;

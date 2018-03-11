@@ -11,6 +11,19 @@
         constructor(selector) {
             super(selector);
         }
+        
+        // noinspection JSMethodCanBeStatic
+        /**
+         * Метод для обновления строки с аватаром пользователя.
+         * @param {string} username
+         */
+        updateBar(username = '') {
+            if (username === '') {
+                window.application.signinPage.builder.checkAuth();
+            } else {
+                window.application.profileBar.innerText = username;
+            }
+        }
 
         /**
          *

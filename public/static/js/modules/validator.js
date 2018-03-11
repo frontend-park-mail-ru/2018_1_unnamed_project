@@ -1,4 +1,4 @@
-(function() {
+(function () {
     /**
      * Validate fields for signin/signup/setting
      */
@@ -17,8 +17,8 @@
                     desc: 'minimum lenght is 6, only english symbols and at least one digit',
                 },
                 password_confirmation: {
-                    regex: /.*/,
-                    desc: 'meh',
+                    regex: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+                    desc: 'minimum lenght is 6, only english symbols and at least one digit',
                 },
                 email: {
                     regex: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/,
@@ -30,28 +30,37 @@
         /**
          * @param {*} form
          * @param {*} push
+         * @param {bool} fromSettings (default: false)
          * @return {Object}
          */
-        validateCredentials(form, push) {
-            debugger;
+        validateCredentials(form, push, fromSettings = false) {
             const errors = [];
             const formData = {};
             Object.values(form.elements).forEach((field) => {
                 let validator = this.validators[field.name];
                 if (validator) {
-                    if (!field.value.match(validator.regex)) {
-                        errors.push(`${field.name} ${validator.desc}`);
-                    } else {
+                    if (field.value.match(validator.regex)) {
                         formData[field.name] = field.value;
+                    } else if (!((field.value === '') && fromSettings)) {
+                        errors.push(`${field.name} ${validator.desc}`);
                     }
                 }
             });
 
-            if ('password_confirmation' in formData && formData['password'] !== formData['password_confirmation']) {
+            if (fromSettings) {
+                if (('password' in formData && !('password_confirmation' in formData)) ||
+                    ('password_confirmation' in formData && !('password' in formData))) {
+                    errors.push('Passwords don\'t match');
+                }
+            };
+
+            if ('password_confirmation' in formData &&
+                        formData['password'] !== formData['password_confirmation']) {
                 errors.push('Passwords don\'t match');
             };
 
-            if (errors.length > 0) {
+            push.clear();
+            if (errors.length) {
                 const data = [...new Set(errors)];
                 data.forEach((errorMessage) => push.data = errorMessage);
                 push.render('error');
@@ -59,12 +68,19 @@
                     err: true,
                     formData: null,
                 };
-            } else {
+            } else if (Object.keys(formData).length) {
                 return {
                     err: false,
                     formData,
                 };
-            };
+            } else {
+                push.data = 'Fields are empty';
+                push.render('warning');
+                return {
+                    err: true,
+                    formData: null,
+                };
+            }
         }
     }
 
