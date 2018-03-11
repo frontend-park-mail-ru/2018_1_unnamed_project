@@ -1,0 +1,7 @@
+table(class="scoreboard__table")
+    tbody
+        each user in users
+            tr(class="scoreboard__row")
+                td= user.email
+                td= user.username
+                td= user.rank
