@@ -49,25 +49,22 @@
 
             if ('password_confirmation' in formData && formData['password'] !== formData['password_confirmation']) {
                 errors.push('Passwords don\'t match');
-            }
+            };
 
-            // Делаем сообщения об ошибках неповторяющимися.
-            const data = [...new Set(errors)];
-
-            data.forEach((errorMessage) => push.data = errorMessage);
-
-            if (push.data.length > 0) {
+            if (errors.length > 0) {
+                const data = [...new Set(errors)];
+                data.forEach((errorMessage) => push.data = errorMessage);
                 push.render('error');
                 return {
                     err: true,
-                    data: null,
+                    formData: null,
                 };
             } else {
                 return {
                     err: false,
-                    data: formData,
+                    formData,
                 };
-            }
+            };
         }
     }
 
