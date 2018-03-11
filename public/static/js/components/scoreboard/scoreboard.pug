@@ -1,11 +1,11 @@
-table(class="scoreboard__table")
+table.scoreboard__table
     tbody
         each user in users
-            tr(class="scoreboard__row")
+            tr.scoreboard__row
                 td= user.email
                 td= user.username
                 td= user.rank
 
-div(class="pagination")
-    a(href="#" id="prev") <
-    a(href="#" id="next") >
+div.pagination
+    a#prev(href="#") <
+    a#next(href="#") >
