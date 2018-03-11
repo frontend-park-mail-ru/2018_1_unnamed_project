@@ -17,6 +17,8 @@
          */
         render() {
             if (!this.node) return;
+            super.render();
+            // noinspection JSUnresolvedFunction
             this.node.insertAdjacentHTML('afterbegin', multiplayerTemplate());
         }
     }

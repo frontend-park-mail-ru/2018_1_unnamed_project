@@ -11,12 +11,9 @@
          */
         constructor({parentId = 'application', pageId = 'singleplayer'} = {}) {
             super({parentId, pageId});
+
+            // noinspection JSUnresolvedFunction
             this.parentNode.insertAdjacentHTML('beforeend', singleplayerPageTemplate({pageId}));
-            // this.parentNode.innerHTML += `
-            // <section id="${pageId}" hidden>
-            //     <img src="static/media/singleplayer.jpg" style="width: 800px">
-            // </section>
-            // `;
         }
     }
 
