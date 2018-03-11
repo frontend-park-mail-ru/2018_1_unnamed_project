@@ -30,7 +30,7 @@
         /**
          * @param {*} form
          * @param {*} push
-         * @param {bool} fromSettings (default: false)
+         * @param {boolean} fromSettings (default: false)
          * @return {Object}
          */
         validateCredentials(form, push, fromSettings = false) {
@@ -52,12 +52,12 @@
                     ('password_confirmation' in formData && !('password' in formData))) {
                     errors.push('Passwords don\'t match');
                 }
-            };
+            }
 
             if ('password_confirmation' in formData &&
                         formData['password'] !== formData['password_confirmation']) {
                 errors.push('Passwords don\'t match');
-            };
+            }
 
             push.clear();
             if (errors.length) {
