@@ -78,8 +78,12 @@
                     profileBuilder.updateBar();
                 })
                 .catch((errors) => {
-                    errors.forEach((error) => push.data = error);
-                    push.render('error');
+                    try {
+                        errors.forEach((error) => push.data = error);
+                        push.render('error');                        
+                    } catch (error) {
+                        console.error(errors);
+                    }
                 });
         }
 
