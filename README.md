@@ -2,7 +2,7 @@
 
 ![](https://travis-ci.org/frontend-park-mail-ru/2018_1_unnamed_project.svg?branch=dev)
 
-Реализация бекенда игры "SHIP COLLISION" - морского боя с кастомными правилами.
+Реализация фронтенда игры "SHIP COLLISION" - морского боя с кастомными правилами.
 
 Собственно приложение [тут](https://dev-shipcollision.herokuapp.com).
 
