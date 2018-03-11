@@ -179,7 +179,7 @@
                         
                         <td class="si-td">
                             <input required type="submit" class="bordered js-sign${this._upin}-form" 
-                            value="${this._upin === 'up' ? 'Register' : 'Signin'}">
+                            value="${this._upin === 'up' ? 'Register' : 'Sign in'}">
                         </td>
                     </tr>
                 </table>
