@@ -45,7 +45,7 @@
                     return response.json();
                 })
                 .then((response) => {
-                    if ((response.status >= 200 && response.status < 300) || !(response.status)) {
+                    if ((response.status >= 200 && response.status <= 304) || !(response.status)) {
                         return response;
                     } else {
                         // noinspection JSUnresolvedVariable
