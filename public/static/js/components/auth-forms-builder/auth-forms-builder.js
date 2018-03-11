@@ -156,34 +156,7 @@
          */
         render() {
             if (!this.node) return;
-            this.node.innerHTML = `
-                <input required class="auth-form__input" type="email" name="email" placeholder="email">
-                <input required class="auth-form__input" type="password" name="password" placeholder="password">
-                ${
-                (this._signup ? `
-                    <input required class="auth-form__input" type="password" name="password_confirmation\" placeholder="password again">
-                    <input required class="auth-form__input" type="text" name="username" placeholder="username">
-                    ` : '')
-                }
-                <table class="form-buttons">
-                    <tr>
-                        ${ (!this._signup ? `
-                        <td class="su-td">
-                            <div class="signup">
-                                <a href="#" data-section="signup" class="js-signup-form bordered">Register</a>
-                            </div>
-                        </td>
-                        <td class="space"></td>
-                        ` : '')
-                }
-                        
-                        <td class="si-td">
-                            <input required type="submit" class="bordered js-sign${this._upin}-form" 
-                            value="${this._upin === 'up' ? 'Register' : 'Sign in'}">
-                        </td>
-                    </tr>
-                </table>
-            `;
+            this.node.insertAdjacentHTML('afterbegin', authFormsBuilderTemplate({signup: this._signup}));
         }
     }
 

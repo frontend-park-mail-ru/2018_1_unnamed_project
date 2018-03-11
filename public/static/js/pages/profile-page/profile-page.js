@@ -11,12 +11,13 @@
          */
         constructor({parentId = 'application', pageId = 'profile'} = {}) {
             super({parentId, pageId});
-            this.parentNode.innerHTML += `
-            <section id="${pageId}" hidden>
-                <div class="profile"></div>
-            </section>
-            `;
-            this._builder = new window.ProfileBuilder('.profile');
+            this.parentNode.insertAdjacentHTML('beforeend', profilePageTemplate({pageId}));
+            // this.parentNode.innerHTML += `
+            // <section id="${pageId}" hidden>
+            //     <div class="profile"></div>
+            // </section>
+            // `;
+            // this._builder = new window.ProfileBuilder('.profile');
         }
 
         /**

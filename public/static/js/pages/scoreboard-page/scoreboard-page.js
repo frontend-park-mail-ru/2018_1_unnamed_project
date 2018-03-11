@@ -12,11 +12,12 @@
         constructor({parentId = 'application', pageId = 'scoreboard'} = {}) {
             super({parentId, pageId});
 
-            this.parentNode.innerHTML += `
-            <section id="${pageId}" hidden>
-                <div class="js-scoreboard-table"></div>
-            </section>
-            `;
+            this.parentNode.insertAdjacentHTML('beforeend', scoreboardPageTemplate({pageId}));
+            // this.parentNode.innerHTML += `
+            // <section id="${pageId}" hidden>
+            //     <div class="js-scoreboard-table"></div>
+            // </section>
+            // `;
             this._builder = new window.ScoreboardBuilder('.js-scoreboard-table');
         }
 

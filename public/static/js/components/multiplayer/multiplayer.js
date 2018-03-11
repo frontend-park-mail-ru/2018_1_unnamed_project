@@ -17,10 +17,7 @@
          */
         render() {
             if (!this.node) return;
-            // noinspection HtmlUnknownTarget
-            this.node.innerHTML = `
-                <img src="static/media/shingis.jpg">
-            `;
+            this.node.insertAdjacentHTML('afterbegin', multiplayerTemplate());
         }
     }
 

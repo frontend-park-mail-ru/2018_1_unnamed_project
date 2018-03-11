@@ -11,11 +11,13 @@
          */
         constructor({parentId = 'application', pageId = 'signin'} = {}) {
             super({parentId, pageId});
-            this.parentNode.innerHTML += `
-            <section id="${pageId}" hidden>
-                <form class="js-signin-form" novalidate></form>
-            </section>
-            `;
+
+            this.parentNode.insertAdjacentHTML('beforeend', signinPageTemplate({pageId}));
+            // this.parentNode.innerHTML += `
+            // <section id="${pageId}" hidden>
+            //     <form class="js-signin-form" novalidate></form>
+            // </section>
+            // `;
             this._builder = new window.AuthFormsBuilder('js-signin-form');
         }
 

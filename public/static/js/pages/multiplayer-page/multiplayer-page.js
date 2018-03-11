@@ -11,11 +11,12 @@
          */
         constructor({parentId = 'application', pageId = 'multiplayer'} = {}) {
             super({parentId, pageId});
-            this.parentNode.innerHTML += `
-            <section id="${pageId}" hidden>
-                <div class="multiplayer"></div>
-            </section>
-            `;
+            this.parentNode.insertAdjacentHTML('beforeend', multiplayerTemplate({pageId}));
+            // this.parentNode.innerHTML += `
+            // <section id="${pageId}" hidden>
+            //     <div class="multiplayer"></div>
+            // </section>
+            // `;
             this._builder = new window.Multiplayer('.multiplayer');
         }
 

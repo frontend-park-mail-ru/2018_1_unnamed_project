@@ -42,12 +42,18 @@
          */
         render(level = 'info') {
             if (!(this._data && this.node)) return;
-            this.node.innerHTML = '';
-            this._data.forEach((message) => {
-                this.node.innerHTML += `
-                    <div class="msg_${level}">${message}</span>
-                `;
+
+            const template = pushTemplate({
+                level,
+                messages: this._data,
             });
+            this.node.insertAdjacentHTML('afterbegin', template);
+            // this.node.innerHTML = '';
+            // this._data.forEach((message) => {
+            //     this.node.innerHTML += `
+            //         <div class="msg_${level}">${message}</span>
+            //     `;
+            // });
             this._data = [];
         }
     }
