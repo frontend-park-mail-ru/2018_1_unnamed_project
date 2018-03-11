@@ -45,9 +45,7 @@
                 rank: this._data.rank,
             });
             this.node.insertAdjacentHTML('afterbegin', template);
-
-            const settingsHref = document.getElementById('settings');
-            settingsHref.addEventListener('click', window.anchorSubmitListener);
+            document.getElementById('settings').addEventListener('click', window.anchorSubmitListener);
         }
     }
 
