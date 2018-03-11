@@ -10,7 +10,9 @@
 
     const node = document.getElementById('application');
     node.className += ' application';
+    // noinspection JSUnresolvedFunction
     node.insertAdjacentHTML('beforebegin', parentTemplate());
+    // noinspection JSUnresolvedFunction
     node.insertAdjacentHTML('beforeend', applicationTemplate());
 
     /**
