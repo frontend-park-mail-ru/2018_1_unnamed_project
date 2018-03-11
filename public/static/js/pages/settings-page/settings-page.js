@@ -12,6 +12,7 @@
         constructor({parentId = 'application', pageId = 'settings'} = {}) {
             super({parentId, pageId});
 
+            // noinspection JSUnresolvedFunction
             this.parentNode.insertAdjacentHTML('beforeend', settingsPageTemplate({pageId}));
             this._builder = new window.SettingsBuilder('.settings');
         }
