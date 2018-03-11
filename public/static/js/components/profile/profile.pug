@@ -1,11 +1,11 @@
-div(class="img-with-text")
-    img(class="avatar" src=`${avatarLink}`)
-    form(action=`${uploadAvatarLink}` method="post" id="upload-avatar" enctype="multipart/form-data")
-        span(class="upload-btn-wrapper")
+div.img-with-text
+    img.avatar(src=`${avatarLink}`)
+    form#upload-avatar(action=`${uploadAvatarLink}` method="post" enctype="multipart/form-data")
+        span.upload-btn-wrapper
             input(type="file" name="avatar")
-    a(href="#" id="settings" data-section="settings") Settings
+    a#settings(href="#" data-section="settings") Settings
 
-div(class="profile-info")
+div.profile-info
     h4
         i= `Username: ${username}`
     h4

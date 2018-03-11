@@ -1,20 +1,20 @@
 <!--suppress HtmlUnknownAttribute -->
-input(required=true class="auth-form__input" type="email" name="email" placeholder="email")
-input(required=true class="auth-form__input" type="password" name="password" placeholder="password")
+input.auth-form__input(required=true type="email" name="email" placeholder="email")
+input.auth-form__input(required=true type="password" name="password" placeholder="password")
 
 if signup
-    input(required=true class="auth-form__input" type="password" name="password_confirmation" placeholder="password again")
-    input(required=true class="auth-form__input" type="text" name="username" placeholder="username")
+    input.auth-form__input(required=true type="password" name="password_confirmation" placeholder="password again")
+    input.auth-form__input(required=true type="text" name="username" placeholder="username")
 
 table(class="form-buttons")
     tr
         unless signup
-            td(class="su-td")
-                div(class="signup")
+            td.su-td
+                div.signup
                     a(href="#" data-section="signup" class="js-signup-form bordered") Register
-            td(class="space")
-            td(class="si-td")
+            td.space
+            td.si-td
                 input(required=true type="submit" class="bordered js-signin-form" value="Sign in")
         else
-            td(class="si-td")
+            td.si-td
                 input(required=true type="submit" class="bordered js-signup-form" value="Register")
