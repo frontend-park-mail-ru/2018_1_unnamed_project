@@ -1,11 +1,11 @@
 @font-face {
     font-family: "Righteous-Regular";
-    src: url("/static/fonts/Righteous-Regular.ttf");
+    src: url("../fonts/Righteous-Regular.ttf");
 }
 
 @font-face {
     font-family: "Comfortaa-Light";
-    src: url("/static/fonts/Comfortaa-Light.ttf");
+    src: url("../fonts/Comfortaa-Light.ttf");
 }
 
 html,
@@ -17,7 +17,7 @@ body {
     justify-content: center;
     flex-direction: column;
     text-align: center;
-    font-family: Comfortaa-Light, serif;    
+    font-family: Comfortaa-Light, serif;
     /* background: linear-gradient(to bottom right, rgb(36, 255, 235), #002542); */
     background: linear-gradient(to bottom right, #000000, rgb(0, 44, 58));
     background-size: cover;
@@ -47,11 +47,11 @@ a {
     text-decoration: none;
 }
 
-[data-section]{
+[data-section] {
     color: #FFFCF9;
 }
 
-[data-section]:hover{
+[data-section]:hover {
     color: #EF476F;
 }
 

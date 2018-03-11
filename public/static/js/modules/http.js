@@ -1,40 +1,60 @@
-(function() {
-    // const backendURL = 'http://localhost:8080'; // debug
-    const backendURL = 'https://dev-api-shipcollision.herokuapp.com'; // production
+'use strict';
 
+(function() {
+    /**
+     * Модуль для работы с сетью.
+     */
     class HttpModule {
-        request({HTTPmethod = 'GET', url = '/', contentType, data = {}} = {}) {
+        /**
+         * Базовый метод запроса.
+         * @param {string} method Метод запроса.
+         * @param {string} url URL запроса.
+         * @param {string} contentType MIME-Type.
+         * @param {Object | HTMLFormElement} data Данные.
+         * @return {Promise<Response>}
+         */
+        static doRequest({method = 'GET', url = '/', contentType = 'application/json', data = null} = {}) {
             const options = {
-                method: HTTPmethod,
+                method,
                 headers: {
-                    'Access-Control-Request-Method': HTTPmethod,
-                    'Cookie': this._cookie,
+                    'Access-Control-Request-Method': method,
                 },
                 mode: 'cors',
                 credentials: 'include',
             };
 
-            if (HTTPmethod !== 'GET' && typeof data !== undefined) {
-                if (contentType !== 'application/json') {
-                    options.body = new FormData(data);
-                } else {
-                    options.headers['Content-type'] = contentType;
+            switch (true) {
+            case !data:
+                break;
+            case method === 'PATCH':
+            case method === 'POST':
+            case method === 'PUT':
+                if (contentType === 'application/json') {
+                    options.headers['Content-Type'] = contentType;
                     options.body = JSON.stringify(data);
+                } else {
+                    options.body = new FormData(data);
                 }
+                break;
+            default:
+                break;
             }
 
-            return fetch(backendURL + url, options)
+            return fetch(url, options)
                 .then((response) => {
                     return response.json();
                 })
-                .then((uresp) => {
-                    if ((uresp.status >= 200 && uresp.status < 300) || !(uresp.status)) {
-                        return uresp;
+                .then((response) => {
+                    if ((response.status >= 200 && response.status < 300) || !(response.status)) {
+                        return response;
                     } else {
-                        if (uresp.errors) {
-                            throw uresp.errors.map((error) => `${error.field}: ${error.defaultMessage}`);
+                        // noinspection JSUnresolvedVariable
+                        if (response.errors) {
+                            // noinspection JSUnresolvedVariable
+                            throw response.errors.map((error) => `${error.field}: ${error.defaultMessage}`);
                         } else {
-                            throw [uresp.message];
+                            // eslint-disable-next-line
+                            throw [response.message];
                         }
                     }
                 })
@@ -42,7 +62,76 @@
                     throw error;
                 });
         }
+
+        /**
+         * Метод DELETE.
+         * @param {string} url
+         * @return {Promise<Response>}
+         */
+        static doDelete({url = '/'} = {}) {
+            return this.doRequest({
+                method: 'DELETE',
+                url,
+            });
+        }
+
+        /**
+         * Метод GET.
+         * @param {string} url
+         * @return {Promise<Response>}
+         */
+        static doGet({url = '/'} = {}) {
+            return this.doRequest({
+                url,
+            });
+        }
+
+        // noinspection JSUnusedGlobalSymbols
+        /**
+         * Метод HEAD.
+         * @param {string}  url
+         * @return {Promise<Response>}
+         */
+        static doHead({url = '/'} = {}) {
+            return this.doRequest({
+                method: 'HEAD',
+                url,
+            });
+        }
+
+        // noinspection JSUnusedGlobalSymbols
+        /**
+         * Метод PATCH.
+         * @param {string} url
+         * @param {string} contentType
+         * @param {Object} data
+         * @return {Promise<Response>}
+         */
+        static doPatch({url = '/', contentType = 'application/json', data = null} = {}) {
+            return this.doRequest({
+                method: 'PATCH',
+                url,
+                contentType,
+                data,
+            });
+        }
+
+        /**
+         * Метод POST.
+         * @param {string} url
+         * @param {string} contentType
+         * @param {Object} data
+         * @return {Promise<Response>}
+         */
+        static doPost({url = '/', contentType = 'application/json', data = null} = {}) {
+            return this.doRequest({
+                method: 'POST',
+                url,
+                contentType,
+                data,
+            });
+        }
     }
+
     window.HttpModule = HttpModule;
-    window.backendURL = backendURL;
 })();
