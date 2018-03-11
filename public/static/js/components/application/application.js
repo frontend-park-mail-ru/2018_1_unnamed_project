@@ -92,7 +92,7 @@
          */
         addRoute(name, {re = null, page = null, hideBackRef = false} = {}) {
             routes[name] = {re, page, hideBackRef};
-            return Router;
+            return this;
         }
     }
 
