@@ -6,7 +6,12 @@
 
 .scoreboard__table tr {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 269%;
+    font-size: 100%;
     outline: thin solid;
     color: white;
+}
+
+.pagination a {
+    font-size: 100px;
+    color: rgb(27, 183, 255);
 }

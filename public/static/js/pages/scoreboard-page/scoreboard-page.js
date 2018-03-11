@@ -22,12 +22,13 @@
 
         /**
          * Отображает страницу.
+         * @param {string} pagination offset and limit param
          */
-        show() {
+        show(pagination = '') {
             super.show();
 
             const self = this;
-            this.api.scoreboard()
+            this.api.scoreboard(pagination)
                 .then((users) => {
                     self._builder.data = users;
                     self._builder.render();

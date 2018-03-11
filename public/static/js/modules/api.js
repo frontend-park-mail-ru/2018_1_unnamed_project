@@ -79,11 +79,12 @@
 
         /**
          * GET /users/scoreboard
+         * @param {string} pagination offset and limit
          * @return {*}
          */
-        scoreboard() {
+        scoreboard(pagination) {
             return this.httpModule.doGet({
-                url: this.routeMappings.scoreboard,
+                url: this.routeMappings.scoreboard + pagination,
             });
         }
 
