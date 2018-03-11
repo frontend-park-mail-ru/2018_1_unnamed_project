@@ -17,7 +17,7 @@
                     desc: 'minimum length is 6, only english symbols and at least one digit',
                 },
                 password_confirmation: {
-                    regex: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+                    regex: /.*/,
                     desc: 'minimum length is 6, only english symbols and at least one digit',
                 },
                 email: {

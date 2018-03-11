@@ -35,6 +35,7 @@
                 username: this._data.username,
                 email: this._data.email,
             });
+            super.render();
             this.node.insertAdjacentHTML('afterbegin', template);
 
             const signinBuilder = window.application.signinPage.builder;
