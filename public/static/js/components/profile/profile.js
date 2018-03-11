@@ -12,14 +12,6 @@
             super(selector);
         }
 
-        // noinspection JSMethodCanBeStatic
-        /**
-         * Метод для обновления строки с аватаром пользователя.
-         */
-        updateBar() {
-            window.signinPage.builder.checkAuth();
-        }
-
         /**
          *
          */
@@ -27,8 +19,6 @@
             super.render();
 
             const backendURI = this.api.backendURI;
-
-            console.log(this._data);
 
             // noinspection JSUnresolvedVariable
             const avatarLink = (this._data.avatarLink ?

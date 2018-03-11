@@ -115,17 +115,15 @@
                 return;
             }
 
-            const profileBuilder = window.application.profilePage.builder;
-
             const router = window.router;
 
             callback(formData)
                 .then(() => {
                     this.checkAuth(true);
                     router.navigateTo('profile');
-                    profileBuilder.updateBar();
                 })
                 .catch((errors) => {
+                    console.log(errors);
                     errors.forEach((error) => push.data = error);
                     push.render('error');
                 });
@@ -136,14 +134,12 @@
          */
         logoutMe() {
             const multiplayerBuilder = window.application.multiplayerPage.builder;
-            const profileBuilder = window.application.profilePage.builder;
 
             const router = window.router;
 
             this.api.logout()
                 .then(() => {
                     router.navigateTo('menu');
-                    profileBuilder.updateBar();
                     multiplayerBuilder.clear();
                 })
                 .catch((error) => {
