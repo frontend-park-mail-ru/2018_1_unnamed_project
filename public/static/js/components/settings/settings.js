@@ -93,7 +93,7 @@
 
             const push = window.application.push;
             const form = event.currentTarget;
-            const result = this.validator.validateCredentials(form, push, true);
+            const result = this.validator.validateCredentials(form, push, true, 'update');
 
             if (result.err) {
                 return;
