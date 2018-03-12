@@ -17,7 +17,7 @@
                     desc: 'minimum length is 6, only english symbols and at least one digit',
                 },
                 password_confirmation: {
-                    regex: /.*/,
+                    regex: /.+/,
                     desc: 'minimum length is 6, only english symbols and at least one digit',
                 },
                 email: {
@@ -31,9 +31,10 @@
          * @param {*} form
          * @param {*} push
          * @param {boolean} confirmationNeeded (default: false)
+         * @param {string} action
          * @return {Object}
          */
-        validateCredentials(form, push, confirmationNeeded = false) {
+        validateCredentials(form, push, confirmationNeeded = false, action = '') {
             const errors = [];
             const formData = {};
             Object.values(form.elements).forEach((field) => {
@@ -41,7 +42,7 @@
                 if (validator) {
                     if (field.value.match(validator.regex)) {
                         formData[field.name] = field.value;
-                    } else if (!((field.value === '') && confirmationNeeded)) {
+                    } else if (!((field.value === '') && action === 'update')) {
                         errors.push(`${field.name} ${validator.desc}`);
                     }
                 }
