@@ -64,7 +64,7 @@
 
             const push = window.application.push;
             const form = event.currentTarget;
-            const result = this.validator.validateCredentials(form, push);
+            const result = this.validator.validateCredentials(form, push, this._signup);
             if (result.err){
                 return;
             }
