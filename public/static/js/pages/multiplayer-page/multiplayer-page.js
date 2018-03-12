@@ -1,10 +1,11 @@
 'use strict';
 
 (function() {
+    const AbstractPage = window.AbstractPage;
     /**
      * Страница мультиплеера.
      */
-    class MultiplayerPage extends window.AbstractPage {
+    class MultiplayerPage extends AbstractPage {
         /**
          * @param {string} parentId Идентификатор родительского узла.
          * @param {string} pageId Желаемый идентификатор страницы.

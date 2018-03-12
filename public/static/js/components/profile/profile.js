@@ -1,10 +1,11 @@
 'use strict';
 
 (function() {
+    const AbstractBuilder = window.AbstractBuilder;
     /**
      * Компонент для орисовки профиля пользователя.
      */
-    class ProfileBuilder extends window.AbstractBuilder {
+    class ProfileBuilder extends AbstractBuilder {
         /**
          * @param {string} selector
          */

@@ -1,8 +1,9 @@
 (function() {
+    const AbstractBuilder = window.AbstractBuilder;
     /**
      * Компонент для отрисовки страницы лидеров.
      */
-    class ScoreboardBuilder extends window.AbstractBuilder {
+    class ScoreboardBuilder extends AbstractBuilder {
         /**
          * Навешивает event listener-ы на кнопки вперед/назад под scoreboard
          * @param {string} selector кнопки

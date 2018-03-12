@@ -1,8 +1,9 @@
 (function() {
+    const AbstractBuilder = window.AbstractBuilder;
     /**
      * User profile settings
      */
-    class SettingsBuilder extends window.AbstractBuilder {
+    class SettingsBuilder extends AbstractBuilder {
         /**
          * @param {string} selector
          */

@@ -1,8 +1,9 @@
 (function() {
+    const AbstractBuilder = window.AbstractBuilder;
     /**
      * Компонент для рендеринга уведомлений.
      */
-    class Push extends window.AbstractBuilder {
+    class Push extends AbstractBuilder {
         /**
          * @param {string} selector CSS-селектор для выбора элемента.
          */
