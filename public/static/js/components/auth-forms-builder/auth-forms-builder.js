@@ -91,6 +91,7 @@
          * Выход из приложения.
          */
         logoutMe() {
+            event.preventDefault();
             const multiplayerBuilder = window.application.multiplayerPage.builder;
             const profileBuilder = window.application.profilePage.builder;
 

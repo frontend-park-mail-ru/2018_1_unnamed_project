@@ -23,7 +23,6 @@
          */
         show(pagination = '') {
             super.show();
-
             this.api.scoreboard(pagination)
                 .then((users) => {
                     this.builder.data = users;
