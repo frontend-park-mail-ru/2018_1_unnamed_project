@@ -30,10 +30,10 @@
         /**
          * @param {*} form
          * @param {*} push
-         * @param {boolean} fromSettings (default: false)
+         * @param {boolean} confirmationNeeded (default: false)
          * @return {Object}
          */
-        validateCredentials(form, push, fromSettings = false) {
+        validateCredentials(form, push, confirmationNeeded = false) {
             const errors = [];
             const formData = {};
             Object.values(form.elements).forEach((field) => {
@@ -41,22 +41,19 @@
                 if (validator) {
                     if (field.value.match(validator.regex)) {
                         formData[field.name] = field.value;
-                    } else if (!((field.value === '') && fromSettings)) {
+                    } else if (!((field.value === '') && confirmationNeeded)) {
                         errors.push(`${field.name} ${validator.desc}`);
                     }
                 }
             });
 
-            if (fromSettings) {
-                if (('password' in formData && !('password_confirmation' in formData)) ||
-                    ('password_confirmation' in formData && !('password' in formData))) {
-                    errors.push('Passwords don\'t match');
-                }
-            }
-
-            if ('password_confirmation' in formData &&
-                        formData['password'] !== formData['password_confirmation']) {
+            switch (true) {
+            case confirmationNeeded && formData['password'] && !formData['password_confirmation']:
+            case formData['password_confirmation'] && formData['password'] !== formData['password_confirmation']:
                 errors.push('Passwords don\'t match');
+                break;
+            default:
+                break;
             }
 
             push.clear();
