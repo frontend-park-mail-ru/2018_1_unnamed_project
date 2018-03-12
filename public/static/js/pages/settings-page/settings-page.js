@@ -1,10 +1,11 @@
 'use strict';
 
 (function() {
+    const AbstractPage = window.AbstractPage;
     /**
      * Страница настроек профиля пользователя.
      */
-    class SettingsPage extends window.AbstractPage {
+    class SettingsPage extends AbstractPage {
         /**
          * @param {string} parentId Идентификатор родительского узла.
          * @param {string} pageId Желаемый идентификатор страницы.

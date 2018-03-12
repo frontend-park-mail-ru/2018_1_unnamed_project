@@ -1,10 +1,11 @@
 'use strict';
 
 (function() {
+    const AbstractPage = window.AbstractPage;
     /**
      * Страница входа.
      */
-    class SignInPage extends window.AbstractPage {
+    class SignInPage extends AbstractPage {
         /**
          * @param {string} parentId Идентификатор родительского узла.
          * @param {string} pageId Желаемый идентификатор страницы.

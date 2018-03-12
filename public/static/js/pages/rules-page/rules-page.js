@@ -2,10 +2,11 @@
 'use strict';
 
 (function() {
+    const AbstractPage = window.AbstractPage;
     /**
      * Страница с праилами игры
      */
-    class RulesPage extends window.AbstractPage {
+    class RulesPage extends AbstractPage {
         /**
          * @param {string} parentId Идентификатор родительского узла.
          * @param {string} pageId Желаемый идентификатор страницы.

@@ -2,10 +2,11 @@
 'use strict';
 
 (function() {
+    const AbstractBuilder = window.AbstractBuilder;
     /**
      * Билдер форм регистрации и входа.
      */
-    class AuthFormsBuilder extends window.AbstractBuilder {
+    class AuthFormsBuilder extends AbstractBuilder {
         /**
          * Имя класса узла, в котором необходимо строить форму.
          * @param {string} nodeClassName

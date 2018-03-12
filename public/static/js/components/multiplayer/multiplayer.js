@@ -1,10 +1,11 @@
 'use strict';
 
 (function() {
+    const AbstractBuilder = window.AbstractBuilder;
     /**
      * Компонент для отрисовки формы мультплеера.
      */
-    class Multiplayer extends window.AbstractBuilder {
+    class Multiplayer extends AbstractBuilder {
         /**
          * @param {string} selector
          */
