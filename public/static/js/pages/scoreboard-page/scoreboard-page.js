@@ -24,11 +24,10 @@
         show(pagination = '') {
             super.show();
 
-            const self = this;
             this.api.scoreboard(pagination)
                 .then((users) => {
-                    self._builder.data = users;
-                    self._builder.render();
+                    this.builder.data = users;
+                    this.builder.render();
                 });
         }
     }

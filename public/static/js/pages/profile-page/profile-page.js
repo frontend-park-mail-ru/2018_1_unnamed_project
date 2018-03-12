@@ -25,8 +25,8 @@
 
             this.api.getMe()
                 .then((response) => {
-                    this._builder.data = response;
-                    this._builder.render();
+                    this.builder.data = response;
+                    this.builder.render();
                 });
         }
     }

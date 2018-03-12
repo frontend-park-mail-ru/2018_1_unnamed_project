@@ -10,6 +10,7 @@
             if (!this.data) return;
 
             super.render();
+
             // noinspection JSUnresolvedFunction
             const template = scoreboardTemplate({
                 users: this._data.users,
