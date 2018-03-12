@@ -1,0 +1,32 @@
+{
+  "name": "ship_collision",
+  "version": "1.0.0beta1",
+  "description": "Multi-player version of sea battle",
+  "main": "index.js",
+  "scripts": {
+    "build": "pug -cD --name-after-file public/static/js -o public/static/precompiled",
+    "start": "npm run build && DEBUG=* node server/server.js",
+    "start:raw": "node server.js"
+  },
+  "contributors": [
+    "Artem Ikchurin",
+    "George Gabolaev",
+    "Kirill Kucherov",
+    "Oleg Venger"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "debug": "^3.1.0",
+    "express": "^4.16.2",
+    "logger": "0.0.1",
+    "pug": "^2.0.1",
+    "pug-cli": "^1.0.0-alpha6",
+    "uuid": "^3.2.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.18.2",
+    "eslint-config-google": "^0.9.1"
+  }
+}

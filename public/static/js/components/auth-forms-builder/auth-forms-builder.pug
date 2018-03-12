@@ -1,0 +1,20 @@
+<!--suppress HtmlUnknownAttribute -->
+input.auth-form__input(required=true type="email" name="email" placeholder="email")
+input.auth-form__input(required=true type="password" name="password" placeholder="password")
+
+if signup
+    input.auth-form__input(required=true type="password" name="password_confirmation" placeholder="password again")
+    input.auth-form__input(required=true type="text" name="username" placeholder="username")
+
+table(class="form-buttons")
+    tr
+        unless signup
+            td.su-td
+                div.signup
+                    a(href="#" data-section="signup" class="js-signup-form bordered") Register
+            td.space
+            td.si-td
+                input(required=true type="submit" class="bordered js-signin-form" value="Sign in")
+        else
+            td.si-td
+                input(required=true type="submit" class="bordered js-signup-form" value="Register")

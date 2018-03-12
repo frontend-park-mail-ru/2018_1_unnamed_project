@@ -1,0 +1,16 @@
+div.img-with-text
+    img.avatar(src=`${avatarLink}`)
+    form(action=`${uploadAvatarLink}` method="post" id="upload-avatar" enctype="multipart/form-data")
+        span.upload-btn-wrapper
+            button(class="btn update") Update
+            input(type="file" name="avatar")
+    button(class="btn delete" id="delete-avatar") Delete
+
+form.settings__form(action=`${meLink}` method="patch" id="update-info")
+    input.settings__input(type="text" name="username" placeholder=`${username}`)
+    input.settings__input(type="text" name="email" placeholder=`${email}`)
+    input.settings__input(type="password" name="password" placeholder="new password")
+    input.settings__input(type="password" name="password_confirmation" placeholder="confirmation")
+    input.settings__input(required=true type="submit" value="Update")
+
+a(href="#" id="logout" data-section="menu") LOG OUT
