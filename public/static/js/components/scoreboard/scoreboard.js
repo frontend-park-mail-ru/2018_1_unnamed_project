@@ -9,7 +9,6 @@
          * @param {function} callback
          */
         prevNextEventHandler(selector, callback) {
-            debugger;
             const button = document.getElementById(selector);
             if (callback) {
                 button.addEventListener('click', () => {
