@@ -15,8 +15,8 @@
             // noinspection JSUnresolvedFunction
             this.parentNode.insertAdjacentHTML('beforeend', signinPageTemplate({pageId}));
             this._builder = new window.AuthFormsBuilder('js-signin-form');
-            const self = this;
-            this.signinSubmit = () => self.builder.onSubmitAuthForm(event, self.api.signIn.bind(self.api));
+
+            this.signinSubmit = () => this.builder.onSubmitAuthForm(event, this.api.signIn.bind(this.api));
         }
 
         // noinspection JSUnusedGlobalSymbols
