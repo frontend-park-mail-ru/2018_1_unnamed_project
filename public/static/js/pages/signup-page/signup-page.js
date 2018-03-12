@@ -24,13 +24,13 @@
          */
         show() {
             super.show();
-            this._builder.render();
+            this.builder.render();
 
-            this._builder.node.removeEventListener(
+            this.builder.node.removeEventListener(
                 'submit',
                 this.signupSubmut
             );
-            this._builder.node.addEventListener(
+            this.builder.node.addEventListener(
                 'submit',
                 this.signupSubmut
             );

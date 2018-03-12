@@ -22,6 +22,8 @@
          *
          */
         render() {
+            super.render();
+
             const backendURI = this.api.backendURI;
             const avatarLink = this.data.avatarLink ?
                 (backendURI + this.data.avatarLink)
@@ -35,7 +37,6 @@
                 username: this._data.username,
                 email: this._data.email,
             });
-            super.render();
             this.node.insertAdjacentHTML('afterbegin', template);
 
             const signinBuilder = window.application.signinPage.builder;
@@ -74,7 +75,6 @@
 
             this.api.uploadAvatar(form)
                 .then((response) => {
-                    debugger;
                     this.data = response;
                     this.render();
                     push.data = 'Avatar updated';
@@ -89,13 +89,16 @@
          * @param {*} event
          */
         onSubmitUpdateForm(event) {
-            const push = window.application.push;
             event.preventDefault();
+
+            const push = window.application.push;
             const form = event.currentTarget;
             const result = this.validator.validateCredentials(form, push, true);
+
             if (result.err) {
                 return;
             }
+
             this.api.updateProfile(result.formData)
                 .then((response) => {
                     push.data = 'Info updated';

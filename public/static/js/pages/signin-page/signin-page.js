@@ -25,13 +25,12 @@
          */
         show() {
             super.show();
-            this._builder.render();
+            this.builder.render();
 
             const generatedSignUpHref = document.getElementsByClassName('signup')[0];
             generatedSignUpHref.addEventListener('click', window.anchorSubmitListener);
 
-            const node = this._builder.node;
-            debugger;
+            const node = this.builder.node;
 
             node.removeEventListener(
                 'submit',

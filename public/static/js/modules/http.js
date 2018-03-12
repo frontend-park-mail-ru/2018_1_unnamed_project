@@ -48,9 +48,7 @@
                     if ((response.status >= 200 && response.status <= 304) || !(response.status)) {
                         return response;
                     } else {
-                        // noinspection JSUnresolvedVariable
                         if (response.errors) {
-                            // noinspection JSUnresolvedVariable
                             throw response.errors.map((error) => `${error.field}: ${error.defaultMessage}`);
                         } else {
                             // eslint-disable-next-line

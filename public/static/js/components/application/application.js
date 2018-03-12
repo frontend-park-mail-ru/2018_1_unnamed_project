@@ -210,9 +210,11 @@
      * Листенер для добавления возможности переключения между страницами.
      */
     window.anchorSubmitListener = () => {
+        event.preventDefault();
+
         const target = event.target;
         const sectionName = target.getAttribute('data-section');
-        event.preventDefault();
+
         if (target.tagName.toLowerCase() === 'a') {
             window.router.navigateTo(sectionName);
         }

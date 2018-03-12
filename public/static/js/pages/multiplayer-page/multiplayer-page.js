@@ -23,9 +23,8 @@
         show() {
             super.show();
 
-            const self = this;
             this.api.getMe()
-                .then(() => self._builder.render())
+                .then(() => this.builder.render())
                 .catch(() => window.router.navigateTo('signin'));
         }
     }
