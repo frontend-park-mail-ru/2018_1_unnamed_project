@@ -4,6 +4,22 @@
      */
     class ScoreboardBuilder extends window.AbstractBuilder {
         /**
+         * Навешивает event listener-ы на кнопки вперед/назад под scoreboard
+         * @param {string} selector кнопки
+         * @param {function} callback
+         */
+        prevNextEventHandler(selector, callback) {
+            const button = document.getElementById(selector);
+            if (callback) {
+                button.addEventListener('click', () => {
+                    event.preventDefault();
+                    window.application.scoreboardPage.show(callback);
+                });
+            } else {
+                button.hidden = true;
+            }
+        }
+        /**
          * Отрисовывает компонент.
          */
         render() {
@@ -16,19 +32,8 @@
                 users: this._data.users,
             });
             this.node.insertAdjacentHTML('afterbegin', template);
-
-            const prev = document.getElementById('prev');
-            if (this.data.prevPage) {
-                prev.addEventListener('click', () => window.application.scoreboardPage.show(this.data.prevPage));
-            } else {
-                prev.hidden = true;
-            }
-            const next = document.getElementById('next');
-            if (this.data.nextPage) {
-                next.addEventListener('click', () => window.application.scoreboardPage.show(this.data.nextPage));
-            } else {
-                next.hidden = true;
-            }
+            this.prevNextEventHandler('prev', this.data.prevPage);
+            this.prevNextEventHandler('next', this.data.nextPage);
         }
     }
 
