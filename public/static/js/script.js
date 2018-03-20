@@ -30,6 +30,9 @@ router.addRoute(
 ).addRoute(
     'rules',
     {page: application.rulesPage}
+).addRoute(
+    'uxui',
+    {page: application.uxuiPage}
 );
 
 

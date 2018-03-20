@@ -1,4 +1,4 @@
-.auth-form__input {
+.sc-form__input {
     border: 40px;
     background-color: #cccccc;
     display: block;
@@ -8,21 +8,16 @@
     text-align: center;
 }
 
-.auth-form__input[type="submit"] {
+.sc-form__input[type="submit"] {
     background-color: transparent;
 }
 
-.auth-form__input::placeholder {
+.sc-form__input::placeholder {
     color: #26547C;
 }
 
-.form-buttons td {
-    border: 2px solid #fffff8;
-}
-
-.form-buttons td:hover {
-    border-color: #EF476F;
-    cursor: pointer;
+td.button-container{
+    height: 1px;;
 }
 
 td.space {
@@ -30,22 +25,30 @@ td.space {
     width: 6px;
 }
 
-.bordered {
+.bordered-button {
     color: #fffff8;
-    border: 40px;
+    border: 2px solid #fffff8;    
     font-family: system-ui, serif;
     font-size: 27px;
     text-align: center;
-}
-
-input.bordered {
+    background-color: transparent;
     width: 100%;
     height: 100%;
-    background-color: transparent;
 }
 
-/*noinspection CssUnusedSymbol*/
-.orsignup {
-    float: right;
-    margin: 22px 0 22px 0;
+.bordered-button:hover {
+    border-color: #EF476F;
+    text-decoration-color: #EF476F;
+    color: #EF476F;
+    cursor: pointer;
+}
+
+.section-opener{
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+}
+
+.bordered-button:hover .section-opener {
+    color: #EF476F;
 }

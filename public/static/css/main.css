@@ -47,6 +47,10 @@ a {
     text-decoration: none;
 }
 
+.menu-item {
+    margin-bottom: 3px;
+}
+
 [data-section] {
     color: #FFFCF9;
 }
@@ -62,12 +66,6 @@ a {
 }
 
 /*noinspection CssUnusedSymbol*/
-.or {
-    font-size: 15pt;
-    margin: 0 2px 0 0;
-}
-
-/*noinspection CssUnusedSymbol*/
 #rules {
     width: 60%;
     margin: 10px auto;
@@ -76,4 +74,13 @@ a {
     flex-direction: column;
     font-family: Arial, Helvetica, sans-serif;
     color: white;
+}
+
+.uxui td{
+    outline: thin solid;
+    padding: 19px;
+}
+
+[data-section='uxui']:not(:hover){
+    opacity: 0;
 }

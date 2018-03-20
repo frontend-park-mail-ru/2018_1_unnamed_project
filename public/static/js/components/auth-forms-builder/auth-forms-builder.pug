@@ -1,20 +1,20 @@
 <!--suppress HtmlUnknownAttribute -->
-input.auth-form__input(required=true type="email" name="email" placeholder="email")
-input.auth-form__input(required=true type="password" name="password" placeholder="password")
+input.sc-form__input(required=true type="email" name="email" placeholder="email")
+input.sc-form__input(required=true type="password" name="password" placeholder="password")
 
 if signup
-    input.auth-form__input(required=true type="password" name="password_confirmation" placeholder="password again")
-    input.auth-form__input(required=true type="text" name="username" placeholder="username")
+    input.sc-form__input(required=true type="password" name="password_confirmation" placeholder="password again")
+    input.sc-form__input(required=true type="text" name="username" placeholder="username")
 
 table(class="form-buttons")
     tr
         unless signup
-            td.su-td
-                div.signup
-                    a(href="#" data-section="signup" class="js-signup-form bordered") Register
+            td.button-container
+                div.bordered-button
+                    a(href="#" class="js-signup-form__submit-button section-opener" data-section="signup") Register
             td.space
-            td.si-td
-                input(required=true type="submit" class="bordered js-signin-form" value="Sign in")
+            td
+                input(required=true type="submit" class="js-signin-form__submit-button bordered-button" value="Sign in")
         else
-            td.si-td
-                input(required=true type="submit" class="bordered js-signup-form" value="Register")
+            td
+                input(required=true type="submit" class="js-signup-form__signup-button bordered-button" value="Register")
