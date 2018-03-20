@@ -24,6 +24,7 @@
     const profilePage = new window.ProfilePage();
     const settingsPage = new window.SettingsPage();
     const rulesPage = new window.RulesPage();
+    const uxuiPage = new window.UxUiPage();
     const scoreboardPage = new window.ScoreboardPage();
     const signinPage = new window.SignInPage();
     const signupPage = new window.SignUpPage();
@@ -203,6 +204,16 @@
          */
         get singleplayerPage() {
             return singleplayerPage;
+        }
+
+
+        // noinspection JSMethodCanBeStatic
+        /**
+         * Возвращает страницу всякого дизайна.
+         * @return {uxuiPage|*}
+         */
+        get uxuiPage() {
+            return uxuiPage;
         }
     }
 

@@ -28,7 +28,7 @@
             super.show();
             this.builder.render();
 
-            const generatedSignUpHref = document.getElementsByClassName('signup')[0];
+            const generatedSignUpHref = document.getElementsByClassName('js-signup-form__submit-button')[0];
             generatedSignUpHref.addEventListener('click', window.anchorSubmitListener);
 
             const node = this.builder.node;

@@ -1,14 +1,13 @@
 div.img-with-text
     img.avatar(src=`${avatarLink}`)
-    form#upload-avatar(action=`${uploadAvatarLink}` method="post" enctype="multipart/form-data")
-        span.upload-btn-wrapper
-            input(type="file" name="avatar")
     a#settings(href="#" data-section="settings") Settings
-
 div.profile-info
     h4
-        i= `Username: ${username}`
+        i= 'Username: '
+        b= `${username}`
     h4
-        i= `Email: ${email}`
+        i= 'Email: ' 
+        b= `${email}`
     h4
-        i= `Game rank: ${rank}`
+        i= 'Game rank: ' 
+        b= `${rank}`
