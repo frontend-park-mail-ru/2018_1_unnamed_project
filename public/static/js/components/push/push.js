@@ -10,10 +10,20 @@ define('Push', (require) => {
          * @param {Object}   element Элемент, в котором рендерить.
          * @param {Object}   attrs   Параметры отрисовки.
          */
-        constructor({element, attrs = {}}) {
-            super({element, templateFunction: pushTemplate, attrs});
+        constructor() {
+            if (Push.__instance) {
+                return Push.__instance;
+            }
+
+            super({
+                element: document.querySelector('.msg'),
+                templateFunction: pushTemplate,
+                attrs: {},
+            });
 
             this._data = [];
+
+            Push.__instance = this;
         }
 
         /**
