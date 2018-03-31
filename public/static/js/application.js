@@ -19,6 +19,7 @@
 
         const root = document.getElementById('application');
 
+        root.insertAdjacentHTML('beforebegin', pushTemplate());
         root.insertAdjacentHTML('afterbegin', profileBarTemplate());
 
         new Router(root)

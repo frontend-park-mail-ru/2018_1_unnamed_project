@@ -1,2 +1,4 @@
-each message in messages
-    div(class=`msg_${level}`)= message
+div.msg
+    if messages
+        each message in messages
+            div(class=`msg_${level}`)= message
