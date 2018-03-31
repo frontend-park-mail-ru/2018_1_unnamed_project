@@ -1,19 +1,20 @@
 'use strict';
 
-(function() {
+define('API', (require) => {
+    const HttpModule = require('HttpModule');
+
     // const BACKEND_URI = 'http://localhost:8080'; // debug
     const BACKEND_URI = 'https://dev-api-shipcollision.herokuapp.com'; // production
 
     /**
      * Модуль для работы с API.
      */
-    class API {
+    return class API {
         /**
          *
          */
         constructor() {
-            this.httpModule = window.HttpModule;
-            // noinspection SpellCheckingInspection
+            this.httpModule = HttpModule;
             this.routeMappings = {
                 'me': `${BACKEND_URI}/me`,
                 'signIn': `${BACKEND_URI}/signin`,
@@ -126,7 +127,5 @@
                 data,
             });
         }
-    }
-
-    window.API = API;
-})();
+    };
+});

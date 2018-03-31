@@ -1,10 +1,11 @@
 'use strict';
 
-(function() {
+// noinspection JSUnusedLocalSymbols
+define('HttpModule', (require) => {
     /**
      * Модуль для работы с сетью.
      */
-    class HttpModule {
+    return class HttpModule {
         /**
          * Базовый метод запроса.
          * @param {string | *} method Метод запроса.
@@ -129,7 +130,5 @@
                 data,
             });
         }
-    }
-
-    window.HttpModule = HttpModule;
-})();
+    };
+});

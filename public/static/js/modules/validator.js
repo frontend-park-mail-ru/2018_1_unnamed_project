@@ -1,8 +1,11 @@
-(function() {
+'use strict';
+
+// noinspection JSUnusedLocalSymbols
+define('validator', (require) => {
     /**
-     * Validate fields for signin/signup/setting
+     * Валидатор для форм логина/логаута/настроек.
      */
-    class Validator {
+    return class Validator {
         /**
          *
          */
@@ -80,7 +83,5 @@
                 };
             }
         }
-    }
-
-    window.Validator = Validator;
-})();
+    };
+});
