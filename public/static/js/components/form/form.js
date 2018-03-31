@@ -23,7 +23,7 @@ define('Form', (require) => {
          * @private
          */
         init() {
-            this._form = this._form || this.element.querySelector('.js-form');
+            this._form = this.element.querySelector('.js-form');
 
             this._form.addEventListener('submit', (evt) => {
                 evt.preventDefault();

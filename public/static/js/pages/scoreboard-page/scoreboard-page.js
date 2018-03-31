@@ -24,6 +24,7 @@ define('ScoreboardPage', (require) => {
                     .scoreboard(pagination)
                     .then((response) => {
                         if (this._scoreboard) {
+                            this._scoreboard.clear();
                             this._scoreboard.render(response);
                         }
                     })
@@ -34,7 +35,7 @@ define('ScoreboardPage', (require) => {
         create() {
             super.create(this.attrs);
 
-            this._scoreboardRoot = this._scoreboardRoot || this.element.querySelector('.js-scoreboard-root');
+            this._scoreboardRoot = this.element.querySelector('.js-scoreboard-root');
             this._scoreboard = new Scoreboard({element: this._scoreboardRoot, attrs: this.attrs});
 
             // Загрузка первой страницы - параметры пагинации не нужны.
