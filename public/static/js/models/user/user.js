@@ -2,12 +2,11 @@
 
 define('User', (require) => {
     const API = require('API');
+    const LocalStorageProxy = require('LocalStorageProxy');
     const RouterEvents = require('Router/events');
 
     const bus = require('bus');
     const events = require('User/events');
-
-    let currentUser = null;
 
     const api = new API();
 
@@ -29,23 +28,35 @@ define('User', (require) => {
          * @return {boolean}
          */
         static isAuthorized() {
-            return !!currentUser;
+            return !!this.currentUser;
         }
 
         /**
          * @return {User|*}
          */
         static get currentUser() {
-            return currentUser;
+            return LocalStorageProxy.fetch('currentUser');
+        }
+
+        static checkCurrentUser() {
+            api
+                .getMe()
+                .then((response) => {
+                    LocalStorageProxy.save('currentUser', new User(response));
+                })
+                .catch((err) => {
+                    LocalStorageProxy.remove('currentUser');
+                    console.log(err);
+                });
         }
 
         static signIn(credentials) {
             api
                 .signIn(credentials)
                 .then((response) => {
-                    // noinspection ReuseOfLocalVariableJS
-                    currentUser = new User(response);
-                    bus.emit(events.CURRENT_USER_CHANGED, currentUser);
+                    const user = new User(response);
+                    LocalStorageProxy.save('currentUser', user);
+                    bus.emit(events.CURRENT_USER_CHANGED, user);
                     bus.emit(RouterEvents.NAVIGATE_TO_NEXT_PAGE_OR_ROOT, null);
                 })
                 .catch((err) => {
@@ -58,7 +69,8 @@ define('User', (require) => {
                 .signUp(credentials)
                 .then((response) => {
                     // noinspection ReuseOfLocalVariableJS
-                    currentUser = new User(response);
+                    user = new User(response);
+                    LocalStorageProxy.save('currentUser', user);
                     bus.emit(events.CURRENT_USER_CHANGED, currentUser);
                     bus.emit(RouterEvents.NAVIGATE_TO_NEXT_PAGE_OR_ROOT, null);
                 })
@@ -71,8 +83,8 @@ define('User', (require) => {
             api
                 .updateProfile(data)
                 .then((response) => {
-                    // noinspection ReuseOfLocalVariableJS
-                    currentUser = new User(response);
+                    user = new User(response);
+                    LocalStorageProxy.save('currentUser', user);
                     bus.emit(events.CURRENT_USER_CHANGED, currentUser);
                 })
                 .catch((err) => {

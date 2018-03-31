@@ -34,14 +34,16 @@ define('SigninPage', (require) => {
                     title: 'Нет аккаунта? Зарегистрируйтесь!',
                     href: '/signup',
                 },
-                resetText: 'Очистить ввод',
-                submitText: 'Войти',
+                resetText: 'Очистить',
+                submitText: 'Вход',
             };
 
             this._formRoot = null;
             this._form = null;
 
             bus.on(FormEvents.FORM_DATA_SUBMITTED, ({data, errors}) => {
+                if (!this.active) return;
+
                 if (errors) {
                     errors.forEach((e) => console.log(e));
                     return;

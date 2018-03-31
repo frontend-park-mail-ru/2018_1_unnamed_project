@@ -46,14 +46,16 @@ define('SignupPage', (require) => {
                     title: 'Уже есть аккаунт? Войдите!',
                     href: '/signin',
                 },
-                resetText: 'Очистить ввод',
-                submitText: 'Зарегистрироваться',
+                resetText: 'Очистить',
+                submitText: 'Регистрация',
             };
 
             this._formRoot = null;
             this._form = null;
 
             bus.on(FormEvents.FORM_DATA_SUBMITTED, ({data, errors}) => {
+                if (!this.active) return;
+
                 if (errors) {
                     errors.forEach((err) => console.log(err));
                     return;
@@ -73,7 +75,7 @@ define('SignupPage', (require) => {
         }
 
         accessType() {
-            return AccessTypes.LOGGED_IN_USER;
+            return AccessTypes.NOT_LOGGED_IN_USER;
         }
     };
 });
