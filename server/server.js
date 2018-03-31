@@ -32,28 +32,28 @@ const users = {
 const games = [
     {
         'type': 'Single',
-        'active': true,
+        "_active": true,
         'users': [
             'venger',
         ],
     },
     {
         'type': 'Single',
-        'active': false,
+        "_active": false,
         'users': [
             'venger',
         ],
     },
     {
         'type': 'Single',
-        'active': true,
+        "_active": true,
         'users': [
             'gabolaev',
         ],
     },
     {
         'type': 'Multi2',
-        'active': false,
+        "_active": false,
         'users': [
             'venger',
             'gabolaev',
@@ -61,7 +61,7 @@ const games = [
     },
     {
         'type': 'Multi3',
-        'active': true,
+        "_active": true,
         'users': [
             'venger',
             'cvkucherov',

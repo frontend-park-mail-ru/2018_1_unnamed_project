@@ -1,7 +1,7 @@
 'use strict';
 
 const application = window.application;
-const router = window.router;
+const router = window._router;
 
 router.addRoute(
     'menu',

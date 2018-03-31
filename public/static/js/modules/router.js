@@ -1,7 +1,9 @@
 'use strict';
 
-// noinspection JSUnusedLocalSymbols
 define('Router', (require) => {
+    const AccessTypes = require('Page/access');
+    const User = require('User');
+
     /**
      * Роутер.
      */
@@ -39,9 +41,22 @@ define('Router', (require) => {
         navigateTo(route) {
             const page = this._routes[route];
 
-            if (!page || page === this._activePage || !page.isAllowed()) {
+            if (!page || page === this._activePage) {
                 // TODO: 404;
                 return this;
+            }
+
+            // noinspection FallThroughInSwitchStatementJS
+            switch (page.accessType()) {
+            case AccessTypes.ANY_USER:
+                break;
+            case AccessTypes.LOGGED_IN_USER:
+                if (!User.isAuthorized()) {
+                    this.navigateTo('/login');
+                    return this;
+                }
+            default:
+                break;
             }
 
             if (this._activePage) {
