@@ -2,6 +2,8 @@
 
 (function() {
     document.addEventListener('DOMContentLoaded', () => {
+        const ProfileBar = require('ProfileBar');
+
         const Router = require('Router');
         const MenuPage = require('MenuPage');
         const MultiplayerPage = require('MultiplayerPage');
@@ -13,7 +15,11 @@
         const SignupPage = require('SignupPage');
         const SingleplayerPage = require('SingleplayerPage');
 
+        const User = require('User');
+
         const root = document.getElementById('application');
+
+        root.insertAdjacentHTML('afterbegin', profileBarTemplate());
 
         new Router(root)
             .addRoute('/', MenuPage)
@@ -26,5 +32,9 @@
             .addRoute('/signup', SignupPage)
             .addRoute('/singleplayer', SingleplayerPage)
             .start();
+
+        const profileBar = new ProfileBar(); // eslint-disable-line no-unused-vars
+
+        User.checkCurrentUser();
     });
 })();
