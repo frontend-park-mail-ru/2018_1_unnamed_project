@@ -4,6 +4,10 @@ define('Router', (require) => {
     const AccessTypes = require('Page/access');
     const User = require('User');
 
+    const bus = require('bus');
+
+    const events = require('Router/events');
+
     /**
      * Роутер.
      */
@@ -21,7 +25,16 @@ define('Router', (require) => {
             this._routes = {};
             this._activePage = null;
 
+            this._nextRoute = null;
+
             Router.__instance = this;
+        }
+
+        /**
+         * @return {string|null}
+         */
+        get nextRoute() {
+            return this._nextRoute;
         }
 
         /**
@@ -52,11 +65,22 @@ define('Router', (require) => {
                 break;
             case AccessTypes.LOGGED_IN_USER:
                 if (!User.isAuthorized()) {
-                    this.navigateTo('/login');
+                    this._nextRoute = route;
+                    this.navigateTo('/signin');
                     return this;
                 }
+                break;
+            case AccessTypes.NOT_LOGGED_IN_USER:
+                if (User.isAuthorized()) {
+                    return this;
+                }
+                break;
             default:
                 break;
+            }
+
+            if (route === this._nextRoute) {
+                this._nextRoute = null;
             }
 
             if (this._activePage) {
@@ -84,6 +108,14 @@ define('Router', (require) => {
                     evt.preventDefault();
                     this.navigateTo(evt.target.pathname);
                 }
+            });
+
+            bus.on(events.NAVIGATE_TO_PAGE, (route) => {
+                this.navigateTo(route);
+            });
+
+            bus.on(events.NAVIGATE_TO_NEXT_PAGE_OR_ROOT, (route = null) => {
+                this.navigateTo(this.nextRoute || '/');
             });
 
             this.navigateTo(window.location.pathname);

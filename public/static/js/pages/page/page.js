@@ -1,8 +1,6 @@
 'use strict';
 
 define('Page', (require) => {
-    const Router = require('Router');
-
     /**
      * Базовый класс страницы.
      */
@@ -13,7 +11,7 @@ define('Page', (require) => {
         constructor(templateFunction) {
             this.templateFunction = templateFunction;
             this.attrs = {};
-            this._router = new Router();
+
             this._active = false;
 
             this.element = document.createElement('div');

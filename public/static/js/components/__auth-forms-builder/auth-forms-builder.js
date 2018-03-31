@@ -2,7 +2,15 @@
 'use strict';
 
 (function() {
+
     const AbstractBuilder = window.AbstractBuilder;
+
+    const multiplayerBuilder = window.application.multiplayerPage.builder;
+    const profileBar = window.application.profileBar;
+    const profileBuilder = window.application.profilePage.builder;
+    const push = window.application.push;
+    const router = window._router;
+
     /**
      * Билдер форм регистрации и входа.
      */
@@ -34,10 +42,6 @@
          * @param {boolean} buildMultiplayer Показывать ли страницу мультиплеера.
          */
         checkAuth(buildMultiplayer = false) {
-            const profileBar = window.application.profileBar;
-            const push = window.application.push;
-            const router = window.router;
-
             this.api.getMe()
                 .then((response) => {
                     profileBar.innerText = response.username;
@@ -63,14 +67,11 @@
         onSubmitAuthForm(event, callback) {
             event.preventDefault();
 
-            const push = window.application.push;
             const form = event.currentTarget;
             const result = this.validator.validateCredentials(form, push, this._signup);
             if (result.err){
                 return;
             }
-            const profileBuilder = window.application.profilePage.builder;
-            const router = window.router;
 
             callback(result.formData)
                 .then(() => {
@@ -93,10 +94,6 @@
          */
         logoutMe() {
             event.preventDefault();
-            const multiplayerBuilder = window.application.multiplayerPage.builder;
-            const profileBuilder = window.application.profilePage.builder;
-
-            const router = window.router;
 
             this.api.logout()
                 .then(() => {

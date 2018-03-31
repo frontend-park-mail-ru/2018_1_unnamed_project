@@ -1,36 +1,36 @@
 'use strict';
 
-(function() {
-    const AbstractPage = window.AbstractPage;
+define('ProfilePage', (require) => {
+    const AccessTypes = require('Page/access');
+    const Page = require('Page');
+    const User = require('User');
+
     /**
-     * Страница профиля пользователя.
+     * Страница профиля текущего пользователя.
      */
-    class ProfilePage extends AbstractPage {
+    return class ProfilePage extends Page {
         /**
-         * @param {string} parentId Идентификатор родительского узла.
-         * @param {string} pageId Желаемый идентификатор страницы.
+         *
          */
-        constructor({parentId = 'application', pageId = 'profile'} = {}) {
-            super({parentId, pageId});
-
-            // noinspection JSUnresolvedFunction
-            this.parentNode.insertAdjacentHTML('beforeend', profilePageTemplate({pageId}));
-            this._builder = new window.ProfileBuilder('.profile');
+        constructor() {
+            super(profilePageTemplate);
         }
 
         /**
-         * Отображает страницу.
+         * @override
+         * @param {Object} attrs
+         * @return {Page}
          */
-        show() {
-            super.show();
-
-            this.api.getMe()
-                .then((response) => {
-                    this.builder.data = response;
-                    this.builder.render();
-                });
+        render(attrs) {
+            return super.render(Object.assign({}, attrs, User.currentUser));
         }
-    }
 
-    window.ProfilePage = ProfilePage;
-})();
+        /**
+         * @override
+         * @return {string}
+         */
+        accessType() {
+            return AccessTypes.LOGGED_IN_USER;
+        }
+    };
+});

@@ -1,49 +1,67 @@
 'use strict';
 
-(function() {
-    const AbstractPage = window.AbstractPage;
-    /**
-     * Страница входа.
-     */
-    class SignInPage extends AbstractPage {
-        /**
-         * @param {string} parentId Идентификатор родительского узла.
-         * @param {string} pageId Желаемый идентификатор страницы.
-         */
-        constructor({parentId = 'application', pageId = 'signin'} = {}) {
-            super({parentId, pageId});
+define('SigninPage', (require) => {
+    const Page = require('Page');
+    const AccessTypes = require('Page/access');
+    const User = require('User');
+    const ValidatorFactory = require('ValidatorFactory');
 
-            // noinspection JSUnresolvedFunction
-            this.parentNode.insertAdjacentHTML('beforeend', signinPageTemplate({pageId}));
-            this._builder = new window.AuthFormsBuilder('js-signin-form');
+    const bus = require('bus');
 
-            this.signinSubmit = () => this.builder.onSubmitAuthForm(event, this.api.signIn.bind(this.api));
+    const Form = require('Form');
+    const FormEvents = require('Form/events');
+
+    return class SigninPage extends Page {
+        constructor() {
+            super(signinPageTemplate);
+
+            this.attrs = {
+                fields: [
+                    {
+                        type: 'email',
+                        name: 'email',
+                        placeholder: 'Email',
+                        validator: ValidatorFactory.buildEmailValidator(),
+                    },
+                    {
+                        type: 'password',
+                        name: 'password',
+                        placeholder: 'Пароль',
+                        validator: ValidatorFactory.buildPasswordValiator(),
+                    },
+                ],
+                formFooterLink: {
+                    title: 'Нет аккаунта? Зарегистрируйтесь!',
+                    href: '/signup',
+                },
+                resetText: 'Очистить ввод',
+                submitText: 'Войти',
+            };
+
+            this._formRoot = null;
+            this._form = null;
+
+            bus.on(FormEvents.FORM_DATA_SUBMITTED, ({data, errors}) => {
+                if (errors) {
+                    errors.forEach((e) => console.log(e));
+                    return;
+                }
+
+                User.signIn(data);
+            });
         }
 
-        // noinspection JSUnusedGlobalSymbols
-        /**
-         * Отображает страницу.
-         */
-        show() {
-            super.show();
-            this.builder.render();
+        create() {
+            super.create(this.attrs);
 
-            const generatedSignUpHref = document.getElementsByClassName('js-signup-form__submit-button')[0];
-            generatedSignUpHref.addEventListener('click', window.anchorSubmitListener);
+            this._formRoot = this.element.querySelector('.js-signin-form-root');
+            this._form = new Form({element: this._formRoot, attrs: this.attrs});
 
-            const node = this.builder.node;
-
-            node.removeEventListener(
-                'submit',
-                this.signinSubmit
-            );
-            node.reset();
-            node.addEventListener(
-                'submit',
-                this.signinSubmit
-            );
+            return this;
         }
-    }
 
-    window.SignInPage = SignInPage;
-})();
+        accessType() {
+            return AccessTypes.NOT_LOGGED_IN_USER;
+        }
+    };
+});

@@ -1,59 +1,70 @@
-(function() {
-    const AbstractBuilder = window.AbstractBuilder;
-    /**
-     * Компонент для рендеринга уведомлений.
-     */
-    class Push extends AbstractBuilder {
+'use strict';
+
+define('Push', (require) => {
+    const Component = require('Component');
+
+    const levels = require('Push/levels');
+
+    return class Push extends Component {
         /**
-         * @param {string} selector CSS-селектор для выбора элемента.
+         * @param {Object}   element Элемент, в котором рендерить.
+         * @param {Object}   attrs   Параметры отрисовки.
          */
-        constructor(selector) {
-            super(selector);
+        constructor({element, attrs = {}}) {
+            super({element, templateFunction: pushTemplate, attrs});
+
             this._data = [];
         }
 
         /**
-         * @return {Array}
+         * @return {Array|*}
          */
         get data() {
             return this._data;
         }
 
-        // noinspection JSAnnotator
         /**
-         * Добавляет сообщение в конец.
-         * @param {Object} message
+         * @param {Array|*} messages
          */
-        set data(message) {
-            this._data.push(message);
+        set data(messages) {
+            this._data = messages;
         }
 
         /**
-         * Очищает список сообщений.
+         * Добавляет сообщение
+         * @param {string} message
+         * @return {Push}
+         */
+        addMessage(message) {
+            this._data.push(message);
+            return this;
+        }
+
+        /**
+         * Очищает содержимое и сообщения.
+         * @override
          */
         clear() {
             super.clear();
             this._data = [];
+            return this;
         }
 
         /**
-         * Отрисовывает список сообщений соответствующим цветом
-         * в зависимости от уровня.
-         * @param {string} level Уровень сообщений.
+         * @override
+         * @param {Object} level
+         * @return {Push}
          */
-        render(level = 'info') {
-            if (!(this._data && this.node)) return;
+        render({level = levels.MSG_INFO}) {
+            if (!this._data) return this;
 
-            // noinspection JSUnresolvedFunction
-            const template = pushTemplate({
+            super.render({
                 level,
                 messages: this._data,
             });
-            this.clear();
-            this.node.insertAdjacentHTML('afterbegin', template);
             this._data = [];
-        }
-    }
 
-    window.Push = Push;
-})();
+            return this;
+        }
+    };
+});

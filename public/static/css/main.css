@@ -1,12 +1,15 @@
-@font-face {
-    font-family: "Righteous-Regular";
-    src: url("../fonts/Righteous-Regular.ttf");
-}
+@import "reset.css";
+@import "system-font.css";
 
-@font-face {
-    font-family: "Comfortaa-Light";
-    src: url("../fonts/Comfortaa-Light.ttf");
-}
+@import "../js/components/form/form.css";
+@import "../js/components/push/push.css";
+@import "../js/components/scoreboard/scoreboard.css";
+
+@import "../js/pages/menu-page/menu-page.css";
+@import "../js/pages/multiplayer-page/multiplayer-page.css";
+@import "../js/pages/settings-page/settings-page.css";
+@import "../js/pages/signin-page/signin-page.css";
+@import "../js/pages/signup-page/signup-page.css";
 
 html,
 body {

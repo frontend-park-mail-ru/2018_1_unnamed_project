@@ -1,42 +1,53 @@
-(function() {
-    const AbstractBuilder = window.AbstractBuilder;
-    /**
-     * Компонент для отрисовки страницы лидеров.
-     */
-    class ScoreboardBuilder extends AbstractBuilder {
+'use strict';
+
+define('Scoreboard', (require) => {
+    const Component = require('Component');
+
+    const bus = require('bus');
+
+    const events = require('Scoreboard/events');
+
+    return class Scoreboard extends Component {
         /**
-         * Навешивает event listener-ы на кнопки вперед/назад под scoreboard
-         * @param {string} selector кнопки
-         * @param {function} callback
+         * @param {Object}   element Элемент, в котором рендерить.
+         * @param {Object}   attrs   Параметры отрисовки.
          */
-        prevNextEventHandler(selector, callback) {
-            const button = document.getElementById(selector);
-            if (callback) {
-                button.addEventListener('click', () => {
-                    event.preventDefault();
-                    window.application.scoreboardPage.show(callback);
-                });
+        constructor({element, attrs = {}}) {
+            super({element, templateFunction: scoreboardTemplate, attrs});
+        }
+
+        /**
+         * @private
+         * @param {string} elementId
+         * @param {string} pagination
+         * @return {Scoreboard}
+         */
+        setPaginationHandler(elementId, pagination) {
+            const button = document.getElementById(elementId);
+
+            if (pagination) {
+                button.onclick = (evt) => {
+                    evt.preventDefault();
+                    bus.emit(events.LOAD_PAGE, pagination);
+                };
             } else {
                 button.hidden = true;
             }
+
+            return this;
         }
+
         /**
-         * Отрисовывает компонент.
+         * @param {Object} attrs
+         * @return {Scoreboard}
          */
-        render() {
-            if (!this.data) return;
+        render(attrs) {
+            super.render(attrs);
 
-            super.render();
+            this.setPaginationHandler('prev', attrs.prevPage)
+                .setPaginationHandler('next', attrs.nextPage);
 
-            // noinspection JSUnresolvedFunction
-            const template = scoreboardTemplate({
-                users: this._data.users,
-            });
-            this.node.insertAdjacentHTML('afterbegin', template);
-            this.prevNextEventHandler('prev', this.data.prevPage);
-            this.prevNextEventHandler('next', this.data.nextPage);
+            return this;
         }
-    }
-
-    window.ScoreboardBuilder = ScoreboardBuilder;
-})();
+    };
+});

@@ -9,5 +9,6 @@ define('Page/access', (require) => {
     return {
         ANY_USER: 'any_user',
         LOGGED_IN_USER: 'logged_in_user',
+        NOT_LOGGED_IN_USER: 'not_logged_in_user',
     };
 });
