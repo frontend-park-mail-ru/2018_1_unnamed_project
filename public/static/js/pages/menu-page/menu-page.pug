@@ -1,18 +1,11 @@
-section(id=`${pageId}` hidden=true)
+section(class="menu menu-page")
     div.header
         | SHIP
         br
         | COLLISION
     hr
-    div.menu
+    nav.menu
         ul
-            li.menu-item
-                a(href="#" data-section="multiplayer") Multiplayer
-            li.menu-item
-                a(href="#" data-section="singleplayer") Singleplayer
-            li.menu-item
-                a(href="#" data-section="scoreboard") Scoreboard
-            li.menu-item
-                a(href="#" data-section="rules") Rules
-            li.menu-item
-                a(href="#" data-section="uxui") 🏳️‍🌈DESIGN!🏳️‍🌈
+            each item in navItems
+                li.menu-item
+                    a(href=`${item.href}`) #{item.title}

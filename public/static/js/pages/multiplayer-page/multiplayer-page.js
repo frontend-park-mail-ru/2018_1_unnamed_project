@@ -1,34 +1,26 @@
 'use strict';
 
-(function() {
-    const AbstractPage = window.AbstractPage;
+define('MultiplayerPage', (require) => {
+    const Page = require('Page');
+    const AccessTypes = require('Page/access');
+
     /**
-     * Страница мультиплеера.
+     * Страница многопользовательской игры.
      */
-    class MultiplayerPage extends AbstractPage {
+    return class MultiplayerPage extends Page {
         /**
-         * @param {string} parentId Идентификатор родительского узла.
-         * @param {string} pageId Желаемый идентификатор страницы.
+         *
          */
-        constructor({parentId = 'application', pageId = 'multiplayer'} = {}) {
-            super({parentId, pageId});
-
-            // noinspection JSUnresolvedFunction
-            this.parentNode.insertAdjacentHTML('beforeend', multiplayerPageTemplate({pageId}));
-            this._builder = new window.Multiplayer('.multiplayer');
+        constructor() {
+            super(multiplayerPageTemplate);
         }
 
         /**
-         * Отображает страницу.
+         * @override
+         * @return {string}
          */
-        show() {
-            super.show();
-
-            this.api.getMe()
-                .then(() => this.builder.render())
-                .catch(() => window.router.navigateTo('signin'));
+        accessType() {
+            return AccessTypes.LOGGED_IN_USER;
         }
-    }
-
-    window.MultiplayerPage = MultiplayerPage;
-})();
+    };
+});

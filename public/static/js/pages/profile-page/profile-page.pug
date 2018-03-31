@@ -1,2 +1,15 @@
 section(id=`${pageId}` hidden)
     div.profile
+        div.img-with-text
+            img.avatar(src=`${avatarLink}`)
+            a#settings(href="#" data-section="settings") Settings
+        div.profile-info
+            h4
+                i= 'Username: '
+                b= `${username}`
+            h4
+                i= 'Email: '
+                b= `${email}`
+            h4
+                i= 'Game rank: '
+                b= `${rank}`
