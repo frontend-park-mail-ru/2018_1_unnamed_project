@@ -19,6 +19,8 @@ define('SettingsPage', (require) => {
             this._form = null;
 
             bus.on(FormEvents.FORM_DATA_SUBMITTED, ({data, errors}) => {
+                if (!this.active) return;
+
                 if (errors) {
                     errors.forEach((err) => console.log(err));
                     return;
