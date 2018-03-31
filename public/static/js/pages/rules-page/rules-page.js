@@ -1,23 +1,27 @@
 /* eslint-disable */
 'use strict';
 
-(function() {
-    const AbstractPage = window.AbstractPage;
-    /**
-     * Страница с праилами игры
-     */
-    class RulesPage extends AbstractPage {
-        /**
-         * @param {string} parentId Идентификатор родительского узла.
-         * @param {string} pageId Желаемый идентификатор страницы.
-         */
-        constructor({parentId = 'application', pageId = 'rules'} = {}) {
-            super({parentId, pageId});
+define('RulesPage', (require) => {
+    const AccessTypes = require('Page/access');
+    const Page = require('Page');
 
-            // noinspection JSUnresolvedFunction
-            this.parentNode.insertAdjacentHTML('beforeend', rulesPageTemplate({pageId}));
+    /**
+     * Страница с праилами игры.
+     */
+    return class RulesPage extends Page {
+        /**
+         *
+         */
+        constructor() {
+            super(rulesPageTemplate);
+        }
+
+        /**
+         * @override
+         * @return {string}
+         */
+        accessType() {
+            return AccessTypes.ANY_USER;
         }
     }
-
-    window.RulesPage = RulesPage;
-})();
+});

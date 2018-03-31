@@ -1,36 +1,77 @@
 'use strict';
 
-(function() {
-    const AbstractPage = window.AbstractPage;
-    /**
-     * Страница настроек профиля пользователя.
-     */
-    class SettingsPage extends AbstractPage {
-        /**
-         * @param {string} parentId Идентификатор родительского узла.
-         * @param {string} pageId Желаемый идентификатор страницы.
-         */
-        constructor({parentId = 'application', pageId = 'settings'} = {}) {
-            super({parentId, pageId});
+define('SettingsPage', (require) => {
+    const AccessTypes = require('Page/access');
+    const Page = require('Page');
+    const User = require('User');
+    const ValidatorFactory = require('ValidatorFactory');
 
-            // noinspection JSUnresolvedFunction
-            this.parentNode.insertAdjacentHTML('beforeend', settingsPageTemplate({pageId}));
-            this._builder = new window.SettingsBuilder('.settings');
+    const bus = require('bus');
+
+    const Form = require('Form');
+    const FormEvents = require('Form/events');
+
+    return class SettingsPage extends Page {
+        constructor() {
+            super(settingsPageTemplate);
+
+            this._formRoot = null;
+            this._form = null;
+
+            bus.on(FormEvents.FORM_DATA_SUBMITTED, ({data, errors}) => {
+                if (errors) {
+                    errors.forEach((err) => console.log(err));
+                    return;
+                }
+
+                User.update(data);
+            });
         }
 
-        /**
-         * Отображает страницу.
-         */
-        show() {
-            super.show();
+        create() {
+            const currentUser = User.currentUser;
 
-            this.api.getMe()
-                .then((response) => {
-                    this.builder.data = response;
-                    this.builder.render();
-                });
+            this.attrs = {
+                fields: [
+                    {
+                        type: 'text',
+                        name: 'username',
+                        placeholder: currentUser.username,
+                        validator: ValidatorFactory.buildUsernameValidator(),
+                    },
+                    {
+                        type: 'email',
+                        name: 'email',
+                        placeholder: currentUser.email,
+                        validator: ValidatorFactory.buildEmailValidator(),
+                    },
+                    {
+                        type: 'password',
+                        name: 'password',
+                        placeholder: 'Пароль',
+                        validator: ValidatorFactory.buildPasswordValiator(),
+                    },
+                    {
+                        type: 'password',
+                        name: 'password_confirmation',
+                        placeholder: 'Подтверждение пароля',
+                        validator: ValidatorFactory.buildPasswordConfirmationValidator(),
+                    },
+                ],
+                resetText: 'Очистить ввод',
+                submitText: 'Войти',
+            };
+
+            super.create(this.attrs);
+
+            this._formRoot = this._formRoot || this.element.querySelector('.js-setings-form');
+            this._form = new Form(this._formRoot, this.attrs);
+
+            return this;
         }
-    }
 
-    window.SettingsPage = SettingsPage;
-})();
+        accessType() {
+            return AccessTypes.LOGGED_IN_USER;
+        }
+    };
+});

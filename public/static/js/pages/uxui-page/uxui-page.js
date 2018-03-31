@@ -1,23 +1,17 @@
 /* eslint-disable */
 'use strict';
 
-(function() {
-    const AbstractPage = window.AbstractPage;
-    /**
-     * Страница cо сборкой всех UI элементов
-     */
-    class UxUiPage extends AbstractPage {
-        /**
-         * @param {string} parentId Идентификатор родительского узла.
-         * @param {string} pageId Желаемый идентификатор страницы.
-         */
-        constructor({parentId = 'application', pageId = 'uxui'} = {}) {
-            super({parentId, pageId});
+define('UxUiPage', (require) => {
+    const AccessTypes = require('Page/access');
+    const Page = require('Page');
 
-            // noinspection JSUnresolvedFunction
-            this.parentNode.insertAdjacentHTML('beforeend', uxuiPageTemplate({pageId}));
+    return class UxUiPage extends Page {
+        constructor() {
+            super(uxuiPageTemplate);
+        }
+
+        accessType() {
+            return AccessTypes.ANY_USER;
         }
     }
-
-    window.UxUiPage = UxUiPage;
-})();
+});
