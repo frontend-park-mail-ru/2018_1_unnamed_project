@@ -35,7 +35,7 @@ define('SignupPage', (require) => {
                         type: 'password',
                         name: 'password',
                         placeholder: 'Пароль',
-                        validator: ValidatorFactory.buildPasswordValiator(),
+                        validator: ValidatorFactory.buildPasswordValidator(),
                     },
                     {
                         type: 'password',

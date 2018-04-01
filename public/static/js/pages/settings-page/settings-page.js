@@ -3,7 +3,10 @@
 define('SettingsPage', (require) => {
     const AccessTypes = require('Page/access');
     const Page = require('Page');
+    const Push = require('Push');
+    const PushLevels = require('Push/levels');
     const User = require('User');
+    const UserEvents = require('User/events');
     const ValidatorFactory = require('ValidatorFactory');
 
     const bus = require('bus');
@@ -18,15 +21,50 @@ define('SettingsPage', (require) => {
             this._formRoot = null;
             this._form = null;
 
+            this._uploadAvatarForm = null;
+            this._deleteAvatarButton = null;
+
             bus.on(FormEvents.FORM_DATA_SUBMITTED, ({data, errors}) => {
                 if (!this.active) return;
 
-                if (errors) {
-                    errors.forEach((err) => console.log(err));
+                const push = new Push();
+                push.clear();
+
+                const notEmptyFieldsCount = Object.values(data).filter((element) => element !== '').length;
+
+                if (notEmptyFieldsCount === 0 && !errors) {
+                    push.addMessage('Поля формы пусты');
+                    push.render({level: PushLevels.MSG_WARNING});
                     return;
                 }
 
+                if (data['password'] !== data['password-confirmation']) {
+                    errors = errors || [];
+                    errors.push('Пароль и подтверждение не совпадают');
+                    push.addMessage('Пароль и подтверждение не совпадают');
+                }
+
+                if (errors) {
+                    errors.forEach((err) => {
+                        push.addMessage(err);
+                        console.log(err);
+                    });
+                    push.render({level: PushLevels.MSG_ERROR});
+                    return;
+                }
+
+                console.log(Object.keys(data).forEach((key) => {
+                    (!data[key] && data[key] !== undefined) && delete data[key];
+                }));
+
                 User.update(data);
+            });
+
+            bus.on(UserEvents.CURRENT_USER_CHANGED, (newUser) => {
+                if (!this.active || !newUser) return;
+
+                const renderAttr = Object.assign({}, this.attrs, newUser);
+                this.render(renderAttr);
             });
         }
 
@@ -39,37 +77,49 @@ define('SettingsPage', (require) => {
                         type: 'text',
                         name: 'username',
                         placeholder: currentUser.username,
-                        validator: ValidatorFactory.buildUsernameValidator(),
+                        validator: ValidatorFactory.buildUsernameNonMandatoryValidator(),
                     },
                     {
                         type: 'email',
                         name: 'email',
                         placeholder: currentUser.email,
-                        validator: ValidatorFactory.buildEmailValidator(),
+                        validator: ValidatorFactory.buildEmailNonMandatoryValidator(),
                     },
                     {
                         type: 'password',
                         name: 'password',
                         placeholder: 'Пароль',
-                        validator: ValidatorFactory.buildPasswordValiator(),
+                        validator: ValidatorFactory.buildPasswordNonMandatoryValidator(),
                     },
                     {
                         type: 'password',
-                        name: 'password_confirmation',
+                        name: 'password-confirmation',
                         placeholder: 'Подтверждение пароля',
-                        validator: ValidatorFactory.buildPasswordConfirmationValidator(),
+                        validator: ValidatorFactory.buildPasswordConfirmationNonMandatoryValidator(),
                     },
                 ],
                 resetText: 'Очистить',
                 submitText: 'Обновить',
             };
 
-            this.attrs = Object.assign({}, this.attrs, currentUser);
-
-            super.create(this.attrs);
+            const renderAttrs = Object.assign({}, this.attrs, currentUser);
+            super.create(renderAttrs);
 
             this._formRoot = this.element.querySelector('.js-settings-form-root');
             this._form = new Form({element: this._formRoot, attrs: this.attrs});
+
+            this._uploadAvatarForm = this.element.querySelector('#upload-avatar');
+            this._uploadAvatarForm.addEventListener('submit', (evt) => {
+                evt.preventDefault();
+                const form = evt.currentTarget;
+                User.changeAvatar(form);
+            });
+
+            this._deleteAvatarButton = this.element.querySelector('#delete-avatar');
+            this._deleteAvatarButton.addEventListener('click', (evt) => {
+                evt.preventDefault();
+                User.deleteAvatar();
+            });
 
             return this;
         }
