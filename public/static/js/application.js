@@ -41,8 +41,10 @@
         bus.on(UserEvents.CURRENT_USER_CHANGED, (newUser) => {
             if (newUser) {
                 profileBar.text = newUser.username;
+                profileBar.logoutAvailable = true;
             } else {
-                profileBar.text = 'Unauthorized';
+                profileBar.text = 'вы не авторизованы';
+                profileBar.logoutAvailable = false;
             }
         });
 

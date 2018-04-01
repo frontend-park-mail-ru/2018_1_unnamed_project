@@ -1,15 +1,18 @@
 .form {
     display: flex;
     flex-direction: column;
+    align-items: center;
     padding: 10px;
 }
 
 .form__fields {
     display: block;
     margin-bottom: 10px;
+    width: 100%;
 }
 
 .form__fields-input {
+    width: 100%;
     border: 40px;
     background-color: #cccccc;
     display: block;
@@ -30,6 +33,7 @@
 .form__controls {
     display: flex;
     flex-direction: row;
+    width: 100%;
 }
 
 .form__control-bordered {
@@ -50,11 +54,13 @@
     cursor: pointer;
 }
 
-td.button-container{
-    height: 1px;;
+.form__footer-link {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
 }
 
-td.space {
+.space {
     border: transparent;
-    width: 6px;
+    width: 10px;
 }

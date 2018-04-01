@@ -10,6 +10,8 @@ define('User', (require) => {
 
     const api = new API();
 
+    const DEFAULT_AVATAR_LINK = 'https://www.shareicon.net/data/128x128/2016/08/05/806962_user_512x512.png';
+
     /**
      * Модель пользователя.
      */
@@ -21,7 +23,9 @@ define('User', (require) => {
             this.username = data.username;
             this.email = data.email;
             this.rank = data.rank;
-            this.avatarLink = data.avatarLink;
+            this.avatarLink = (data.avatarLink) ?
+                (api.backendURI + data.avatarLink) : DEFAULT_AVATAR_LINK;
+            this.uploadAvatarLink = `${api.backendURI}/me/avatar`;
         }
 
         /**
@@ -95,6 +99,19 @@ define('User', (require) => {
                 .catch((err) => {
                     console.log(err);
                     bus.emit(events.CURRENT_USER_CHANGED, null);
+                });
+        }
+
+        static logout() {
+            api
+                .logout()
+                .then((response) => {
+                    LocalStorageProxy.remove('currentUser');
+                    bus.emit(events.CURRENT_USER_CHANGED, null);
+                    bus.emit(RouterEvents.NAVIGATE_TO_PAGE, '/');
+                })
+                .catch((err) => {
+                    console.log(err);
                 });
         }
     };
