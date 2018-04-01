@@ -16,6 +16,9 @@
         const SingleplayerPage = require('SingleplayerPage');
 
         const User = require('User');
+        const UserEvents = require('User/events');
+
+        const bus = require('bus');
 
         const root = document.getElementById('application');
 
@@ -34,7 +37,14 @@
             .addRoute('/singleplayer', SingleplayerPage)
             .start();
 
-        const profileBar = new ProfileBar(); // eslint-disable-line no-unused-vars
+        const profileBar = new ProfileBar();
+        bus.on(UserEvents.CURRENT_USER_CHANGED, (newUser) => {
+            if (newUser) {
+                profileBar.text = newUser.username;
+            } else {
+                profileBar.text = 'Unauthorized';
+            }
+        });
 
         User.checkCurrentUser();
     });

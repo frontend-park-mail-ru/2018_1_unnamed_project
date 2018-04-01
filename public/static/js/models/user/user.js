@@ -42,11 +42,14 @@ define('User', (require) => {
             api
                 .getMe()
                 .then((response) => {
-                    LocalStorageProxy.save('currentUser', new User(response));
+                    const user = new User(response);
+                    LocalStorageProxy.save('currentUser', user);
+                    bus.emit(events.CURRENT_USER_CHANGED, user);
                 })
                 .catch((err) => {
                     LocalStorageProxy.remove('currentUser');
                     console.log(err);
+                    bus.emit(events.CURRENT_USER_CHANGED, null);
                 });
         }
 
@@ -61,6 +64,7 @@ define('User', (require) => {
                 })
                 .catch((err) => {
                     console.log(err);
+                    bus.emit(events.CURRENT_USER_CHANGED, null);
                 });
         }
 
@@ -71,11 +75,12 @@ define('User', (require) => {
                     // noinspection ReuseOfLocalVariableJS
                     user = new User(response);
                     LocalStorageProxy.save('currentUser', user);
-                    bus.emit(events.CURRENT_USER_CHANGED, currentUser);
+                    bus.emit(events.CURRENT_USER_CHANGED, user);
                     bus.emit(RouterEvents.NAVIGATE_TO_NEXT_PAGE_OR_ROOT, null);
                 })
                 .catch((err) => {
                     console.log(err);
+                    bus.emit(events.CURRENT_USER_CHANGED, null);
                 });
         }
 
@@ -85,10 +90,11 @@ define('User', (require) => {
                 .then((response) => {
                     user = new User(response);
                     LocalStorageProxy.save('currentUser', user);
-                    bus.emit(events.CURRENT_USER_CHANGED, currentUser);
+                    bus.emit(events.CURRENT_USER_CHANGED, user);
                 })
                 .catch((err) => {
                     console.log(err);
+                    bus.emit(events.CURRENT_USER_CHANGED, null);
                 });
         }
     };

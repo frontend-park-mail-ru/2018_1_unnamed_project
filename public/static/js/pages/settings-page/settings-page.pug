@@ -1,12 +1,12 @@
 section(class="menu settings-page")
-    div.settings
-        div.settings__img-with-text
-            img.avatar(src=`${avatarLink}`)
-            form(action=`${uploadAvatarLink}` method="post" id="upload-avatar" enctype="multipart/form-data")
-                span.upload-btn-wrapper
-                    button(class="btn update") Update
-                    input(type="file" name="avatar")
-            button(class="btn delete" id="delete-avatar") Delete
-            hr
-        div.js-signup-form-root
-            include ../../components/form/form.pug
+    include ../../components/menu-ref/menu-ref.pug
+    div.settings__img-with-text
+        img.avatar(src=`${avatarLink}`)
+        form(action=`${uploadAvatarLink}` method="post" id="upload-avatar" enctype="multipart/form-data")
+            span.upload-btn-wrapper
+                button(class="btn update") Update
+                input(type="file" name="avatar")
+        button(class="btn delete" id="delete-avatar") Delete
+        hr
+    div.js-settings-form-root
+        include ../../components/form/form.pug

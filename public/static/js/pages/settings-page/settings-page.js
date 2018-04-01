@@ -60,14 +60,14 @@ define('SettingsPage', (require) => {
                         validator: ValidatorFactory.buildPasswordConfirmationValidator(),
                     },
                 ],
-                resetText: 'Очистить ввод',
-                submitText: 'Войти',
+                resetText: 'Очистить',
+                submitText: 'Обновить',
             };
 
             super.create(this.attrs);
 
-            this._formRoot = this._formRoot || this.element.querySelector('.js-setings-form');
-            this._form = new Form(this._formRoot, this.attrs);
+            this._formRoot = this.element.querySelector('.js-settings-form-root');
+            this._form = new Form({element: this._formRoot, attrs: this.attrs});
 
             return this;
         }

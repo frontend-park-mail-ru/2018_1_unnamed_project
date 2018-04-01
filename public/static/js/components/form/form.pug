@@ -4,9 +4,13 @@ form(class="form js-form" novalidate=true)
             each field in fields
                 input.form__fields-input(required=true, type=`${field.type}`, name=`${field.name}` placeholder=`${field.placeholder}`)
 
-    div.form__controls
-        button.form__control-bordered(type="reset") #{resetText}
-        button.form__control-bordered(type="submit") #{submitText}
+    table.form-buttons
+        tr
+            td.button-container
+                button.form__control-bordered(type="reset") #{resetText}
+            td.space
+            td.button-container
+                button.form__control-bordered(type="submit") #{submitText}
 
     if formFooterLink
         a.form__footer-link(href=`${formFooterLink.href}`) #{formFooterLink.title}
