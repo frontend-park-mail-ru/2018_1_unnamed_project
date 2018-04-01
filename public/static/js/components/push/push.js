@@ -56,13 +56,23 @@ define('Push', (require) => {
             this._sharedMessages.add(message);
         }
 
+        clearMessages() {
+            this._messages.clear();
+            return this;
+        }
+
+        clearSharedMessages() {
+            this._sharedMessages.clear();
+            return this;
+        }
+
         /**
          * Очищает содержимое и сообщения.
          * @override
          */
         clear() {
             super.clear();
-            this._messages = [];
+            this._messages.clear();
             return this;
         }
 
@@ -78,7 +88,7 @@ define('Push', (require) => {
                 level,
                 messages: [...this._messages],
             });
-            this._messages = [];
+            this.clearMessages();
 
             return this;
         }
@@ -90,7 +100,7 @@ define('Push', (require) => {
                 level,
                 messages: [...this._sharedMessages],
             });
-            this._sharedMessages.clear();
+            this.clearSharedMessages();
 
             return this;
         }
