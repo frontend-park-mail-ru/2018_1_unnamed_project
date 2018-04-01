@@ -64,6 +64,8 @@ define('SettingsPage', (require) => {
                 submitText: 'Обновить',
             };
 
+            this.attrs = Object.assign({}, this.attrs, currentUser);
+
             super.create(this.attrs);
 
             this._formRoot = this.element.querySelector('.js-settings-form-root');
