@@ -45,7 +45,7 @@
             this.api.getMe()
                 .then((response) => {
                     profileBar.innerText = response.username;
-                    profileBar.setAttribute('data-section', 'profile');
+                    profileBar.setAttribute('messages-section', 'profile');
                     if (buildMultiplayer) {
                         router.navigateTo('multiplayer');
                         push.data = `Welcome back, ${response.username}`;
@@ -54,7 +54,7 @@
                 })
                 .catch((error) => {
                     profileBar.innerText = 'Unauthorised';
-                    profileBar.setAttribute('data-section', 'signin');
+                    profileBar.setAttribute('messages-section', 'signin');
                     console.log(error);
                 });
         }

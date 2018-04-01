@@ -29,14 +29,14 @@
             const avatarLink = this.data.avatarLink ?
                 (backendURI + this.data.avatarLink)
                 :
-                'https://www.shareicon.net/data/128x128/2016/08/05/806962_user_512x512.png';
+                'https://www.shareicon.net/messages/128x128/2016/08/05/806962_user_512x512.png';
             // noinspection JSUnresolvedFunction
             const template = settingsTemplate({
                 avatarLink,
                 uploadAvatarLink: `${backendURI}/me/avatar`,
                 meLink: `${backendURI}/me`,
-                username: this._data.username,
-                email: this._data.email,
+                username: this._messages.username,
+                email: this._messages.email,
             });
             this.node.insertAdjacentHTML('afterbegin', template);
 

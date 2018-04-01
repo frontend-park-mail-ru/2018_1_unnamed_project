@@ -10,7 +10,7 @@ define('User', (require) => {
 
     const api = new API();
 
-    const DEFAULT_AVATAR_LINK = 'https://www.shareicon.net/data/128x128/2016/08/05/806962_user_512x512.png';
+    const DEFAULT_AVATAR_LINK = 'https://www.shareicon.net/messages/128x128/2016/08/05/806962_user_512x512.png';
 
     /**
      * Модель пользователя.

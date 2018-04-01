@@ -5,6 +5,7 @@
         const ProfileBar = require('ProfileBar');
 
         const Router = require('Router');
+
         const MenuPage = require('MenuPage');
         const MultiplayerPage = require('MultiplayerPage');
         const ProfilePage = require('ProfilePage');

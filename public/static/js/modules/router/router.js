@@ -2,6 +2,7 @@
 
 define('Router', (require) => {
     const AccessTypes = require('Page/access');
+    const Push = require('Push');
     const User = require('User');
 
     const bus = require('bus');
@@ -88,6 +89,7 @@ define('Router', (require) => {
                 this._activePage = null;
             }
 
+            new Push().clear();
             this._activePage = page.create();
 
             if (window.location.pathname !== route) {

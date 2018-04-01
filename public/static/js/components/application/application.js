@@ -98,7 +98,7 @@
 //          * Навешивает на клик ссылок начальной страницы обработчики для навигации по приложению.
 //          */
 //         constructor() {
-//             const hrefs = document.querySelectorAll('[data-section]');
+//             const hrefs = document.querySelectorAll('[messages-section]');
 //             Object.entries(hrefs).forEach(([key, value]) => {
 //                 value.addEventListener('click', window.anchorSubmitListener);
 //             });
@@ -229,7 +229,7 @@
 //         event.preventDefault();
 //
 //         const target = event.target;
-//         const sectionName = target.getAttribute('data-section');
+//         const sectionName = target.getAttribute('messages-section');
 //
 //         if (target.tagName.toLowerCase() === 'a') {
 //             router.navigateTo(sectionName);

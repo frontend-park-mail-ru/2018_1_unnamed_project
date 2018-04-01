@@ -7,8 +7,7 @@ define('Push', (require) => {
 
     return class Push extends Component {
         /**
-         * @param {Object}   element Элемент, в котором рендерить.
-         * @param {Object}   attrs   Параметры отрисовки.
+         *
          */
         constructor() {
             if (Push.__instance) {
@@ -21,7 +20,10 @@ define('Push', (require) => {
                 attrs: {},
             });
 
-            this._data = [];
+            // Сообщения, доступные только текущей странице.
+            this._messages = new Set();
+            // Сообщения, которые должны отобразиться на следующей странице.
+            this._sharedMessages = new Set();
 
             Push.__instance = this;
         }
@@ -29,15 +31,15 @@ define('Push', (require) => {
         /**
          * @return {Array|*}
          */
-        get data() {
-            return this._data;
+        get messages() {
+            return this._messages;
         }
 
         /**
          * @param {Array|*} messages
          */
-        set data(messages) {
-            this._data = messages;
+        set messages(messages) {
+            this._messages = messages;
         }
 
         /**
@@ -46,8 +48,12 @@ define('Push', (require) => {
          * @return {Push}
          */
         addMessage(message) {
-            this._data.push(message);
+            this._messages.add(message);
             return this;
+        }
+
+        addSharedMessage(message) {
+            this._sharedMessages.add(message);
         }
 
         /**
@@ -56,7 +62,7 @@ define('Push', (require) => {
          */
         clear() {
             super.clear();
-            this._data = [];
+            this._messages = [];
             return this;
         }
 
@@ -66,13 +72,25 @@ define('Push', (require) => {
          * @return {Push}
          */
         render({level = levels.MSG_INFO}) {
-            if (!this._data) return this;
+            if (this._messages.em) return this;
 
             super.render({
                 level,
-                messages: this._data,
+                messages: [...this._messages],
             });
-            this._data = [];
+            this._messages = [];
+
+            return this;
+        }
+
+        renderShared({level = levels.MSG_INFO}) {
+            if (this._sharedMessages.empty) return this;
+
+            super.render({
+                level,
+                messages: [...this._sharedMessages],
+            });
+            this._sharedMessages.clear();
 
             return this;
         }
