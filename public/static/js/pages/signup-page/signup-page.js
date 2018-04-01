@@ -3,6 +3,8 @@
 define('SignupPage', (require) => {
     const AccessTypes = require('Page/access');
     const Page = require('Page');
+    const Push = require('Push');
+    const PushLevels = require('Push/levels');
     const User = require('User');
     const ValidatorFactory = require('ValidatorFactory');
 
@@ -56,8 +58,21 @@ define('SignupPage', (require) => {
             bus.on(FormEvents.FORM_DATA_SUBMITTED, ({data, errors}) => {
                 if (!this.active) return;
 
+                const push = new Push();
+                push.clear();
+
+                if (data['password'] !== data['password-confirmation']) {
+                    errors = errors || [];
+                    errors.push('Пароль и подтверждение не совпадают');
+                    push.addMessage('Пароль и подтверждение не совпадают');
+                }
+
                 if (errors) {
-                    errors.forEach((err) => console.log(err));
+                    errors.forEach((err) => {
+                        push.addMessage(err);
+                        console.log(err);
+                    });
+                    push.render({level: PushLevels.MSG_ERROR});
                     return;
                 }
 

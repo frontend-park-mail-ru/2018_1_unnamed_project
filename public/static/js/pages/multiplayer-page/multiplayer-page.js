@@ -21,7 +21,7 @@ define('MultiplayerPage', (require) => {
 
             bus.on(UserEvents.CURRENT_USER_CHANGED, (newUser) => {
                 if (!newUser) return;
-                new Push().addSharedMessage(`Добро пожаловать, ${newUser.username}`);
+                new Push().clear().addSharedMessage(`Добро пожаловать, ${newUser.username}`);
             });
         }
 

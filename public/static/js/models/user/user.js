@@ -3,6 +3,8 @@
 define('User', (require) => {
     const API = require('API');
     const LocalStorageProxy = require('LocalStorageProxy');
+    const Push = require('Push');
+    const PushLevels = require('Push/levels');
     const RouterEvents = require('Router/events');
 
     const bus = require('bus');
@@ -50,9 +52,9 @@ define('User', (require) => {
                     LocalStorageProxy.save('currentUser', user);
                     bus.emit(events.CURRENT_USER_CHANGED, user);
                 })
-                .catch((err) => {
+                .catch((errors) => {
                     LocalStorageProxy.remove('currentUser');
-                    console.log(err);
+                    console.log(errors);
                     bus.emit(events.CURRENT_USER_CHANGED, null);
                 });
         }
@@ -66,8 +68,16 @@ define('User', (require) => {
                     bus.emit(events.CURRENT_USER_CHANGED, user);
                     bus.emit(RouterEvents.NAVIGATE_TO_NEXT_PAGE_OR_ROOT, null);
                 })
-                .catch((err) => {
-                    console.log(err);
+                .catch((errors) => {
+                    const push = new Push();
+
+                    errors.forEach((err) => {
+                        push.addMessage(err);
+                        console.log(err);
+                    });
+
+                    push.render({level: PushLevels.MSG_ERROR});
+
                     bus.emit(events.CURRENT_USER_CHANGED, null);
                 });
         }
@@ -76,14 +86,21 @@ define('User', (require) => {
             api
                 .signUp(credentials)
                 .then((response) => {
-                    // noinspection ReuseOfLocalVariableJS
-                    user = new User(response);
+                    const user = new User(response);
                     LocalStorageProxy.save('currentUser', user);
                     bus.emit(events.CURRENT_USER_CHANGED, user);
                     bus.emit(RouterEvents.NAVIGATE_TO_NEXT_PAGE_OR_ROOT, null);
                 })
-                .catch((err) => {
-                    console.log(err);
+                .catch((errors) => {
+                    const push = new Push();
+
+                    errors.forEach((err) => {
+                        push.addMessage(err);
+                        console.log(err);
+                    });
+
+                    push.render({level: PushLevels.MSG_ERROR});
+                    
                     bus.emit(events.CURRENT_USER_CHANGED, null);
                 });
         }
@@ -92,12 +109,20 @@ define('User', (require) => {
             api
                 .updateProfile(data)
                 .then((response) => {
-                    user = new User(response);
+                    const user = new User(response);
                     LocalStorageProxy.save('currentUser', user);
                     bus.emit(events.CURRENT_USER_CHANGED, user);
                 })
-                .catch((err) => {
-                    console.log(err);
+                .catch((errors) => {
+                    const push = new Push();
+
+                    errors.forEach((err) => {
+                        push.addMessage(err);
+                        console.log(err);
+                    });
+
+                    push.render({level: PushLevels.MSG_ERROR});
+
                     bus.emit(events.CURRENT_USER_CHANGED, null);
                 });
         }
@@ -110,8 +135,8 @@ define('User', (require) => {
                     bus.emit(events.CURRENT_USER_CHANGED, null);
                     bus.emit(RouterEvents.NAVIGATE_TO_PAGE, '/');
                 })
-                .catch((err) => {
-                    console.log(err);
+                .catch((errors) => {
+                    console.log(errors);
                 });
         }
     };
