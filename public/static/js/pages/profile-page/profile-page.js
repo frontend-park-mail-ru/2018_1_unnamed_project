@@ -3,7 +3,12 @@
 define('ProfilePage', (require) => {
     const AccessTypes = require('Page/access');
     const Page = require('Page');
+    const Push = require('Push');
+    const PushLevels = require('Push/levels');
     const User = require('User');
+    const UserEvents = require('User/events');
+
+    const bus = require('bus');
 
     /**
      * Страница профиля текущего пользователя.
@@ -14,6 +19,11 @@ define('ProfilePage', (require) => {
          */
         constructor() {
             super(profilePageTemplate);
+
+            bus.on(UserEvents.CURRENT_USER_CHANGED, (newUser) => {
+                if (!newUser) return;
+                new Push().addSharedMessage(`Добро пожаловать, ${newUser.username}`);
+            });
         }
 
         /**
@@ -22,7 +32,9 @@ define('ProfilePage', (require) => {
          * @return {Page}
          */
         render(attrs) {
-            return super.render(Object.assign({}, attrs, User.currentUser));
+            super.render(Object.assign({}, attrs, User.currentUser));
+            new Push().renderShared({level: PushLevels.MSG_SUCCESS});
+            return this;
         }
 
         /**

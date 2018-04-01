@@ -35,17 +35,17 @@
             const backendURI = this.api.backendURI;
 
             // noinspection JSUnresolvedVariable
-            const avatarLink = (this._data.avatarLink ?
-                (backendURI + this._data.avatarLink)
+            const avatarLink = (this._messages.avatarLink ?
+                (backendURI + this._messages.avatarLink)
                 :
-                'https://www.shareicon.net/data/128x128/2016/08/05/806962_user_512x512.png');
+                'https://www.shareicon.net/messages/128x128/2016/08/05/806962_user_512x512.png');
             // noinspection JSUnresolvedFunction
             const template = profileTemplate({
                 avatarLink,
                 uploadAvatarLink: `${backendURI}/me/avatar`,
-                username: this._data.username,
-                email: this._data.email,
-                rank: this._data.rank,
+                username: this._messages.username,
+                email: this._messages.email,
+                rank: this._messages.rank,
             });
             this.node.insertAdjacentHTML('afterbegin', template);
             document.getElementById('settings').addEventListener('click', window.anchorSubmitListener);

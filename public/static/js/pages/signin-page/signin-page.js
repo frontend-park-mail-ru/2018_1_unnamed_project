@@ -1,8 +1,10 @@
 'use strict';
 
 define('SigninPage', (require) => {
-    const Page = require('Page');
     const AccessTypes = require('Page/access');
+    const Page = require('Page');
+    const Push = require('Push');
+    const PushLevels = require('Push/levels');
     const User = require('User');
     const ValidatorFactory = require('ValidatorFactory');
 
@@ -44,8 +46,15 @@ define('SigninPage', (require) => {
             bus.on(FormEvents.FORM_DATA_SUBMITTED, ({data, errors}) => {
                 if (!this.active) return;
 
+                const push = new Push();
+                push.clear();
+
                 if (errors) {
-                    errors.forEach((e) => console.log(e));
+                    errors.forEach((e) => {
+                        push.addMessage(e);
+                        console.log(e);
+                    });
+                    push.render({level: PushLevels.MSG_ERROR});
                     return;
                 }
 

@@ -97,7 +97,7 @@ define('API', (require) => {
         uploadAvatar(data) {
             /**
              * Content-Type выставляется в null для того, чтобы
-             * браузер сам коректно выставил boundaries для multipart/form-data.
+             * браузер сам коректно выставил boundaries для multipart/form-messages.
              */
             return this.httpModule.doPost({
                 url: this.routeMappings.avatar,
