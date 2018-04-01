@@ -12,7 +12,18 @@ define('User', (require) => {
 
     const api = new API();
 
-    const DEFAULT_AVATAR_LINK = 'https://www.shareicon.net/messages/128x128/2016/08/05/806962_user_512x512.png';
+    const DEFAULT_AVATAR_LINK = 'https://cdn.weasyl.com/static/media/61/c0/6f/61c06fe056b415366fc32ed9914058a30098ba0264ffed0b9e1108610bd4f2f1.png';
+
+    function renderErrors(errors) {
+        const push = new Push();
+
+        errors.forEach((err) => {
+            push.addMessage(err);
+            console.log(err);
+        });
+
+        push.render({level: PushLevels.MSG_ERROR});
+    }
 
     /**
      * Модель пользователя.
@@ -41,6 +52,7 @@ define('User', (require) => {
          * @return {User|*}
          */
         static get currentUser() {
+            this.checkCurrentUser();
             return LocalStorageProxy.fetch('currentUser');
         }
 
@@ -64,20 +76,16 @@ define('User', (require) => {
                 .signIn(credentials)
                 .then((response) => {
                     const user = new User(response);
+
                     LocalStorageProxy.save('currentUser', user);
+
                     bus.emit(events.CURRENT_USER_CHANGED, user);
+                    bus.emit(events.AUTHENTICATION_DONE, user);
                     bus.emit(RouterEvents.NAVIGATE_TO_NEXT_PAGE_OR_ROOT, null);
                 })
                 .catch((errors) => {
-                    const push = new Push();
-
-                    errors.forEach((err) => {
-                        push.addMessage(err);
-                        console.log(err);
-                    });
-
-                    push.render({level: PushLevels.MSG_ERROR});
-
+                    renderErrors(errors);
+                    LocalStorageProxy.save('currentUser', user);
                     bus.emit(events.CURRENT_USER_CHANGED, null);
                 });
         }
@@ -87,20 +95,16 @@ define('User', (require) => {
                 .signUp(credentials)
                 .then((response) => {
                     const user = new User(response);
+
                     LocalStorageProxy.save('currentUser', user);
+
                     bus.emit(events.CURRENT_USER_CHANGED, user);
+                    bus.emit(events.AUTHENTICATION_DONE, user);
                     bus.emit(RouterEvents.NAVIGATE_TO_NEXT_PAGE_OR_ROOT, null);
                 })
                 .catch((errors) => {
-                    const push = new Push();
-
-                    errors.forEach((err) => {
-                        push.addMessage(err);
-                        console.log(err);
-                    });
-
-                    push.render({level: PushLevels.MSG_ERROR});
-                    
+                    renderErrors(errors);
+                    LocalStorageProxy.save('currentUser', user);
                     bus.emit(events.CURRENT_USER_CHANGED, null);
                 });
         }
@@ -109,21 +113,50 @@ define('User', (require) => {
             api
                 .updateProfile(data)
                 .then((response) => {
+                    const push = new Push();
+                    push.addMessage('Настройки обновлены');
+                    push.render({level: PushLevels.MSG_INFO});
+
                     const user = new User(response);
                     LocalStorageProxy.save('currentUser', user);
                     bus.emit(events.CURRENT_USER_CHANGED, user);
                 })
                 .catch((errors) => {
+                    renderErrors(errors);
+                });
+        }
+
+        static changeAvatar(form) {
+            api
+                .changeAvatar(form)
+                .then((response) => {
                     const push = new Push();
+                    push.addMessage('Аватар обновлен');
+                    push.render({level: PushLevels.MSG_INFO});
 
-                    errors.forEach((err) => {
-                        push.addMessage(err);
-                        console.log(err);
-                    });
+                    const user = new User(response);
+                    LocalStorageProxy.save('currentUser', user);
+                    bus.emit(events.CURRENT_USER_CHANGED, user);
+                })
+                .catch((errors) => {
+                    renderErrors(errors);
+                });
+        }
 
+        static deleteAvatar() {
+            api
+                .deleteAvatar()
+                .then((response) => {
+                    const push = new Push();
+                    push.addMessage('Аватар пользователя удален');
                     push.render({level: PushLevels.MSG_ERROR});
 
-                    bus.emit(events.CURRENT_USER_CHANGED, null);
+                    const user = new User(response);
+                    LocalStorageProxy.save('currentUser', user);
+                    bus.emit(events.CURRENT_USER_CHANGED, user);
+                })
+                .catch((errors) => {
+                    console.log(errors);
                 });
         }
 

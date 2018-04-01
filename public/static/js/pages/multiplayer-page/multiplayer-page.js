@@ -19,7 +19,7 @@ define('MultiplayerPage', (require) => {
         constructor() {
             super(multiplayerPageTemplate);
 
-            bus.on(UserEvents.CURRENT_USER_CHANGED, (newUser) => {
+            bus.on(UserEvents.AUTHENTICATION_DONE, (newUser) => {
                 if (!newUser) return;
                 new Push().clear().addSharedMessage(`Добро пожаловать, ${newUser.username}`);
             });

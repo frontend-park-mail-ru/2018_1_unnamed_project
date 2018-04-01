@@ -59,6 +59,22 @@ define('ValidatorFactory', (require) => {
     }
 
     /**
+     * Валидатор, допускающий пустые поля.
+     */
+    class NonMandatoryValidator extends Validator {
+        /**
+         * @param {string} value
+         * @override
+         */
+        validate(value) {
+            if (!value || value === '') {
+                return true;
+            }
+            return super.validate(value);
+        }
+    }
+
+    /**
      * Фабрика валидаторов.
      */
     return class ValidatorFactory {
@@ -70,10 +86,24 @@ define('ValidatorFactory', (require) => {
         }
 
         /**
+         * @return {NonMandatoryValidator}
+         */
+        static buildUsernameNonMandatoryValidator() {
+            return new NonMandatoryValidator(validators.username);
+        }
+
+        /**
          * @return {Validator}
          */
-        static buildPasswordValiator() {
+        static buildPasswordValidator() {
             return new Validator(validators.password);
+        }
+
+        /**
+         * @return {NonMandatoryValidator}
+         */
+        static buildPasswordNonMandatoryValidator() {
+            return new NonMandatoryValidator(validators.password);
         }
 
         /**
@@ -84,10 +114,21 @@ define('ValidatorFactory', (require) => {
         }
 
         /**
+         * @return {NonMandatoryValidator}
+         */
+        static buildPasswordConfirmationNonMandatoryValidator() {
+            return new NonMandatoryValidator(validators.passwordConfirmation);
+        }
+
+        /**
          * @return {Validator}
          */
         static buildEmailValidator() {
             return new Validator(validators.email);
+        }
+
+        static buildEmailNonMandatoryValidator() {
+            return new NonMandatoryValidator(validators.email);
         }
     };
 });

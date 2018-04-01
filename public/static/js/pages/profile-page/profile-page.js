@@ -20,7 +20,7 @@ define('ProfilePage', (require) => {
         constructor() {
             super(profilePageTemplate);
 
-            bus.on(UserEvents.CURRENT_USER_CHANGED, (newUser) => {
+            bus.on(UserEvents.AUTHENTICATION_DONE, (newUser) => {
                 if (!newUser) return;
                 new Push().clear().addSharedMessage(`Добро пожаловать, ${newUser.username}`);
             });
