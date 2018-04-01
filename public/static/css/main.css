@@ -8,6 +8,7 @@
 
 @import "../js/pages/menu-page/menu-page.css";
 @import "../js/pages/multiplayer-page/multiplayer-page.css";
+@import "../js/pages/profile-page/profile-page.css";
 @import "../js/pages/settings-page/settings-page.css";
 @import "../js/pages/signin-page/signin-page.css";
 @import "../js/pages/signup-page/signup-page.css";
@@ -25,6 +26,10 @@ body {
     /* background: linear-gradient(to bottom right, rgb(36, 255, 235), #002542); */
     background: linear-gradient(to bottom right, #000000, rgb(0, 44, 58));
     background-size: cover;
+    color: white;
+}
+
+a {
     color: white;
 }
 

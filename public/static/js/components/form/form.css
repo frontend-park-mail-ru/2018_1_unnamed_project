@@ -49,3 +49,12 @@
     color: #EF476F;
     cursor: pointer;
 }
+
+td.button-container{
+    height: 1px;;
+}
+
+td.space {
+    border: transparent;
+    width: 6px;
+}
