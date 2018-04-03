@@ -12,9 +12,7 @@ define('User', (require) => {
 
     const api = new API();
 
-    // const DEFAULT_AVATAR_LINK = 'https://cdn.weasyl.com/static/media/61/c0/6f/61c06fe056b415366fc32ed9914058a30098ba0264ffed0b9e1108610bd4f2f1.png';
-
-    const DEFAULT_AVATAR_LINK = '/media/avatar.png';
+    const DEFAULT_AVATAR_LINK = 'https://cdn.weasyl.com/static/media/61/c0/6f/61c06fe056b415366fc32ed9914058a30098ba0264ffed0b9e1108610bd4f2f1.png';
 
     /**
      * Вспомогатльная функция для отрисовки ошибок.

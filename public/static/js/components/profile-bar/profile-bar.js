@@ -16,7 +16,7 @@ define('ProfileBar', (require) => {
                 User.logout();
             });
 
-            this.username = 'Unauthorized';
+            this.setUnauthorized();
         }
 
 
@@ -32,6 +32,7 @@ define('ProfileBar', (require) => {
 
         /**
          * Задает имя пользователя.
+         * @private
          * @param {string} text
          */
         set username(text) {
@@ -40,6 +41,7 @@ define('ProfileBar', (require) => {
 
         /**
          * Задает доступность ссылки "выход".
+         * @private
          * @param {boolean} available
          */
         set logoutAvailable(available) {
@@ -49,6 +51,23 @@ define('ProfileBar', (require) => {
             } else {
                 logout.setAttribute('hidden', 'true');
             }
+        }
+
+        /**
+         * Устанавливает компонент в состояние "авторизован".
+         * @param {string} username
+         */
+        setAuthorized(username) {
+            this.username = username;
+            this.logoutAvailable = true;
+        }
+
+        /**
+         * Устанавливат компонент в состояние "не авторизован".
+         */
+        setUnauthorized() {
+            this.username = 'вы не авторизованы';
+            this.logoutAvailable = false;
         }
     };
 });
