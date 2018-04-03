@@ -1,12 +1,19 @@
-@font-face {
-    font-family: "Righteous-Regular";
-    src: url("../fonts/Righteous-Regular.ttf");
-}
+@import "system-font.css";
 
-@font-face {
-    font-family: "Comfortaa-Light";
-    src: url("../fonts/Comfortaa-Light.ttf");
-}
+@import "../js/components/form/form.css";
+@import "../js/components/push/push.css";
+@import "../js/components/profile-bar/profile-bar.css";
+@import "../js/components/scoreboard/scoreboard.css";
+
+@import "../js/pages/menu-page/menu-page.css";
+@import "../js/pages/multiplayer-page/multiplayer-page.css";
+@import "../js/pages/profile-page/profile-page.css";
+@import "../js/pages/rules-page/rules-page.css";
+@import "../js/pages/scoreboard-page/scoreboard-page.css";
+@import "../js/pages/settings-page/settings-page.css";
+@import "../js/pages/signin-page/signin-page.css";
+@import "../js/pages/signup-page/signup-page.css";
+@import "../js/pages/singleplayer-page/singleplayer-page.css";
 
 html,
 body {
@@ -18,9 +25,12 @@ body {
     flex-direction: column;
     text-align: center;
     font-family: Comfortaa-Light, serif;
-    /* background: linear-gradient(to bottom right, rgb(36, 255, 235), #002542); */
     background: linear-gradient(to bottom right, #000000, rgb(0, 44, 58));
     background-size: cover;
+    color: white;
+}
+
+a {
     color: white;
 }
 
@@ -55,25 +65,20 @@ a {
     color: #FFFCF9;
 }
 
-[data-section]:hover {
+li:hover {
+    text-decoration-color: #EF476F;
+    color: #EF476F;
+}
+
+a:hover {
+    text-decoration-color: #EF476F;
     color: #EF476F;
 }
 
 .back {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     color: #99c2ff7c;
     font-size: 21px;
-}
-
-/*noinspection CssUnusedSymbol*/
-#rules {
-    width: 60%;
-    margin: 10px auto;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    font-family: Arial, Helvetica, sans-serif;
-    color: white;
 }
 
 .uxui td{

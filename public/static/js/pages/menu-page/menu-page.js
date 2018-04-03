@@ -1,33 +1,55 @@
 'use strict';
 
-(function() {
-    const AbstractPage = window.AbstractPage;
+define('MenuPage', (require) => {
+    const Page = require('Page');
+    const AccessTypes = require('Page/access');
+
     /**
-     * Страница меню.
+     * Главная страница.
      */
-    class MenuPage extends AbstractPage {
+    return class MenuPage extends Page {
         /**
-         * @param {string} parentId Идентификатор родительского узла.
-         * @param {string} pageId Желаемый идентификатор страницы.
+         *
          */
-        constructor({parentId = 'application', pageId = 'menu'} = {}) {
-            super({parentId, pageId});
-
-            this._templateFunction = menuPageTemplate;
-
-            const template = this._templateFunction({pageId});
-            this.parentNode.insertAdjacentHTML('beforeend', template);
+        constructor() {
+            super(menuPageTemplate);
         }
 
-        // noinspection JSUnusedGlobalSymbols
         /**
-         * Отображает страницу.
+         * @override
+         * @param {Object} attrs
+         * @return {Page}
          */
-        show() {
-            super.show();
-            window.application.signinPage.builder.checkAuth();
-        }
-    }
+        render(attrs) {
+            attrs = attrs || {};
+            attrs.navItems = [
+                {
+                    title: 'Мультиплеер',
+                    href: '/multiplayer',
+                },
+                {
+                    title: 'Одиночная игра',
+                    href: '/singleplayer',
+                },
+                {
+                    title: 'Таблица лидеров',
+                    href: '/scoreboard',
+                },
+                {
+                    title: 'Правила',
+                    href: '/rules',
+                },
+            ];
 
-    window.MenuPage = MenuPage;
-})();
+            return super.render(attrs);
+        }
+
+        /**
+         * @override
+         * @return {string}
+         */
+        accessType() {
+            return AccessTypes.ANY_USER;
+        }
+    };
+});

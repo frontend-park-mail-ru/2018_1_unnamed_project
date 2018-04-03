@@ -1,36 +1,66 @@
 'use strict';
 
-(function() {
-    const AbstractPage = window.AbstractPage;
+define('ScoreboardPage', (require) => {
+    const AccessTypes = require('Page/access');
+    const API = require('API');
+    const Page = require('Page');
+
+    const bus = require('bus');
+
+    const Scoreboard = require('Scoreboard');
+    const ScoreboardEvents = require('Scoreboard/events');
+
+    const api = new API();
+
     /**
-     * Страница лидеров.
+     * Страница списка лидеров.
      */
-    class ScoreboardPage extends AbstractPage {
+    return class ScoreboardPage extends Page {
         /**
-         * @param {string} parentId Идентификатор родительского узла.
-         * @param {string} pageId Желаемый идентификатор страницы.
+         *
          */
-        constructor({parentId = 'application', pageId = 'scoreboard'} = {}) {
-            super({parentId, pageId});
+        constructor() {
+            super(scoreboardPageTemplate);
 
-            // noinspection JSUnresolvedFunction
-            this.parentNode.insertAdjacentHTML('beforeend', scoreboardPageTemplate({pageId}));
-            this._builder = new window.ScoreboardBuilder('.js-scoreboard-table');
+            this._scoreboardRoot = null;
+            this._scoreboard = null;
+
+            bus.on(ScoreboardEvents.LOAD_PAGE, (pagination) => {
+                api
+                    .scoreboard(pagination)
+                    .then((response) => {
+                        if (this._scoreboard) {
+                            this._scoreboard.clear();
+                            this._scoreboard.render(response);
+                        }
+                    })
+                    .catch((err) => console.log(err));
+            });
         }
 
         /**
-         * Отображает страницу.
-         * @param {string} pagination offset and limit param
+         * @override
+         * @param {Object} attrs
+         * @return {ScoreboardPage}
          */
-        show(pagination = '') {
-            super.show();
-            this.api.scoreboard(pagination)
-                .then((users) => {
-                    this.builder.data = users;
-                    this.builder.render();
-                });
-        }
-    }
+        create(attrs) {
+            super.create(this.attrs);
 
-    window.ScoreboardPage = ScoreboardPage;
-})();
+            this._scoreboardRoot = this.element.querySelector('.js-scoreboard-root');
+            this._scoreboard = new Scoreboard({element: this._scoreboardRoot, attrs: this.attrs});
+
+            // Загрузка первой страницы - параметры пагинации не нужны.
+            bus.emit(ScoreboardEvents.LOAD_PAGE, '');
+
+            return this;
+        }
+
+        /**
+         * @override
+         * @return {string}
+         */
+        accessType() {
+            return AccessTypes.ANY_USER;
+        }
+    };
+});

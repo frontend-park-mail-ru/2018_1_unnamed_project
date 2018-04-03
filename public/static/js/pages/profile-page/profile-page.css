@@ -19,6 +19,7 @@
 
 .profile-info h4 {
     text-align: left;
+    font-size: 17px;
 }
 
 .img-with-text {
@@ -29,7 +30,7 @@
 
 .img-with-text img {
     display: block;
-    margin: -18px 0 4px 0;
+    margin: -14px 0 4px 0;
 }
 
 .upload-btn-wrapper {

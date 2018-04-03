@@ -1,34 +1,47 @@
 'use strict';
 
-(function() {
-    const AbstractPage = window.AbstractPage;
+define('MultiplayerPage', (require) => {
+    const AccessTypes = require('Page/access');
+    const Page = require('Page');
+    const Push = require('Push');
+    const PushLevels = require('Push/levels');
+    const UserEvents = require('User/events');
+
+    const bus = require('bus');
+
     /**
-     * Страница мультиплеера.
+     * Страница многопользовательской игры.
      */
-    class MultiplayerPage extends AbstractPage {
+    return class MultiplayerPage extends Page {
         /**
-         * @param {string} parentId Идентификатор родительского узла.
-         * @param {string} pageId Желаемый идентификатор страницы.
+         *
          */
-        constructor({parentId = 'application', pageId = 'multiplayer'} = {}) {
-            super({parentId, pageId});
+        constructor() {
+            super(multiplayerPageTemplate);
 
-            // noinspection JSUnresolvedFunction
-            this.parentNode.insertAdjacentHTML('beforeend', multiplayerPageTemplate({pageId}));
-            this._builder = new window.Multiplayer('.multiplayer');
+            bus.on(UserEvents.AUTHENTICATION_DONE, (newUser) => {
+                if (!newUser) return;
+                new Push().clear().addSharedMessage(`Добро пожаловать, ${newUser.username}`);
+            });
         }
 
         /**
-         * Отображает страницу.
+         * @override
+         * @param {Object} attrs
+         * @return {MultiplayerPage}
          */
-        show() {
-            super.show();
-
-            this.api.getMe()
-                .then(() => this.builder.render())
-                .catch(() => window.router.navigateTo('signin'));
+        render(attrs) {
+            super.render(attrs);
+            new Push().renderShared({level: PushLevels.MSG_SUCCESS});
+            return this;
         }
-    }
 
-    window.MultiplayerPage = MultiplayerPage;
-})();
+        /**
+         * @override
+         * @return {string}
+         */
+        accessType() {
+            return AccessTypes.LOGGED_IN_USER;
+        }
+    };
+});

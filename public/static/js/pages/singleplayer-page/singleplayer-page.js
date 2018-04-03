@@ -1,22 +1,26 @@
 'use strict';
 
-(function() {
-    const AbstractPage = window.AbstractPage;
+define('SingleplayerPage', (require) => {
+    const AccessTypes = require('Page/access');
+    const Page = require('Page');
+
     /**
      * Страница одиночной игры.
      */
-    class SingleplayerPage extends AbstractPage {
+    return class SingleplayerPage extends Page {
         /**
-         * @param {string} parentId Идентификатор родительского узла.
-         * @param {string} pageId Желаемый идентификатор страницы.
+         *
          */
-        constructor({parentId = 'application', pageId = 'singleplayer'} = {}) {
-            super({parentId, pageId});
-
-            // noinspection JSUnresolvedFunction
-            this.parentNode.insertAdjacentHTML('beforeend', singleplayerPageTemplate({pageId}));
+        constructor() {
+            super(singleplayerPageTemplate);
         }
-    }
 
-    window.SingleplayerPage = SingleplayerPage;
-})();
+        /**
+         * @override
+         * @return {string}
+         */
+        accessType() {
+            return AccessTypes.ANY_USER;
+        }
+    };
+});
