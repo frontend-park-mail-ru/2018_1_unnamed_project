@@ -32,7 +32,6 @@ define('ProfilePage', (require) => {
          * @return {Page}
          */
         render(attrs) {
-            debugger;
             super.render(Object.assign({}, attrs, User.currentUser));
             new Push().renderShared({level: PushLevels.MSG_SUCCESS});
             return this;

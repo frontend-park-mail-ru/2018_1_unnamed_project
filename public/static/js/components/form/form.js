@@ -41,7 +41,7 @@ define('Form', (require) => {
                     if (field.validator.validate(value)) {
                         data[name] = value;
                     } else {
-                        (errors || (errors = [])).push(field.validator.lastError);
+                        (errors || (errors = [])).push(`${name}: ${field.validator.lastError}`);
                     }
                 });
 

@@ -1,0 +1,10 @@
+.rules-page {
+    width: 60%;
+    font-size: 17px !important;
+    margin: 10px auto;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+}

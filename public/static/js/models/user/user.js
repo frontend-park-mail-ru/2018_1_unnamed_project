@@ -38,7 +38,6 @@ define('User', (require) => {
          * @param {Object} data
          */
         constructor(data) {
-            debugger;
             this.username = data.username;
             this.email = data.email;
             this.rank = data.rank;
