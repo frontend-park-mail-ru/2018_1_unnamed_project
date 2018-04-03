@@ -12,8 +12,14 @@ define('User', (require) => {
 
     const api = new API();
 
-    const DEFAULT_AVATAR_LINK = 'https://cdn.weasyl.com/static/media/61/c0/6f/61c06fe056b415366fc32ed9914058a30098ba0264ffed0b9e1108610bd4f2f1.png';
+    // const DEFAULT_AVATAR_LINK = 'https://cdn.weasyl.com/static/media/61/c0/6f/61c06fe056b415366fc32ed9914058a30098ba0264ffed0b9e1108610bd4f2f1.png';
 
+    const DEFAULT_AVATAR_LINK = '/media/avatar.png';
+
+    /**
+     * Вспомогатльная функция для отрисовки ошибок.
+     * @param {Array} errors
+     */
     function renderErrors(errors) {
         const push = new Push();
 
@@ -27,6 +33,7 @@ define('User', (require) => {
 
     /**
      * Модель пользователя.
+     * @note Текущий пользователь сохраняется в LocalStorage.
      */
     return class User {
         /**
@@ -56,6 +63,9 @@ define('User', (require) => {
             return LocalStorageProxy.fetch('currentUser');
         }
 
+        /**
+         * Проверяет авторизацию пользователя.
+         */
         static checkCurrentUser() {
             api
                 .getMe()
@@ -71,6 +81,10 @@ define('User', (require) => {
                 });
         }
 
+        /**
+         * Авторизует пользователя.
+         * @param {*} credentials
+         */
         static signIn(credentials) {
             api
                 .signIn(credentials)
@@ -90,6 +104,10 @@ define('User', (require) => {
                 });
         }
 
+        /**
+         * Создает пользователя.
+         * @param {*} credentials
+         */
         static signUp(credentials) {
             api
                 .signUp(credentials)
@@ -109,6 +127,10 @@ define('User', (require) => {
                 });
         }
 
+        /**
+         * Обновляет данные пользователя.
+         * @param {*} data
+         */
         static update(data) {
             api
                 .updateProfile(data)
@@ -126,9 +148,13 @@ define('User', (require) => {
                 });
         }
 
+        /**
+         * Изменяет аватар пользователя.
+         * @param {*} form
+         */
         static changeAvatar(form) {
             api
-                .changeAvatar(form)
+                .uploadAvatar(form)
                 .then((response) => {
                     const push = new Push();
                     push.addMessage('Аватар обновлен');
@@ -143,6 +169,9 @@ define('User', (require) => {
                 });
         }
 
+        /**
+         * Удаляет аватар пользователя.
+         */
         static deleteAvatar() {
             api
                 .deleteAvatar()
@@ -160,6 +189,9 @@ define('User', (require) => {
                 });
         }
 
+        /**
+         * Осуществляет выход пользователя.
+         */
         static logout() {
             api
                 .logout()

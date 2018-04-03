@@ -14,7 +14,13 @@ define('SettingsPage', (require) => {
     const Form = require('Form');
     const FormEvents = require('Form/events');
 
+    /**
+     * Страница настроект пользователя.
+     */
     return class SettingsPage extends Page {
+        /**
+         *
+         */
         constructor() {
             super(settingsPageTemplate);
 
@@ -68,7 +74,12 @@ define('SettingsPage', (require) => {
             });
         }
 
-        create() {
+        /**
+         * @override
+         * @param {Object} attrs
+         * @return {SettingsPage}
+         */
+        create(attrs) {
             const currentUser = User.currentUser;
 
             this.attrs = {
@@ -124,6 +135,10 @@ define('SettingsPage', (require) => {
             return this;
         }
 
+        /**
+         * @override
+         * @return {string}
+         */
         accessType() {
             return AccessTypes.LOGGED_IN_USER;
         }

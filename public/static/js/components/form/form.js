@@ -7,6 +7,9 @@ define('Form', (require) => {
 
     const events = require('Form/events');
 
+    /**
+     * Форма для ввода данных.
+     */
     return class Form extends Component {
         /**
          * @param {Object} element Элемент, в котором рендерить.

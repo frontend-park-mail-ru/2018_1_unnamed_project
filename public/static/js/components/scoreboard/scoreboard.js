@@ -7,6 +7,9 @@ define('Scoreboard', (require) => {
 
     const events = require('Scoreboard/events');
 
+    /**
+     * Таблица лидеров.
+     */
     return class Scoreboard extends Component {
         /**
          * @param {Object}   element Элемент, в котором рендерить.

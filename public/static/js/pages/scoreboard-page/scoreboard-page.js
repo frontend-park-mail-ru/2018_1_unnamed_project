@@ -12,7 +12,13 @@ define('ScoreboardPage', (require) => {
 
     const api = new API();
 
+    /**
+     * Страница списка лидеров.
+     */
     return class ScoreboardPage extends Page {
+        /**
+         *
+         */
         constructor() {
             super(scoreboardPageTemplate);
 
@@ -32,7 +38,12 @@ define('ScoreboardPage', (require) => {
             });
         }
 
-        create() {
+        /**
+         * @override
+         * @param {Object} attrs
+         * @return {ScoreboardPage}
+         */
+        create(attrs) {
             super.create(this.attrs);
 
             this._scoreboardRoot = this.element.querySelector('.js-scoreboard-root');
@@ -44,6 +55,10 @@ define('ScoreboardPage', (require) => {
             return this;
         }
 
+        /**
+         * @override
+         * @return {string}
+         */
         accessType() {
             return AccessTypes.ANY_USER;
         }

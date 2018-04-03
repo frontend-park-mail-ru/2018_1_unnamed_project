@@ -1,4 +1,3 @@
-/* eslint-disable */
 'use strict';
 
 define('RulesPage', (require) => {
@@ -23,5 +22,5 @@ define('RulesPage', (require) => {
         accessType() {
             return AccessTypes.ANY_USER;
         }
-    }
+    };
 });

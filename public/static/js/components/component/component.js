@@ -1,9 +1,8 @@
 'use strict';
 
-// noinspection JSUnusedLocalSymbols
 define( 'Component', (require) => {
     /**
-     * Абстрактный класс компонента.
+     * Базовый класс компонента.
      */
     return class Component {
         /**

@@ -13,7 +13,13 @@ define('SignupPage', (require) => {
     const Form = require('Form');
     const FormEvents = require('Form/events');
 
+    /**
+     * Страница регистрации.
+     */
     return class SignupPage extends Page {
+        /**
+         *
+         */
         constructor() {
             super(signupPageTemplate);
 
@@ -80,7 +86,12 @@ define('SignupPage', (require) => {
             });
         }
 
-        create() {
+        /**
+         * @override
+         * @param {Object} attrs
+         * @return {SignupPage}
+         */
+        create(attrs) {
             super.create(this.attrs);
 
             this._formRoot = this.element.querySelector('.js-signup-form-root');
@@ -89,6 +100,10 @@ define('SignupPage', (require) => {
             return this;
         }
 
+        /**
+         * @override
+         * @return {string}
+         */
         accessType() {
             return AccessTypes.NOT_LOGGED_IN_USER;
         }
