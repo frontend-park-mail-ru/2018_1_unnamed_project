@@ -5,9 +5,12 @@ define('Push', (require) => {
 
     const levels = require('Push/levels');
 
+    /**
+     * Компонент для генерации сообщений пользователю.
+     */
     return class Push extends Component {
         /**
-         *
+         * @note Синглтон.
          */
         constructor() {
             if (Push.__instance) {
@@ -23,27 +26,30 @@ define('Push', (require) => {
             // Сообщения, доступные только текущей странице.
             this._messages = new Set();
             // Сообщения, которые должны отобразиться на следующей странице.
+            // Это буфер сообщений, разделяемый между страницами.
             this._sharedMessages = new Set();
 
             Push.__instance = this;
         }
 
         /**
-         * @return {Array|*}
+         * Возвращает буфер сообщений для текущей страницы.
+         * @return {Set|*}
          */
         get messages() {
             return this._messages;
         }
 
         /**
-         * @param {Array|*} messages
+         * Перезаписывает множество сообщений для текущей страницы.
+         * @param {Set|*} messages
          */
         set messages(messages) {
             this._messages = messages;
         }
 
         /**
-         * Добавляет сообщение
+         * Добавляет сообщение в буфер текущей страницы.
          * @param {string} message
          * @return {Push}
          */
@@ -52,22 +58,35 @@ define('Push', (require) => {
             return this;
         }
 
+        /**
+         * Добавляет сообщение в разделяемый буфер.
+         * @param {string} message
+         */
         addSharedMessage(message) {
             this._sharedMessages.add(message);
         }
 
+        /**
+         * Очищает буфер сообщений для текущей страницы.
+         * @return {Push}
+         */
         clearMessages() {
             this._messages.clear();
             return this;
         }
 
+        /**
+         * Очищает разделяемый буфер сообщений.
+         * @return {Push}
+         */
         clearSharedMessages() {
             this._sharedMessages.clear();
             return this;
         }
 
         /**
-         * Очищает содержимое и сообщения.
+         * Очищает содержимое компонента и буфер сообщений для текущей страницы.
+         * @note Разделяемый буфер надо чистить явно!
          * @override
          */
         clear() {
@@ -93,6 +112,11 @@ define('Push', (require) => {
             return this;
         }
 
+        /**
+         * Отрисовывает компонент с разделяемыми сообщениями.
+         * @param {string} level
+         * @return {Push}
+         */
         renderShared({level = levels.MSG_INFO}) {
             if (this._sharedMessages.empty) return this;
 

@@ -13,7 +13,13 @@ define('SigninPage', (require) => {
     const Form = require('Form');
     const FormEvents = require('Form/events');
 
+    /**
+     * Страница входа.
+     */
     return class SigninPage extends Page {
+        /**
+         *
+         */
         constructor() {
             super(signinPageTemplate);
 
@@ -62,7 +68,12 @@ define('SigninPage', (require) => {
             });
         }
 
-        create() {
+        /**
+         * @override
+         * @param {Object} attrs
+         * @return {SigninPage}
+         */
+        create(attrs) {
             super.create(this.attrs);
 
             this._formRoot = this.element.querySelector('.js-signin-form-root');
@@ -71,6 +82,10 @@ define('SigninPage', (require) => {
             return this;
         }
 
+        /**
+         * @override
+         * @return {string}
+         */
         accessType() {
             return AccessTypes.NOT_LOGGED_IN_USER;
         }

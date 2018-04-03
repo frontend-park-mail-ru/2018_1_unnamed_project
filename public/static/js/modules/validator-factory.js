@@ -127,6 +127,9 @@ define('ValidatorFactory', (require) => {
             return new Validator(validators.email);
         }
 
+        /**
+         * @return {NonMandatoryValidator}
+         */
         static buildEmailNonMandatoryValidator() {
             return new NonMandatoryValidator(validators.email);
         }
