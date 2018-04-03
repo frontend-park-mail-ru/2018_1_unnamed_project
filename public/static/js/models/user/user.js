@@ -41,11 +41,11 @@ define('User', (require) => {
             this.username = data.username;
             this.email = data.email;
             this.rank = data.rank;
+            this.avatarLink = (data.avatarLink) ?
+                (api.backendURI + data.avatarLink) : DEFAULT_AVATAR_LINK;
             // for demo
             // this.avatarLink = (data.avatarLink) ?
-            //     (api.backendURI + data.avatarLink) : DEFAULT_AVATAR_LINK;
-            this.avatarLink = (data.avatarLink) ?
-                (data.avatarLink) : DEFAULT_AVATAR_LINK;
+            // (data.avatarLink) : DEFAULT_AVATAR_LINK;
             this.uploadAvatarLink = `${api.backendURI}/me/avatar`;
         }
 
