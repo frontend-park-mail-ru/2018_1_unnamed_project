@@ -41,11 +41,9 @@
         const profileBar = new ProfileBar();
         bus.on(UserEvents.CURRENT_USER_CHANGED, (newUser) => {
             if (newUser) {
-                profileBar.username = newUser.username;
-                profileBar.logoutAvailable = true;
+                profileBar.setAuthorized(newUser.username);
             } else {
-                profileBar.username = 'вы не авторизованы';
-                profileBar.logoutAvailable = false;
+                profileBar.setUnauthorized();
             }
         });
 
