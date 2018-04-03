@@ -65,25 +65,20 @@ a {
     color: #FFFCF9;
 }
 
-[data-section]:hover {
+li:hover {
+    text-decoration-color: #EF476F;
+    color: #EF476F;
+}
+
+a:hover {
+    text-decoration-color: #EF476F;
     color: #EF476F;
 }
 
 .back {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     color: #99c2ff7c;
     font-size: 21px;
-}
-
-/*noinspection CssUnusedSymbol*/
-#rules {
-    width: 60%;
-    margin: 10px auto;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    font-family: Arial, Helvetica, sans-serif;
-    color: white;
 }
 
 .uxui td{
