@@ -81,7 +81,6 @@ define('SettingsPage', (require) => {
             this._uploadAvatarForm = this.element.querySelector('#upload-avatar');
             this._uploadAvatarForm.addEventListener('change', (evt) => {
                 evt.preventDefault();
-                debugger;
                 const form = evt.currentTarget;
                 User.changeAvatar(form);
             });
