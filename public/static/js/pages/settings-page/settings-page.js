@@ -75,6 +75,36 @@ define('SettingsPage', (require) => {
         }
 
         /**
+         * Set avatar editing handlers
+         */
+        setHandlers() {
+            this._uploadAvatarForm = this.element.querySelector('#upload-avatar');
+            this._uploadAvatarForm.addEventListener('change', (evt) => {
+                evt.preventDefault();
+                debugger;
+                const form = evt.currentTarget;
+                User.changeAvatar(form);
+            });
+
+            this._deleteAvatarButton = this.element.querySelector('#delete-avatar');
+            this._deleteAvatarButton.addEventListener('click', (evt) => {
+                evt.preventDefault();
+                User.deleteAvatar();
+            });
+        }
+
+        /**
+         * @override
+         * @param {Object} attrs
+         * @return {Page}
+         */
+        render(attrs) {
+            super.render(attrs);
+            this.setHandlers();
+            return this;
+        }
+
+        /**
          * @override
          * @param {Object} attrs
          * @return {SettingsPage}
@@ -118,20 +148,6 @@ define('SettingsPage', (require) => {
 
             this._formRoot = this.element.querySelector('.js-settings-form-root');
             this._form = new Form({element: this._formRoot, attrs: this.attrs});
-
-            this._uploadAvatarForm = this.element.querySelector('#upload-avatar');
-            this._uploadAvatarForm.addEventListener('submit', (evt) => {
-                evt.preventDefault();
-                const form = evt.currentTarget;
-                User.changeAvatar(form);
-            });
-
-            this._deleteAvatarButton = this.element.querySelector('#delete-avatar');
-            this._deleteAvatarButton.addEventListener('click', (evt) => {
-                evt.preventDefault();
-                User.deleteAvatar();
-            });
-
             return this;
         }
 
