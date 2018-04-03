@@ -1,49 +1,93 @@
 'use strict';
 
-(function() {
-    const AbstractPage = window.AbstractPage;
+define('SigninPage', (require) => {
+    const AccessTypes = require('Page/access');
+    const Page = require('Page');
+    const Push = require('Push');
+    const PushLevels = require('Push/levels');
+    const User = require('User');
+    const ValidatorFactory = require('ValidatorFactory');
+
+    const bus = require('bus');
+
+    const Form = require('Form');
+    const FormEvents = require('Form/events');
+
     /**
      * Страница входа.
      */
-    class SignInPage extends AbstractPage {
+    return class SigninPage extends Page {
         /**
-         * @param {string} parentId Идентификатор родительского узла.
-         * @param {string} pageId Желаемый идентификатор страницы.
+         *
          */
-        constructor({parentId = 'application', pageId = 'signin'} = {}) {
-            super({parentId, pageId});
+        constructor() {
+            super(signinPageTemplate);
 
-            // noinspection JSUnresolvedFunction
-            this.parentNode.insertAdjacentHTML('beforeend', signinPageTemplate({pageId}));
-            this._builder = new window.AuthFormsBuilder('js-signin-form');
+            this.attrs = {
+                fields: [
+                    {
+                        type: 'email',
+                        name: 'email',
+                        placeholder: 'Email',
+                        validator: ValidatorFactory.buildEmailValidator(),
+                    },
+                    {
+                        type: 'password',
+                        name: 'password',
+                        placeholder: 'Пароль',
+                        validator: ValidatorFactory.buildPasswordValidator(),
+                    },
+                ],
+                formFooterLink: {
+                    title: 'Нет аккаунта? Зарегистрируйтесь!',
+                    href: '/signup',
+                },
+                resetText: 'Очистить',
+                submitText: 'Вход',
+            };
 
-            this.signinSubmit = () => this.builder.onSubmitAuthForm(event, this.api.signIn.bind(this.api));
+            this._formRoot = null;
+            this._form = null;
+
+            bus.on(FormEvents.FORM_DATA_SUBMITTED, ({data, errors}) => {
+                if (!this.active) return;
+
+                const push = new Push();
+                push.clear();
+
+                if (errors) {
+                    errors.forEach((e) => {
+                        push.addMessage(e);
+                        console.log(e);
+                    });
+                    push.render({level: PushLevels.MSG_ERROR});
+                    return;
+                }
+
+                User.signIn(data);
+            });
         }
 
-        // noinspection JSUnusedGlobalSymbols
         /**
-         * Отображает страницу.
+         * @override
+         * @param {Object} attrs
+         * @return {SigninPage}
          */
-        show() {
-            super.show();
-            this.builder.render();
+        create(attrs) {
+            super.create(this.attrs);
 
-            const generatedSignUpHref = document.getElementsByClassName('js-signup-form__submit-button')[0];
-            generatedSignUpHref.addEventListener('click', window.anchorSubmitListener);
+            this._formRoot = this.element.querySelector('.js-signin-form-root');
+            this._form = new Form({element: this._formRoot, attrs: this.attrs});
 
-            const node = this.builder.node;
-
-            node.removeEventListener(
-                'submit',
-                this.signinSubmit
-            );
-            node.reset();
-            node.addEventListener(
-                'submit',
-                this.signinSubmit
-            );
+            return this;
         }
-    }
 
-    window.SignInPage = SignInPage;
-})();
+        /**
+         * @override
+         * @return {string}
+         */
+        accessType() {
+            return AccessTypes.NOT_LOGGED_IN_USER;
+        }
+    };
+});

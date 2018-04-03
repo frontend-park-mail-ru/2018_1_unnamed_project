@@ -1,36 +1,48 @@
 'use strict';
 
-(function() {
-    const AbstractPage = window.AbstractPage;
+define('ProfilePage', (require) => {
+    const AccessTypes = require('Page/access');
+    const Page = require('Page');
+    const Push = require('Push');
+    const PushLevels = require('Push/levels');
+    const User = require('User');
+    const UserEvents = require('User/events');
+
+    const bus = require('bus');
+
     /**
-     * Страница профиля пользователя.
+     * Страница профиля текущего пользователя.
      */
-    class ProfilePage extends AbstractPage {
+    return class ProfilePage extends Page {
         /**
-         * @param {string} parentId Идентификатор родительского узла.
-         * @param {string} pageId Желаемый идентификатор страницы.
+         *
          */
-        constructor({parentId = 'application', pageId = 'profile'} = {}) {
-            super({parentId, pageId});
+        constructor() {
+            super(profilePageTemplate);
 
-            // noinspection JSUnresolvedFunction
-            this.parentNode.insertAdjacentHTML('beforeend', profilePageTemplate({pageId}));
-            this._builder = new window.ProfileBuilder('.profile');
+            bus.on(UserEvents.AUTHENTICATION_DONE, (newUser) => {
+                if (!newUser) return;
+                new Push().clear().addSharedMessage(`Добро пожаловать, ${newUser.username}`);
+            });
         }
 
         /**
-         * Отображает страницу.
+         * @override
+         * @param {Object} attrs
+         * @return {Page}
          */
-        show() {
-            super.show();
-
-            this.api.getMe()
-                .then((response) => {
-                    this.builder.data = response;
-                    this.builder.render();
-                });
+        render(attrs) {
+            super.render(Object.assign({}, attrs, User.currentUser));
+            new Push().renderShared({level: PushLevels.MSG_SUCCESS});
+            return this;
         }
-    }
 
-    window.ProfilePage = ProfilePage;
-})();
+        /**
+         * @override
+         * @return {string}
+         */
+        accessType() {
+            return AccessTypes.LOGGED_IN_USER;
+        }
+    };
+});

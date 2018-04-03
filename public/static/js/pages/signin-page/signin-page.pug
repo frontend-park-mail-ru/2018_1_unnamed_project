@@ -1,2 +1,4 @@
-section(id=`${pageId}` hidden)
-    form.js-signin-form(novalidate=true)
+section(class="menu signin-page")
+    include ../../components/menu-ref/menu-ref.pug
+    div.js-signin-form-root
+        include ../../components/form/form.pug

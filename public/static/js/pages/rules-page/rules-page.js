@@ -1,23 +1,26 @@
-/* eslint-disable */
 'use strict';
 
-(function() {
-    const AbstractPage = window.AbstractPage;
+define('RulesPage', (require) => {
+    const AccessTypes = require('Page/access');
+    const Page = require('Page');
+
     /**
-     * Страница с праилами игры
+     * Страница с праилами игры.
      */
-    class RulesPage extends AbstractPage {
+    return class RulesPage extends Page {
         /**
-         * @param {string} parentId Идентификатор родительского узла.
-         * @param {string} pageId Желаемый идентификатор страницы.
+         *
          */
-        constructor({parentId = 'application', pageId = 'rules'} = {}) {
-            super({parentId, pageId});
-
-            // noinspection JSUnresolvedFunction
-            this.parentNode.insertAdjacentHTML('beforeend', rulesPageTemplate({pageId}));
+        constructor() {
+            super(rulesPageTemplate);
         }
-    }
 
-    window.RulesPage = RulesPage;
-})();
+        /**
+         * @override
+         * @return {string}
+         */
+        accessType() {
+            return AccessTypes.ANY_USER;
+        }
+    };
+});

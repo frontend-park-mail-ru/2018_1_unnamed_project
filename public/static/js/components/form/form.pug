@@ -1,0 +1,13 @@
+form(class="form js-form" novalidate=true)
+    if fields
+        div.form__fields
+            each field in fields
+                input.form__fields-input(required=true, type=`${field.type}`, name=`${field.name}` placeholder=`${field.placeholder}`)
+
+    div.form__controls
+        button.form__control-bordered(type="reset") #{resetText}
+        div.space
+        button.form__control-bordered(type="submit") #{submitText}
+
+    if formFooterLink
+        a.form__footer-link(href=`${formFooterLink.href}`) #{formFooterLink.title}
