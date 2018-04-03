@@ -38,11 +38,15 @@ define('User', (require) => {
          * @param {Object} data
          */
         constructor(data) {
+            debugger;
             this.username = data.username;
             this.email = data.email;
             this.rank = data.rank;
+            // for demo
+            // this.avatarLink = (data.avatarLink) ?
+            //     (api.backendURI + data.avatarLink) : DEFAULT_AVATAR_LINK;
             this.avatarLink = (data.avatarLink) ?
-                (api.backendURI + data.avatarLink) : DEFAULT_AVATAR_LINK;
+                (data.avatarLink) : DEFAULT_AVATAR_LINK;
             this.uploadAvatarLink = `${api.backendURI}/me/avatar`;
         }
 
