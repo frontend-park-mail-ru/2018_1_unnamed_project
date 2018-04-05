@@ -1,7 +1,7 @@
 'use strict';
 
-define('bus', (require) => {
-    // Шина системных сообщений.
+define('game/core/bus', (require) => {
+    // Шина сообщений игры.
 
     const EventBus = require('EventBus');
 
