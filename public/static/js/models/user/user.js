@@ -30,6 +30,15 @@ define('User', (require) => {
     }
 
     /**
+     * Вспомогательная функция для рендеринга приветственного сообщения.
+     * @param {string} username
+     */
+    function renderHello(username) {
+        const push = new Push();
+        push.addSharedMessage(`Добро пожаловать, ${username}`);
+    }
+
+    /**
      * Модель пользователя.
      * @note Текущий пользователь сохраняется в LocalStorage.
      */
@@ -113,6 +122,8 @@ define('User', (require) => {
 
                     LocalStorageProxy.save('currentUser', user);
 
+                    renderHello(user.username);
+
                     bus.emit(events.CURRENT_USER_CHANGED, user);
                     bus.emit(events.AUTHENTICATION_DONE, user);
                     bus.emit(RouterEvents.NAVIGATE_TO_NEXT_PAGE_OR_ROOT, null);
@@ -135,6 +146,8 @@ define('User', (require) => {
                     const user = new User(response);
 
                     LocalStorageProxy.save('currentUser', user);
+
+                    renderHello(user.username);
 
                     bus.emit(events.CURRENT_USER_CHANGED, user);
                     bus.emit(events.AUTHENTICATION_DONE, user);
