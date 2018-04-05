@@ -20,10 +20,20 @@ define('ProfilePage', (require) => {
         constructor() {
             super(profilePageTemplate);
 
+            this.setAuthenticationDoneHandler();
+        }
+
+        /**
+         * @private
+         * @return {ProfilePage}
+         */
+        setAuthenticationDoneHandler() {
             bus.on(UserEvents.AUTHENTICATION_DONE, (newUser) => {
-                if (!newUser) return;
+                if (!this.active || !newUser) return;
                 new Push().clear().addSharedMessage(`Добро пожаловать, ${newUser.username}`);
             });
+
+            return this;
         }
 
         /**

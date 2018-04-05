@@ -20,10 +20,8 @@ define('SignupPage', (require) => {
         /**
          *
          */
-        constructor() {
-            super(signupPageTemplate);
-
-            this.attrs = {
+        static get defaultAttrs() {
+            return {
                 fields: [
                     {
                         type: 'text',
@@ -57,10 +55,24 @@ define('SignupPage', (require) => {
                 resetText: 'Очистить',
                 submitText: 'Регистрация',
             };
+        }
 
-            this._formRoot = null;
-            this._form = null;
+        /**
+         *
+         */
+        constructor() {
+            super(signupPageTemplate);
 
+            this.attrs = SignupPage.defaultAttrs;
+
+            this.setFormDataSubmittedHandler();
+        }
+
+        /**
+         * @private
+         * @return {SignupPage}
+         */
+        setFormDataSubmittedHandler() {
             bus.on(FormEvents.FORM_DATA_SUBMITTED, ({data, errors}) => {
                 if (!this.active) return;
 
@@ -84,6 +96,8 @@ define('SignupPage', (require) => {
 
                 User.signUp(data);
             });
+
+            return this;
         }
 
         /**
@@ -91,8 +105,8 @@ define('SignupPage', (require) => {
          * @param {Object} attrs
          * @return {SignupPage}
          */
-        create(attrs) {
-            super.create(this.attrs);
+        render(attrs) {
+            super.render(attrs);
 
             this._formRoot = this.element.querySelector('.js-signup-form-root');
             this._form = new Form({element: this._formRoot, attrs: this.attrs});

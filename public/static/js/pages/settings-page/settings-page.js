@@ -24,12 +24,17 @@ define('SettingsPage', (require) => {
         constructor() {
             super(settingsPageTemplate);
 
-            this._formRoot = null;
-            this._form = null;
+            this._rendering = false;
 
-            this._uploadAvatarForm = null;
-            this._deleteAvatarButton = null;
+            this.setFormDataSubmittedHandler()
+                .setCurrentUserChangedHandler();
+        }
 
+        /**
+         * @private
+         * @return {SettingsPage}
+         */
+        setFormDataSubmittedHandler() {
             bus.on(FormEvents.FORM_DATA_SUBMITTED, ({data, errors}) => {
                 if (!this.active) return;
 
@@ -66,18 +71,29 @@ define('SettingsPage', (require) => {
                 User.update(data);
             });
 
+            return this;
+        }
+
+        /**
+         * @private
+         * @return {SettingsPage}
+         */
+        setCurrentUserChangedHandler() {
             bus.on(UserEvents.CURRENT_USER_CHANGED, (newUser) => {
-                if (!this.active || !newUser) return;
+                if (!this.active || !newUser || this._rendering) return;
 
                 const renderAttr = Object.assign({}, this.attrs, newUser);
                 this.render(renderAttr);
             });
+
+            return this;
         }
 
         /**
-         * Set avatar editing handlers
+         * @private
+         * @return {SettingsPage}
          */
-        setHandlers() {
+        setAvatarHandlers() {
             this._uploadAvatarForm = this.element.querySelector('#upload-avatar');
             this._uploadAvatarForm.addEventListener('change', (evt) => {
                 evt.preventDefault();
@@ -90,6 +106,8 @@ define('SettingsPage', (require) => {
                 evt.preventDefault();
                 User.deleteAvatar();
             });
+
+            return this;
         }
 
         /**
@@ -98,56 +116,67 @@ define('SettingsPage', (require) => {
          * @return {Page}
          */
         render(attrs) {
-            super.render(attrs);
-            this.setHandlers();
+            this._rendering = true;
+
+            // Перенесено в render, чтобы отрисовать изменения плейсходлеров при
+            // изменении пользователя.
+            const renderAttrs = this.constructRenderAttrs(attrs);
+            super.render(renderAttrs);
+
+            this._formRoot = this.element.querySelector('.js-settings-form-root');
+            this._form = new Form({element: this._formRoot, attrs: this.attrs});
+
+            this.setAvatarHandlers();
+
+            this._rendering = false;
+
             return this;
         }
 
         /**
-         * @override
+         * Заполняет массив атрибутов для отрисовки страницы.
          * @param {Object} attrs
          * @return {SettingsPage}
          */
-        create(attrs) {
+        constructRenderAttrs(attrs) {
             const currentUser = User.currentUser;
 
-            this.attrs = {
-                fields: [
-                    {
-                        type: 'text',
-                        name: 'username',
-                        placeholder: currentUser.username,
-                        validator: ValidatorFactory.buildUsernameNonMandatoryValidator(),
-                    },
-                    {
-                        type: 'email',
-                        name: 'email',
-                        placeholder: currentUser.email,
-                        validator: ValidatorFactory.buildEmailNonMandatoryValidator(),
-                    },
-                    {
-                        type: 'password',
-                        name: 'password',
-                        placeholder: 'Пароль',
-                        validator: ValidatorFactory.buildPasswordNonMandatoryValidator(),
-                    },
-                    {
-                        type: 'password',
-                        name: 'password-confirmation',
-                        placeholder: 'Подтверждение пароля',
-                        validator: ValidatorFactory.buildPasswordConfirmationNonMandatoryValidator(),
-                    },
-                ],
-                resetText: 'Очистить',
-                submitText: 'Обновить',
-            };
+            if (currentUser) {
+                this.attrs = {
+                    fields: [
+                        {
+                            type: 'text',
+                            name: 'username',
+                            placeholder: currentUser.username,
+                            validator: ValidatorFactory.buildUsernameNonMandatoryValidator(),
+                        },
+                        {
+                            type: 'email',
+                            name: 'email',
+                            placeholder: currentUser.email,
+                            validator: ValidatorFactory.buildEmailNonMandatoryValidator(),
+                        },
+                        {
+                            type: 'password',
+                            name: 'password',
+                            placeholder: 'Пароль',
+                            validator: ValidatorFactory.buildPasswordNonMandatoryValidator(),
+                        },
+                        {
+                            type: 'password',
+                            name: 'password-confirmation',
+                            placeholder: 'Подтверждение пароля',
+                            validator: ValidatorFactory.buildPasswordConfirmationNonMandatoryValidator(),
+                        },
+                    ],
+                    resetText: 'Очистить',
+                    submitText: 'Обновить',
+                };
+            } else {
+                this.attrs = {};
+            }
 
-            const renderAttrs = Object.assign({}, this.attrs, currentUser);
-            super.create(renderAttrs);
-
-            this._formRoot = this.element.querySelector('.js-settings-form-root');
-            this._form = new Form({element: this._formRoot, attrs: this.attrs});
-            return this;
+            return Object.assign({}, this.attrs, currentUser);
         }
 
         /**

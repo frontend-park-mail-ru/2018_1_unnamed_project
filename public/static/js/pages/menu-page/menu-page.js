@@ -9,39 +9,39 @@ define('MenuPage', (require) => {
      */
     return class MenuPage extends Page {
         /**
+         * Возвращает артрибуты по умолчанию.
+         * @return {{navItems: *[]}}
+         */
+        static get defaultAttrs() {
+            return {
+                'navItems': [
+                    {
+                        title: 'Мультиплеер',
+                        href: '/multiplayer',
+                    },
+                    {
+                        title: 'Одиночная игра',
+                        href: '/singleplayer',
+                    },
+                    {
+                        title: 'Таблица лидеров',
+                        href: '/scoreboard',
+                    },
+                    {
+                        title: 'Правила',
+                        href: '/rules',
+                    },
+                ],
+            };
+        }
+
+        /**
          *
          */
         constructor() {
             super(menuPageTemplate);
-        }
 
-        /**
-         * @override
-         * @param {Object} attrs
-         * @return {Page}
-         */
-        render(attrs) {
-            attrs = attrs || {};
-            attrs.navItems = [
-                {
-                    title: 'Мультиплеер',
-                    href: '/multiplayer',
-                },
-                {
-                    title: 'Одиночная игра',
-                    href: '/singleplayer',
-                },
-                {
-                    title: 'Таблица лидеров',
-                    href: '/scoreboard',
-                },
-                {
-                    title: 'Правила',
-                    href: '/rules',
-                },
-            ];
-
-            return super.render(attrs);
+            this.attrs = MenuPage.defaultAttrs;
         }
 
         /**

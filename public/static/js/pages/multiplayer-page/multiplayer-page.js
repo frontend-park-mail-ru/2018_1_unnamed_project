@@ -19,10 +19,20 @@ define('MultiplayerPage', (require) => {
         constructor() {
             super(multiplayerPageTemplate);
 
+            this.setAuthenticationDoneHandler();
+        }
+
+        /**
+         * @private
+         * @return {MultiplayerPage}
+         */
+        setAuthenticationDoneHandler() {
             bus.on(UserEvents.AUTHENTICATION_DONE, (newUser) => {
-                if (!newUser) return;
+                if (!this.active || !newUser) return;
                 new Push().clear().addSharedMessage(`Добро пожаловать, ${newUser.username}`);
             });
+
+            return this;
         }
 
         /**

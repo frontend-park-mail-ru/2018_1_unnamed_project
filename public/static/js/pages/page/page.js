@@ -69,7 +69,7 @@ define('Page', (require) => {
          * @param {Object} attrs  Атрибуты отрисовки.
          * @return {Page}
          */
-        renderTo(parent, attrs = {}) {
+        renderTo(parent, attrs = null) {
             this.render(attrs);
             parent.insertAdjacentElement('beforeend', this.element);
             return this;
