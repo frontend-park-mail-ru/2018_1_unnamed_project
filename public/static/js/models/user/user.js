@@ -2,7 +2,6 @@
 
 define('User', (require) => {
     const API = require('API');
-    const LocalStorageProxy = require('LocalStorageProxy');
     const Push = require('Push');
     const PushLevels = require('Push/levels');
     const RouterEvents = require('Router/events');
@@ -13,6 +12,8 @@ define('User', (require) => {
     const api = new API();
 
     const DEFAULT_AVATAR_LINK = 'https://cdn.weasyl.com/static/media/61/c0/6f/61c06fe056b415366fc32ed9914058a30098ba0264ffed0b9e1108610bd4f2f1.png';
+
+    let currentUser = null;
 
     /**
      * Вспомогатльная функция для отрисовки ошибок.
@@ -82,14 +83,14 @@ define('User', (require) => {
          * @return {boolean}
          */
         static isAuthorized() {
-            return !! LocalStorageProxy.fetchRaw('currentUser');
+            return !!currentUser;
         }
 
         /**
          * @return {User|*}
          */
         static get currentUser() {
-            return LocalStorageProxy.fetch('currentUser');
+            return currentUser;
         }
 
         /**
@@ -99,14 +100,15 @@ define('User', (require) => {
             api
                 .getMe()
                 .then((response) => {
-                    const user = new User(response);
-                    LocalStorageProxy.save('currentUser', user);
-                    bus.emit(events.CURRENT_USER_CHANGED, user);
+                    // noinspection ReuseOfLocalVariableJS
+                    currentUser = new User(response);
+                    bus.emit(events.CURRENT_USER_CHANGED, currentUser);
                 })
                 .catch((errors) => {
-                    LocalStorageProxy.remove('currentUser');
                     console.log(errors);
-                    bus.emit(events.CURRENT_USER_CHANGED, null);
+                    // noinspection ReuseOfLocalVariableJS
+                    currentUser = null;
+                    bus.emit(events.CURRENT_USER_CHANGED, currentUser);
                 });
         }
 
@@ -118,20 +120,19 @@ define('User', (require) => {
             api
                 .signIn(credentials)
                 .then((response) => {
-                    const user = new User(response);
+                    // noinspection ReuseOfLocalVariableJS
+                    currentUser = new User(response);
+                    renderHello(currentUser.username);
 
-                    LocalStorageProxy.save('currentUser', user);
-
-                    renderHello(user.username);
-
-                    bus.emit(events.CURRENT_USER_CHANGED, user);
-                    bus.emit(events.AUTHENTICATION_DONE, user);
+                    bus.emit(events.CURRENT_USER_CHANGED, currentUser);
+                    bus.emit(events.AUTHENTICATION_DONE, currentUser);
                     bus.emit(RouterEvents.NAVIGATE_TO_NEXT_PAGE_OR_ROOT, null);
                 })
                 .catch((errors) => {
                     renderErrors(errors);
-                    LocalStorageProxy.save('currentUser', user);
-                    bus.emit(events.CURRENT_USER_CHANGED, null);
+                    // noinspection ReuseOfLocalVariableJS
+                    currentUser = null;
+                    bus.emit(events.CURRENT_USER_CHANGED, currentUser);
                 });
         }
 
@@ -143,20 +144,19 @@ define('User', (require) => {
             api
                 .signUp(credentials)
                 .then((response) => {
-                    const user = new User(response);
+                    // noinspection ReuseOfLocalVariableJS
+                    currentUser = new User(response);
+                    renderHello(currentUser.username);
 
-                    LocalStorageProxy.save('currentUser', user);
-
-                    renderHello(user.username);
-
-                    bus.emit(events.CURRENT_USER_CHANGED, user);
-                    bus.emit(events.AUTHENTICATION_DONE, user);
+                    bus.emit(events.CURRENT_USER_CHANGED, currentUser);
+                    bus.emit(events.AUTHENTICATION_DONE, currentUser);
                     bus.emit(RouterEvents.NAVIGATE_TO_NEXT_PAGE_OR_ROOT, null);
                 })
                 .catch((errors) => {
                     renderErrors(errors);
-                    LocalStorageProxy.save('currentUser', user);
-                    bus.emit(events.CURRENT_USER_CHANGED, null);
+                    // noinspection ReuseOfLocalVariableJS
+                    currentUser = null;
+                    bus.emit(events.CURRENT_USER_CHANGED, currentUser);
                 });
         }
 
@@ -172,9 +172,9 @@ define('User', (require) => {
                     push.addMessage('Настройки обновлены');
                     push.render({level: PushLevels.MSG_INFO});
 
-                    const user = new User(response);
-                    LocalStorageProxy.save('currentUser', user);
-                    bus.emit(events.CURRENT_USER_CHANGED, user);
+                    // noinspection ReuseOfLocalVariableJS
+                    currentUser = new User(response);
+                    bus.emit(events.CURRENT_USER_CHANGED, currentUser);
                 })
                 .catch((errors) => {
                     renderErrors(errors);
@@ -193,9 +193,9 @@ define('User', (require) => {
                     push.addMessage('Аватар обновлен');
                     push.render({level: PushLevels.MSG_INFO});
 
-                    const user = new User(response);
-                    LocalStorageProxy.save('currentUser', user);
-                    bus.emit(events.CURRENT_USER_CHANGED, user);
+                    // noinspection ReuseOfLocalVariableJS
+                    currentUser = new User(response);
+                    bus.emit(events.CURRENT_USER_CHANGED, currentUser);
                 })
                 .catch((errors) => {
                     renderErrors(errors);
@@ -213,9 +213,9 @@ define('User', (require) => {
                     push.addMessage('Аватар пользователя удален');
                     push.render({level: PushLevels.MSG_ERROR});
 
-                    const user = new User(response);
-                    LocalStorageProxy.save('currentUser', user);
-                    bus.emit(events.CURRENT_USER_CHANGED, user);
+                    // noinspection ReuseOfLocalVariableJS
+                    currentUser = new User(response);
+                    bus.emit(events.CURRENT_USER_CHANGED, currentUser);
                 })
                 .catch((errors) => {
                     console.log(errors);
@@ -229,8 +229,9 @@ define('User', (require) => {
             api
                 .logout()
                 .then((response) => {
-                    LocalStorageProxy.remove('currentUser');
-                    bus.emit(events.CURRENT_USER_CHANGED, null);
+                    // noinspection ReuseOfLocalVariableJS
+                    currentUser = null;
+                    bus.emit(events.CURRENT_USER_CHANGED, currentUser);
                     bus.emit(RouterEvents.NAVIGATE_TO_PAGE, '/');
                 })
                 .catch((errors) => {
