@@ -22,9 +22,14 @@ define('ScoreboardPage', (require) => {
         constructor() {
             super(scoreboardPageTemplate);
 
-            this._scoreboardRoot = null;
-            this._scoreboard = null;
+            this.setLoadPageHandler();
+        }
 
+        /**
+         * @private
+         * @return {ScoreboardPage}
+         */
+        setLoadPageHandler() {
             bus.on(ScoreboardEvents.LOAD_PAGE, (pagination) => {
                 api
                     .scoreboard(pagination)
@@ -36,6 +41,8 @@ define('ScoreboardPage', (require) => {
                     })
                     .catch((err) => console.log(err));
             });
+
+            return this;
         }
 
         /**
@@ -43,8 +50,8 @@ define('ScoreboardPage', (require) => {
          * @param {Object} attrs
          * @return {ScoreboardPage}
          */
-        create(attrs) {
-            super.create(this.attrs);
+        render(attrs) {
+            super.render(attrs);
 
             this._scoreboardRoot = this.element.querySelector('.js-scoreboard-root');
             this._scoreboard = new Scoreboard({element: this._scoreboardRoot, attrs: this.attrs});

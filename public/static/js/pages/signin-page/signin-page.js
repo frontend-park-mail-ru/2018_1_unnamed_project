@@ -18,12 +18,11 @@ define('SigninPage', (require) => {
      */
     return class SigninPage extends Page {
         /**
-         *
+         * Возвращает атрибуты по умолчанию.
+         * @return {{fields: *[], formFooterLink: {title: string, href: string}, resetText: string, submitText: string}}
          */
-        constructor() {
-            super(signinPageTemplate);
-
-            this.attrs = {
+        static get deaultAttrs() {
+            return {
                 fields: [
                     {
                         type: 'email',
@@ -45,10 +44,24 @@ define('SigninPage', (require) => {
                 resetText: 'Очистить',
                 submitText: 'Вход',
             };
+        }
 
-            this._formRoot = null;
-            this._form = null;
+        /**
+         *
+         */
+        constructor() {
+            super(signinPageTemplate);
 
+            this.attrs = SigninPage.deaultAttrs;
+
+            this.setFormDataSubmittedHandler();
+        }
+
+        /**
+         * @private
+         * @return {SigninPage}
+         */
+        setFormDataSubmittedHandler() {
             bus.on(FormEvents.FORM_DATA_SUBMITTED, ({data, errors}) => {
                 if (!this.active) return;
 
@@ -66,6 +79,8 @@ define('SigninPage', (require) => {
 
                 User.signIn(data);
             });
+
+            return this;
         }
 
         /**
@@ -73,8 +88,8 @@ define('SigninPage', (require) => {
          * @param {Object} attrs
          * @return {SigninPage}
          */
-        create(attrs) {
-            super.create(this.attrs);
+        render(attrs) {
+            super.render(attrs);
 
             this._formRoot = this.element.querySelector('.js-signin-form-root');
             this._form = new Form({element: this._formRoot, attrs: this.attrs});

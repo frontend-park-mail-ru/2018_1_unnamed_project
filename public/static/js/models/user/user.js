@@ -41,12 +41,32 @@ define('User', (require) => {
             this.username = data.username;
             this.email = data.email;
             this.rank = data.rank;
-            this.avatarLink = (data.avatarLink) ?
-                (api.backendURI + data.avatarLink) : DEFAULT_AVATAR_LINK;
+            this.avatarLink = this.resolveAvatarLink(data.avatarLink);
             // for demo
             // this.avatarLink = (data.avatarLink) ?
             // (data.avatarLink) : DEFAULT_AVATAR_LINK;
             this.uploadAvatarLink = `${api.backendURI}/me/avatar`;
+        }
+
+        // noinspection JSMethodCanBeStatic
+        /**
+         * Разрешает полный путь к аватарке.
+         * @note ХАРДКОД!
+         * @private
+         * @param {string} avatarLink
+         * @return {*}
+         */
+        resolveAvatarLink(avatarLink) {
+            switch (true) {
+            case !avatarLink:
+                return DEFAULT_AVATAR_LINK;
+            // Если не начинается с uploads, то картинка должна быть получена с другого ресурса
+            // и добавлять префикс бекенда не надо.
+            case !avatarLink.startsWith('/uploads'):
+                return avatarLink;
+            default:
+                return api.backendURI + avatarLink;
+            }
         }
 
         /**
@@ -60,7 +80,6 @@ define('User', (require) => {
          * @return {User|*}
          */
         static get currentUser() {
-            this.checkCurrentUser();
             return LocalStorageProxy.fetch('currentUser');
         }
 
