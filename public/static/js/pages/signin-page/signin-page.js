@@ -21,7 +21,7 @@ define('SigninPage', (require) => {
          * Возвращает атрибуты по умолчанию.
          * @return {{fields: *[], formFooterLink: {title: string, href: string}, resetText: string, submitText: string}}
          */
-        static get deaultAttrs() {
+        static get defaultAttrs() {
             return {
                 fields: [
                     {
@@ -52,7 +52,7 @@ define('SigninPage', (require) => {
         constructor() {
             super(signinPageTemplate);
 
-            this.attrs = SigninPage.deaultAttrs;
+            this.attrs = SigninPage.defaultAttrs;
 
             this.setFormDataSubmittedHandler();
         }
@@ -93,6 +93,9 @@ define('SigninPage', (require) => {
 
             this._formRoot = this.element.querySelector('.js-signin-form-root');
             this._form = new Form({element: this._formRoot, attrs: this.attrs});
+
+            const push = new Push();
+            push.renderShared({level: PushLevels.MSG_ERROR});
 
             return this;
         }

@@ -67,7 +67,12 @@ define('Router', (require) => {
             case AccessTypes.LOGGED_IN_USER:
                 if (!User.isAuthorized()) {
                     this._nextRoute = route;
+
+                    const push = new Push();
+                    push.addSharedMessage('Войдите для продолжения');
+
                     this.navigateTo('/signin');
+
                     return this;
                 }
                 break;
