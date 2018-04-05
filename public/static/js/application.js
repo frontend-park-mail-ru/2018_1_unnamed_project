@@ -1,6 +1,9 @@
 'use strict';
 
 (function() {
+    const User = require('User');
+    User.checkCurrentUser();
+
     document.addEventListener('DOMContentLoaded', () => {
         const ProfileBar = require('ProfileBar');
 
@@ -16,7 +19,6 @@
         const SignupPage = require('SignupPage');
         const SingleplayerPage = require('SingleplayerPage');
 
-        const User = require('User');
         const UserEvents = require('User/events');
 
         const bus = require('bus');
@@ -46,7 +48,5 @@
                 profileBar.setUnauthorized();
             }
         });
-
-        User.checkCurrentUser();
     });
 })();
