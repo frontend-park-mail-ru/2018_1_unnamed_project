@@ -82,7 +82,9 @@ define('User', (require) => {
          * @return {boolean}
          */
         static isAuthorized() {
-            return !!this.currentUser;
+            const isa = !!LocalStorageProxy.fetchRaw('currentUser');
+            console.log(isa);
+            return isa;
         }
 
         /**

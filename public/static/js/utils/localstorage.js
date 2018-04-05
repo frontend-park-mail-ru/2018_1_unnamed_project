@@ -15,13 +15,23 @@ define('LocalStorageProxy', (require) => {
         }
 
         /**
-         * Извлекает значение по ключу.
+         * Извлекает значение по ключу и десериализует его из строки.
          * @param {string} key
          * @return {*|null}
          */
         static fetch(key) {
-            const value = window.localStorage[key];
+            const value = LocalStorageProxy.fetchRaw(key);
             return value ? JSON.parse(value) : null;
+        }
+
+        /**
+         * Извлекает значение по ключу.
+         * @note Использовать для быстрых операций, где важен только факт наличия/отсутствия ключа.
+         * @param {string} key
+         * @return {*|null}
+         */
+        static fetchRaw(key) {
+            return window.localStorage[key];
         }
 
         /**

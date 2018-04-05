@@ -78,7 +78,9 @@ define('Router', (require) => {
                 break;
             case AccessTypes.NOT_LOGGED_IN_USER:
                 if (User.isAuthorized()) {
-                    return this;
+                    // Чтобы не оставаться на странице (которая из-за того, что ее нельзя показывать авторизованному,
+                    // просто не отрисуется).
+                    this.navigateTo('/');
                 }
                 break;
             default:
