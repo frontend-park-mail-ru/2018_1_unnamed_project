@@ -30,7 +30,11 @@ define('ProfilePage', (require) => {
         setAuthenticationDoneHandler() {
             bus.on(UserEvents.AUTHENTICATION_DONE, (newUser) => {
                 if (!this.active || !newUser) return;
-                new Push().clear().addSharedMessage(`Добро пожаловать, ${newUser.username}`);
+
+                const push = new Push();
+                push
+                    .clear()
+                    .addSharedMessage(`Добро пожаловать, ${newUser.username}`);
             });
 
             return this;
@@ -43,7 +47,8 @@ define('ProfilePage', (require) => {
          */
         render(attrs) {
             super.render(Object.assign({}, attrs, User.currentUser));
-            new Push().renderShared({level: PushLevels.MSG_SUCCESS});
+            const push = new Push();
+            push.renderShared({level: PushLevels.MSG_SUCCESS});
             return this;
         }
 

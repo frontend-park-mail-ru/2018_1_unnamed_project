@@ -11,12 +11,19 @@ define('ProfileBar', (require) => {
          *
          */
         constructor() {
+            if (ProfileBar.__instance) {
+                return ProfileBar.__instance;
+            }
+
             this.element.querySelector('#profile-bar__logout').addEventListener('click', (evt) => {
                 evt.preventDefault();
                 User.logout();
             });
 
             this.setUnauthorized();
+            this.hide();
+
+            ProfileBar.__instance = this;
         }
 
 
@@ -68,6 +75,24 @@ define('ProfileBar', (require) => {
         setUnauthorized() {
             this.username = 'вы не авторизованы';
             this.logoutAvailable = false;
+        }
+
+        /**
+         * Скрывает компонент.
+         * @return {ProfileBar}
+         */
+        hide() {
+            this.element.setAttribute('hidden', 'hidden');
+            return this;
+        }
+
+        /**
+         * Показывает компонент
+         * @return {ProfileBar}
+         */
+        show() {
+            this.element.removeAttribute('hidden');
+            return this;
         }
     };
 });

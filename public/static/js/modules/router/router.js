@@ -49,44 +49,12 @@ define('Router', (require) => {
         }
 
         /**
+         * @private
          * @param {string} route
+         * @param {Page} page
          * @return {Router}
          */
-        navigateTo(route) {
-            const page = this._routes[route];
-
-            if (!page || page === this._activePage) {
-                // TODO: 404;
-                return this;
-            }
-
-            // noinspection FallThroughInSwitchStatementJS
-            switch (page.accessType()) {
-            case AccessTypes.ANY_USER:
-                break;
-            case AccessTypes.LOGGED_IN_USER:
-                if (!User.isAuthorized()) {
-                    this._nextRoute = route;
-
-                    const push = new Push();
-                    push.addSharedMessage('Войдите для продолжения');
-
-                    this.navigateTo('/signin');
-
-                    return this;
-                }
-                break;
-            case AccessTypes.NOT_LOGGED_IN_USER:
-                if (User.isAuthorized()) {
-                    // Чтобы не оставаться на странице (которая из-за того, что ее нельзя показывать авторизованному,
-                    // просто не отрисуется).
-                    this.navigateTo('/');
-                }
-                break;
-            default:
-                break;
-            }
-
+        renderRoute(route, page) {
             if (route === this._nextRoute) {
                 this._nextRoute = null;
             }
@@ -97,11 +65,59 @@ define('Router', (require) => {
             }
 
             new Push().clear();
-            this._activePage = page.create();
+            this._activePage = page.create(null);
 
             if (window.location.pathname !== route) {
                 window.history.pushState(null, null, route);
             }
+
+            return this;
+        }
+
+        /**
+         * @param {string} route
+         * @return {Router}
+         */
+        navigateTo(route) {
+            const page = this._routes[route];
+
+            if (!page || page === this._activePage) {
+                bus.emit(events.NAVIGATED);
+                return this;
+            }
+
+            User.checkCurrentUser()
+                .then(() => {
+                    switch (page.accessType()) {
+                    case AccessTypes.LOGGED_IN_USER:
+                        this.renderRoute(route, page);
+                        break;
+                    case AccessTypes.NOT_LOGGED_IN_USER:
+                        this.navigateTo('/');
+                        break;
+                    default:
+                        this.renderRoute(route, page);
+                    }
+                    bus.emit(events.NAVIGATED);
+                })
+                .catch(() => {
+                    switch (page.accessType()) {
+                    case AccessTypes.LOGGED_IN_USER:
+                        const push = new Push();
+                        push.addSharedMessage('Вы должны войти');
+
+                        this._nextRoute = route;
+                        this.navigateTo('/signin');
+
+                        break;
+                    case AccessTypes.NOT_LOGGED_IN_USER:
+                        this.renderRoute(route, page);
+                        break;
+                    default:
+                        this.renderRoute(route, page);
+                    }
+                    bus.emit(events.NAVIGATED);
+                });
 
             return this;
         }

@@ -29,7 +29,9 @@ define('MultiplayerPage', (require) => {
         setAuthenticationDoneHandler() {
             bus.on(UserEvents.AUTHENTICATION_DONE, (newUser) => {
                 if (!this.active || !newUser) return;
-                new Push().clear().addSharedMessage(`Добро пожаловать, ${newUser.username}`);
+
+                const push = new Push();
+                push.addSharedMessage(`Добро пожаловать, ${newUser.username}`);
             });
 
             return this;
@@ -42,7 +44,8 @@ define('MultiplayerPage', (require) => {
          */
         render(attrs) {
             super.render(attrs);
-            new Push().renderShared({level: PushLevels.MSG_SUCCESS});
+            const push = new Push();
+            push.renderShared({level: PushLevels.MSG_SUCCESS});
             return this;
         }
 

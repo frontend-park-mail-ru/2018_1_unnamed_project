@@ -1,8 +1,8 @@
 'use strict';
 
 define('MenuPage', (require) => {
-    const Page = require('Page');
     const AccessTypes = require('Page/access');
+    const Page = require('Page');
 
     /**
      * Главная страница.

@@ -95,20 +95,25 @@ define('User', (require) => {
 
         /**
          * Проверяет авторизацию пользователя.
+         * @return {Promise<Object>}
          */
         static checkCurrentUser() {
-            api
+            return api
                 .getMe()
                 .then((response) => {
                     // noinspection ReuseOfLocalVariableJS
                     currentUser = new User(response);
                     bus.emit(events.CURRENT_USER_CHANGED, currentUser);
+
+                    return currentUser;
                 })
                 .catch((errors) => {
                     console.log(errors);
                     // noinspection ReuseOfLocalVariableJS
                     currentUser = null;
                     bus.emit(events.CURRENT_USER_CHANGED, currentUser);
+
+                    throw new Error();
                 });
         }
 
