@@ -24,8 +24,6 @@ define('SettingsPage', (require) => {
         constructor() {
             super(settingsPageTemplate);
 
-            this._rendering = false;
-
             this.setFormDataSubmittedHandler()
                 .setCurrentUserChangedHandler();
         }
@@ -80,7 +78,7 @@ define('SettingsPage', (require) => {
          */
         setCurrentUserChangedHandler() {
             bus.on(UserEvents.CURRENT_USER_CHANGED, (newUser) => {
-                if (!this.active || !newUser || this._rendering) return;
+                if (!this.active || !newUser) return;
 
                 const renderAttr = Object.assign({}, this.attrs, newUser);
                 this.render(renderAttr);
@@ -116,8 +114,6 @@ define('SettingsPage', (require) => {
          * @return {Page}
          */
         render(attrs) {
-            this._rendering = true;
-
             // Перенесено в render, чтобы отрисовать изменения плейсходлеров при
             // изменении пользователя.
             const renderAttrs = this.constructRenderAttrs(attrs);
@@ -127,8 +123,6 @@ define('SettingsPage', (require) => {
             this._form = new Form({element: this._formRoot, attrs: this.attrs});
 
             this.setAvatarHandlers();
-
-            this._rendering = false;
 
             return this;
         }

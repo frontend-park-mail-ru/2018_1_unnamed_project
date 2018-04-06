@@ -11,5 +11,7 @@ define('Router/events', (require) => {
         NAVIGATE_TO_PAGE: 'navigate_to',
         // Отрисовать конкретную страницу или, если ее нет, корневую страницу.
         NAVIGATE_TO_NEXT_PAGE_OR_ROOT: 'navigate_to_next',
+        // Отрисовка страницы закончена.
+        NAVIGATED: 'navigated',
     };
 });

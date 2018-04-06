@@ -1,13 +1,13 @@
 'use strict';
 
 (function() {
-    const User = require('User');
-    User.checkCurrentUser();
-
     document.addEventListener('DOMContentLoaded', () => {
         const ProfileBar = require('ProfileBar');
 
         const Router = require('Router');
+        const RouterEvents = require('Router/events');
+
+        const UserEvents = require('User/events');
 
         const MenuPage = require('MenuPage');
         const MultiplayerPage = require('MultiplayerPage');
@@ -18,8 +18,6 @@
         const SigninPage = require('SigninPage');
         const SignupPage = require('SignupPage');
         const SingleplayerPage = require('SingleplayerPage');
-
-        const UserEvents = require('User/events');
 
         const bus = require('bus');
 
@@ -48,5 +46,7 @@
                 profileBar.setUnauthorized();
             }
         });
+
+        bus.on(RouterEvents.NAVIGATED, () => profileBar.show());
     });
 })();
