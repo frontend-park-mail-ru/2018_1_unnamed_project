@@ -58,25 +58,11 @@ define('User', (require) => {
             this.uploadAvatarLink = `${api.backendURI}/me/avatar`;
         }
 
-        // noinspection JSMethodCanBeStatic
         /**
-         * Разрешает полный путь к аватарке.
-         * @note ХАРДКОД!
-         * @private
-         * @param {string} avatarLink
-         * @return {*}
+         * @return {User|*}
          */
-        resolveAvatarLink(avatarLink) {
-            switch (true) {
-            case !avatarLink:
-                return DEFAULT_AVATAR_LINK;
-            // Если не начинается с uploads, то картинка должна быть получена с другого ресурса
-            // и добавлять префикс бекенда не надо.
-            case !avatarLink.startsWith('/uploads'):
-                return avatarLink;
-            default:
-                return api.backendURI + avatarLink;
-            }
+        static get currentUser() {
+            return currentUser;
         }
 
         /**
@@ -84,13 +70,6 @@ define('User', (require) => {
          */
         static isAuthorized() {
             return !!currentUser;
-        }
-
-        /**
-         * @return {User|*}
-         */
-        static get currentUser() {
-            return currentUser;
         }
 
         /**
@@ -242,6 +221,27 @@ define('User', (require) => {
                 .catch((errors) => {
                     console.log(errors);
                 });
+        }
+
+        // noinspection JSMethodCanBeStatic
+        /**
+         * Разрешает полный путь к аватарке.
+         * @note ХАРДКОД!
+         * @private
+         * @param {string} avatarLink
+         * @return {*}
+         */
+        resolveAvatarLink(avatarLink) {
+            switch (true) {
+            case !avatarLink:
+                return DEFAULT_AVATAR_LINK;
+            // Если не начинается с uploads, то картинка должна быть получена с другого ресурса
+            // и добавлять префикс бекенда не надо.
+            case !avatarLink.startsWith('/uploads'):
+                return avatarLink;
+            default:
+                return api.backendURI + avatarLink;
+            }
         }
     };
 });

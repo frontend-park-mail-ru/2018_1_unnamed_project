@@ -1,6 +1,6 @@
 'use strict';
 
-define( 'Component', (require) => {
+define('Component', (require) => {
     /**
      * Базовый класс компонента.
      */

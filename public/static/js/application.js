@@ -2,6 +2,8 @@
 
 (function() {
     document.addEventListener('DOMContentLoaded', () => {
+        require('add-sw');
+
         const ProfileBar = require('ProfileBar');
 
         const Router = require('Router');

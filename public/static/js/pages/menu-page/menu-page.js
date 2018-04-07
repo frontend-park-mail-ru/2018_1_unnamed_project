@@ -9,6 +9,15 @@ define('MenuPage', (require) => {
      */
     return class MenuPage extends Page {
         /**
+         *
+         */
+        constructor() {
+            super(menuPageTemplate);
+
+            this.attrs = MenuPage.defaultAttrs;
+        }
+
+        /**
          * Возвращает артрибуты по умолчанию.
          * @return {{navItems: *[]}}
          */
@@ -33,15 +42,6 @@ define('MenuPage', (require) => {
                     },
                 ],
             };
-        }
-
-        /**
-         *
-         */
-        constructor() {
-            super(menuPageTemplate);
-
-            this.attrs = MenuPage.defaultAttrs;
         }
 
         /**
