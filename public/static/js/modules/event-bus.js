@@ -51,5 +51,12 @@ define('EventBus', (require) => {
             (this._listeners[event] || (this._listeners[event] = [])).forEach((l) => l(data));
             return this;
         }
+
+        /**
+         * Очищает шину
+         */
+        clear() {
+            this._listeners = {};
+        }
     };
 });

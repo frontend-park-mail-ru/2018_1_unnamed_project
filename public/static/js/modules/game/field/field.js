@@ -4,7 +4,7 @@ define('game/field/GameField', (require) => {
     const CalcDelegate = require('game/field/CalcDelegate');
     const Cell = require('game/field/cell/Cell');
     const Scene = require('graphics/Scene');
-
+    const SetupValidator = require('game/field/SetupValidator');
     const gameBus = require('game/core/bus');
     const gameEvents = require('game/core/events');
 
@@ -17,7 +17,7 @@ define('game/field/GameField', (require) => {
          */
         constructor(canvas) {
             this.canvas = canvas;
-
+            this.setupValidator = new SetupValidator();
             const ctx = canvas.getContext('2d');
             this.ctx = ctx;
 
@@ -57,7 +57,14 @@ define('game/field/GameField', (require) => {
                 const i = Math.floor(y / cellHeight);
 
                 console.log(i, j);
-                gameBus.emit(gameEvents.REQUEST_SETUP_PERMISSION, {i, j});
+                switch (event) {
+                case gameEvents.LCLICK:
+                    gameBus.emit(gameEvents.REQUEST_SETUP_PERMISSION, {i, j});
+                    break;
+                case gameEvents.RCLICK:
+                    gameBus.emit(gameEvents.REQUEST_FREE_PERMISSION, {i, j});
+                    break;
+                }
             });
             return this;
         }
@@ -70,10 +77,9 @@ define('game/field/GameField', (require) => {
             gameBus.on(gameEvents.DRAW, ({i, j, status}) => {
                 // Поле квадратное, id идут друг за другом,
                 // поэтому по i, j можно найти id фигуры.
-                const idx = i * this._fieldParams.dim + j;
+                const idx = j * this._fieldParams.dim + i;
                 const cell = this._cells[idx];
                 cell.changeStatus(status);
-
                 this.renderScene();
             });
             return this;
@@ -110,6 +116,7 @@ define('game/field/GameField', (require) => {
 
             this._calcDelegate.playersCount = playersCount;
             this._fieldParams = this._calcDelegate.gameFieldParams;
+            gameBus.emit(gameEvents.CREATE_BATTLEFIELD, this._fieldParams.dim);
 
             const [cellWidth, cellHeight] = this.computeCellParams();
 

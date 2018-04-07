@@ -2,6 +2,7 @@
 
 define('game/core/events', (require) => {
     return {
+        CREATE_BATTLEFIELD: 'create_battlefield',
         APPROVE: 'approve',
         DRAW: 'draw',
         ENABLE_SCENE: 'enable_scene',

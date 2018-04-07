@@ -4,6 +4,7 @@ define('SingleplayerPage', (require) => {
     const AccessTypes = require('Page/access');
     const Controllers = require('game/Controllers');
     const GameField = require('game/field/GameField');
+    const gameBus = require('game/core/bus');
     const Page = require('Page');
 
     /**
@@ -50,8 +51,8 @@ define('SingleplayerPage', (require) => {
             this._canvas = this.element.querySelector('#singleplayer__canvas');
             [this._canvas.width, this._canvas.height] = SingleplayerPage.computeCanvasSize();
 
+            gameBus.clear();
             this._gameField = new GameField(this._canvas);
-
             // noinspection JSUnusedGlobalSymbols
             this._controllers = new Controllers(this._canvas);
 
