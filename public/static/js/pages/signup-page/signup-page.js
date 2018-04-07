@@ -20,6 +20,17 @@ define('SignupPage', (require) => {
         /**
          *
          */
+        constructor() {
+            super(signupPageTemplate);
+
+            this.attrs = SignupPage.defaultAttrs;
+
+            this.setFormDataSubmittedHandler();
+        }
+
+        /**
+         *
+         */
         static get defaultAttrs() {
             return {
                 fields: [
@@ -55,17 +66,6 @@ define('SignupPage', (require) => {
                 resetText: 'Очистить',
                 submitText: 'Регистрация',
             };
-        }
-
-        /**
-         *
-         */
-        constructor() {
-            super(signupPageTemplate);
-
-            this.attrs = SignupPage.defaultAttrs;
-
-            this.setFormDataSubmittedHandler();
         }
 
         /**

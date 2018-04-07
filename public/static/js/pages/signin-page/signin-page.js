@@ -18,6 +18,17 @@ define('SigninPage', (require) => {
      */
     return class SigninPage extends Page {
         /**
+         *
+         */
+        constructor() {
+            super(signinPageTemplate);
+
+            this.attrs = SigninPage.defaultAttrs;
+
+            this.setFormDataSubmittedHandler();
+        }
+
+        /**
          * Возвращает атрибуты по умолчанию.
          * @return {{fields: *[], formFooterLink: {title: string, href: string}, resetText: string, submitText: string}}
          */
@@ -44,17 +55,6 @@ define('SigninPage', (require) => {
                 resetText: 'Очистить',
                 submitText: 'Вход',
             };
-        }
-
-        /**
-         *
-         */
-        constructor() {
-            super(signinPageTemplate);
-
-            this.attrs = SigninPage.defaultAttrs;
-
-            this.setFormDataSubmittedHandler();
         }
 
         /**
