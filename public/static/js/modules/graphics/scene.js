@@ -65,6 +65,16 @@ define('graphics/Scene', (require) => {
         clear() {
             const ctx = this.ctx;
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            return this;
+        }
+
+        /**
+         * Полностью очищает сцену.
+         * @return {Scene}
+         */
+        removeAll() {
+            this.clear();
+            this.figures.clear();
             this._id = 0;
             return this;
         }

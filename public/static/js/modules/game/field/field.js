@@ -21,11 +21,16 @@ define('game/field/GameField', (require) => {
             const ctx = canvas.getContext('2d');
             this.ctx = ctx;
 
+            this._cells = [];
+
             this._scene = new Scene(ctx);
             this._calcDelegate = new CalcDelegate();
 
             this.setCoordMapper(gameEvents.LCLICK)
-                .setCoordMapper(gameEvents.RCLICK);
+                .setCoordMapper(gameEvents.RCLICK)
+                .setDrawHandler()
+                .setEnableSceneHandler()
+                .setDisableSceneHandler();
 
             this.init();
         }
@@ -34,10 +39,9 @@ define('game/field/GameField', (require) => {
          * @return {*[]}
          */
         computeCellParams() {
-            const fieldParams = this._calcDelegate.gameFieldParams;
             return [
-                Math.round(this.canvas.width / fieldParams.dim),
-                Math.round(this.canvas.height / fieldParams.dim),
+                Math.round(this.canvas.width / this._fieldParams.dim),
+                Math.round(this.canvas.height / this._fieldParams.dim),
             ];
         }
 
@@ -59,29 +63,86 @@ define('game/field/GameField', (require) => {
         }
 
         /**
+         * Хендлер на событие перерисовки.
+         * @return {GameField}
+         */
+        setDrawHandler() {
+            gameBus.on(gameEvents.DRAW, ({i, j, status}) => {
+                // Поле квадратное, id идут друг за другом,
+                // поэтому по i, j можно найти id фигуры.
+                const idx = i * this._fieldParams.dim + j;
+                const cell = this._cells[idx];
+                cell.changeStatus(status);
+
+                this.renderScene();
+            });
+            return this;
+        }
+
+        /**
+         * Хендлер события "сделать сцену активной".
+         * @return {GameField}
+         */
+        setEnableSceneHandler() {
+            gameBus.on(gameEvents.ENABLE_SCENE, () => this._scene.figures.forEach((figure) => {
+                figure.enabled = true;
+            }));
+            return this;
+        }
+
+        /**
+         * Хендлер события "сделать сцену неактивной".
+         * @return {GameField}
+         */
+        setDisableSceneHandler() {
+            gameBus.on(gameEvents.DISABLE_SCENE, () => this._scene.figures.forEach((figure) => {
+                figure.enabled = false;
+            }));
+            return this;
+        }
+
+        /**
          * @param {Number} playersCount
+         * @return {GameField}
          */
         init(playersCount = 2) {
-            if (!playersCount) return;
+            if (!playersCount) return this;
 
             this._calcDelegate.playersCount = playersCount;
-            const fieldParams = this._calcDelegate.gameFieldParams;
+            this._fieldParams = this._calcDelegate.gameFieldParams;
 
             const [cellWidth, cellHeight] = this.computeCellParams();
 
-            this._scene.clear();
+            this._cells = [];
 
             const ctx = this.ctx;
-            for (let i = 0; i < fieldParams.dim; i++) {
-                for (let j = 0; j < fieldParams.dim; j++) {
+            for (let i = 0; i < this._fieldParams.dim; i++) {
+                for (let j = 0; j < this._fieldParams.dim; j++) {
                     const cell = new Cell(ctx, {width: cellWidth, height: cellHeight});
                     cell.x = i * cellWidth + Math.round(cellWidth / 2);
                     cell.y = j * cellHeight + Math.round(cellHeight / 2);
 
-                    this._scene.addFigure(cell);
+                    this._cells.push(cell);
                 }
             }
+
+            return this.renderScene();
+        }
+
+        /**
+         * @private
+         * @return {GameField}
+         */
+        renderScene() {
+            this._scene.removeAll();
+
+            for (let i = 0; i < this._cells.length; i++) {
+                this._scene.addFigure(this._cells[i]);
+            }
+
             this._scene.render();
+
+            return this;
         }
     };
 });
