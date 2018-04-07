@@ -51,7 +51,6 @@ define('SingleplayerPage', (require) => {
             [this._canvas.width, this._canvas.height] = SingleplayerPage.computeCanvasSize();
 
             this._gameField = new GameField(this._canvas);
-            this._gameField.init();
 
             // noinspection JSUnusedGlobalSymbols
             this._controllers = new Controllers(this._canvas);
