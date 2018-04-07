@@ -2,7 +2,8 @@
 
 define('game/field/cell/Cell', (require) => {
     const Rectangle = require('graphics/Rectangle');
-
+    const GameBus = require('game/core/bus');
+    const GameEvents = require('game/core/bus');
     const status = require('game/cell/status');
 
     return class Cell extends Rectangle {
@@ -38,7 +39,6 @@ define('game/field/cell/Cell', (require) => {
             }
 
             const colors = (this._enabled) ? this.status.enabled : this.status.disabled;
-
             this.borderColor = colors.borderColor;
             this.fillColor = colors.fillColor;
 
