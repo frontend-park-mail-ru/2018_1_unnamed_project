@@ -11,12 +11,12 @@ define('ProfileBar', (require) => {
          *
          */
         constructor({element, templateFunction, attrs = {}}) {
-            super(element, templateFunction, attrs);
+            super({element, templateFunction, attrs});
             if (ProfileBar.__instance) {
                 return ProfileBar.__instance;
             }
 
-            this.element.querySelector('#profile-bar__logout').addEventListener('click', (evt) => {
+            this._element.querySelector('#profile-bar__logout').addEventListener('click', (evt) => {
                 evt.preventDefault();
                 User.logout();
             });
@@ -35,7 +35,16 @@ define('ProfileBar', (require) => {
          * @return {HTMLElement | null}
          */
         get element() {
-            return document.getElementById('profile-bar');
+            return this._element;
+        }
+
+        /**
+         * Изменяет значение базового элемента компонента.
+         * @private
+         * @param {HTMLElement} data
+         */
+        set element(data) {
+            this._element = data;
         }
 
         /**
@@ -44,7 +53,7 @@ define('ProfileBar', (require) => {
          * @param {string} text
          */
         set username(text) {
-            this.element.querySelector('#profile-bar__username').innerText = text;
+            this._element.querySelector('#profile-bar__username').innerText = text;
         }
 
         /**
@@ -53,7 +62,7 @@ define('ProfileBar', (require) => {
          * @param {boolean} available
          */
         set logoutAvailable(available) {
-            const logout = this.element.querySelector('#profile-bar__logout');
+            const logout = this._element.querySelector('#profile-bar__logout');
             if (available) {
                 logout.removeAttribute('hidden');
             } else {
@@ -83,7 +92,7 @@ define('ProfileBar', (require) => {
          * @return {ProfileBar}
          */
         hide() {
-            this.element.setAttribute('hidden', 'hidden');
+            this._element.setAttribute('hidden', 'hidden');
             return this;
         }
 
@@ -92,7 +101,7 @@ define('ProfileBar', (require) => {
          * @return {ProfileBar}
          */
         show() {
-            this.element.removeAttribute('hidden');
+            this._element.removeAttribute('hidden');
             return this;
         }
     };

@@ -21,7 +21,7 @@
 
         const bus = require('bus');
 
-        const root = document.getElementById('application');
+        const root = document.querySelector('#application');
 
         root.insertAdjacentHTML('beforebegin', pushTemplate());
         root.insertAdjacentHTML('afterbegin', profileBarTemplate());
@@ -38,7 +38,8 @@
             .addRoute('/singleplayer', SingleplayerPage)
             .start();
 
-        const profileBar = new ProfileBar();
+        debugger;
+        const profileBar = new ProfileBar({element: document.querySelector('#profile-bar')});
         bus.on(UserEvents.CURRENT_USER_CHANGED, (newUser) => {
             if (newUser) {
                 profileBar.setAuthorized(newUser.username);
