@@ -2,15 +2,16 @@
 
 define('ProfileBar', (require) => {
     const User = require('User');
-
+    const Component = require('Component');
     /**
      * Статусбар с данными текущего пользователя.
      */
-    return class ProfileBar {
+    return class ProfileBar extends Component {
         /**
          *
          */
-        constructor() {
+        constructor({element, templateFunction, attrs = {}}) {
+            super(element, templateFunction, attrs);
             if (ProfileBar.__instance) {
                 return ProfileBar.__instance;
             }

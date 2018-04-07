@@ -10,6 +10,7 @@ define('game/core/events', (require) => {
         RCLICK: 'rclick',
         REQUEST_GAME_PERMISSION: 'game_permission',
         REQUEST_SETUP_PERMISSION: 'setup_permission',
+        REQUEST_REMOVE_PERMISSION: 'remove_permission',
         SETUP_TIMEOUT: 'setup_timeout',
     };
 });
