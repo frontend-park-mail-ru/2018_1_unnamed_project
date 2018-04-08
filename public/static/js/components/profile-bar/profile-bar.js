@@ -41,7 +41,7 @@ define('ProfileBar', (require) => {
         /**
          * Изменяет значение базового элемента компонента.
          * @private
-         * @param {HTMLElement} data
+         * @param {HTMLElement | null} data
          */
         set element(data) {
             this._element = data;
