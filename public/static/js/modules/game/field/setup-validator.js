@@ -23,15 +23,7 @@ define('game/field/SetupValidator', (require) => {
          * @param {*} fieldSize
          */
         prepareField(fieldSize) {
-            // noinspection JSUnusedGlobalSymbols
-            this._fieldSize = fieldSize;
-            this._battlefield = new Array(fieldSize);
-            for (let i = 0; i < fieldSize; ++i) {
-                this._battlefield[i] = new Array(fieldSize);
-                for (let j = 0; j < fieldSize; ++j) {
-                    this._battlefield[i][j] = cellStatuses.EMPTY;
-                }
-            }
+            this._battlefield = Array.from(Array(fieldSize), () => (new Array(fieldSize)).fill(cellStatuses.EMPTY))
         };
 
         /**
