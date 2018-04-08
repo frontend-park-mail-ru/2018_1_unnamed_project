@@ -13,9 +13,15 @@ app.use('/static', express.static(path.join(__dirname + '/../public/static')));
 app.use(body.json());
 app.use(cookie());
 
+app.get('/sw.js', (req, res) => {
+    logger(`${req.url} ${req.method}`);
+    res.header('Content-Type', 'application/javascript');
+    res.sendFile(path.join(public + 'sw.js'));
+});
+
 app.get('/*', (req, res) => {
     logger(`${req.url} ${req.method}`);
-    res.sendFile(path.join(public + 'template/index.html'));
+    res.sendFile(path.join(public + 'index.html'));
 });
 
 app.listen(process.env.PORT || 5000);
