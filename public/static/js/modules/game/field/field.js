@@ -17,6 +17,7 @@ define('game/field/GameField', (require) => {
          */
         constructor(canvas) {
             this.canvas = canvas;
+            // noinspection JSUnusedGlobalSymbols
             this.setupValidator = new SetupValidator();
             const ctx = canvas.getContext('2d');
             this.ctx = ctx;
@@ -63,6 +64,8 @@ define('game/field/GameField', (require) => {
                     break;
                 case gameEvents.RCLICK:
                     gameBus.emit(gameEvents.REQUEST_FREE_PERMISSION, {i, j});
+                    break;
+                default:
                     break;
                 }
             });

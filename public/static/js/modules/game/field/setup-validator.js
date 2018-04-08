@@ -12,7 +12,6 @@ define('game/field/SetupValidator', (require) => {
          * Constructor
          */
         constructor() {
-            this._battlefield;
             this._push = new Push();
             gameBus.on(gameEvents.CREATE_BATTLEFIELD, (fieldSize) => this.prepareField(fieldSize));
             gameBus.on(gameEvents.REQUEST_SETUP_PERMISSION, ({i, j}) => this.fillCell(i, j));
@@ -24,6 +23,7 @@ define('game/field/SetupValidator', (require) => {
          * @param {*} fieldSize
          */
         prepareField(fieldSize) {
+            // noinspection JSUnusedGlobalSymbols
             this._fieldSize = fieldSize;
             this._battlefield = new Array(fieldSize);
             for (let i = 0; i < fieldSize; ++i) {
@@ -51,8 +51,11 @@ define('game/field/SetupValidator', (require) => {
                 break;
             case cellStatuses.DESTROYED:
                 this._push.addMessage('Ячейка уничтожена! (как ты вообще умудрился?)');
+                break;
+            default:
+                break;
             }
-            this._push.render(PushLevels.MSG_ERROR);
+            this._push.render({level: PushLevels.MSG_ERROR});
         };
 
         /**
@@ -72,8 +75,11 @@ define('game/field/SetupValidator', (require) => {
                 break;
             case cellStatuses.DESTROYED:
                 this._push.addMessage('Ячейка уничтожена! (как ты вообще умудрился?)');
+                break;
+            default:
+                break;
             }
-            this._push.render(PushLevels.MSG_ERROR);
+            this._push.render({level: PushLevels.MSG_ERROR});
         };
     };
 });
