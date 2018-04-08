@@ -66,3 +66,5 @@ typings/
 
 # Precompiled templates
 public/static/precompiled/
+
+public/sw.js
