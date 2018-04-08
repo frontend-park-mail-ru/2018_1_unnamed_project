@@ -17,7 +17,6 @@ define('Push', (require) => {
                 return Push.__instance;
             }
 
-            debugger;
             super({
                 element: document.querySelector('.msg'),
                 templateFunction: pushTemplate,

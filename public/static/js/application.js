@@ -40,7 +40,6 @@
             .addRoute('/singleplayer', SingleplayerPage)
             .start();
 
-        debugger;
         const profileBar = new ProfileBar({element: document.querySelector('#profile-bar')});
         bus.on(UserEvents.CURRENT_USER_CHANGED, (newUser) => {
             if (newUser) {
