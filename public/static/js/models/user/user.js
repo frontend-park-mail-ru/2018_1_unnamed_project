@@ -66,13 +66,6 @@ define('User', (require) => {
         }
 
         /**
-         * @return {boolean}
-         */
-        static isAuthorized() {
-            return !!currentUser;
-        }
-
-        /**
          * Проверяет авторизацию пользователя.
          * @return {Promise<Object>}
          */
