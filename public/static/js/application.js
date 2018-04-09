@@ -20,7 +20,7 @@
         const SigninPage = require('SigninPage');
         const SignupPage = require('SignupPage');
         const SingleplayerPage = require('SingleplayerPage');
-        const PlayersCountMenu = require('PlayersCountMenu');
+        const OpponentsCountMenu = require('OpponentsCountMenu');
 
         const bus = require('bus');
 
