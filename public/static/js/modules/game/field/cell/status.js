@@ -1,6 +1,6 @@
 'use strict';
 
-define('game/cell/status', (require) => {
+define('game/cell/status', () => {
     // enabled/disabled показывает, какими цветами отрисовываются клетки на
     // активном и неактивном игровом поле.
     return {
@@ -31,6 +31,16 @@ define('game/cell/status', (require) => {
             enabled: {
                 borderColor: '#EF476F',
                 fillColor: '#EF476F',
+            },
+            disabled: {
+                borderColor: '#B23553',
+                fillColor: '#B23553',
+            },
+        },
+        DESTROYED_OTHER: {
+            enabled: {
+                borderColor: '#B23553',
+                fillColor: '#B23553',
             },
             disabled: {
                 borderColor: '#B23553',
