@@ -4,8 +4,9 @@
   "description": "Multi-player version of sea battle",
   "main": "index.js",
   "scripts": {
+    "sw": "cd public && node generate-sw.js && cd ..",
     "build": "pug -cD --name-after-file public/static/js -o public/static/precompiled",
-    "start": "npm run build && DEBUG=* node server/server.js",
+    "start": "npm run build && npm run sw && DEBUG=* node server/server.js",
     "start:raw": "node server.js"
   },
   "contributors": [
@@ -23,6 +24,7 @@
     "logger": "0.0.1",
     "pug": "^2.0.1",
     "pug-cli": "^1.0.0-alpha6",
+    "recursive-readdir": "^2.2.2",
     "uuid": "^3.2.1"
   },
   "devDependencies": {
