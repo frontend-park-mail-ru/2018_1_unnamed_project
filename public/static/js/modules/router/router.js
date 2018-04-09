@@ -89,9 +89,6 @@ define('Router', (require) => {
             User.checkCurrentUser()
                 .then(() => {
                     switch (page.accessType()) {
-                    case AccessTypes.LOGGED_IN_USER:
-                        this.renderRoute(route, page);
-                        break;
                     case AccessTypes.NOT_LOGGED_IN_USER:
                         this.navigateTo('/');
                         break;
@@ -109,9 +106,6 @@ define('Router', (require) => {
                         this._nextRoute = route;
                         this.navigateTo('/signin');
 
-                        break;
-                    case AccessTypes.NOT_LOGGED_IN_USER:
-                        this.renderRoute(route, page);
                         break;
                     default:
                         this.renderRoute(route, page);

@@ -4,6 +4,7 @@
 @import "../js/components/push/push.css";
 @import "../js/components/profile-bar/profile-bar.css";
 @import "../js/components/scoreboard/scoreboard.css";
+@import "../js/components/opponents-count-menu/opponents-count-menu.css";
 
 @import "../js/pages/menu-page/menu-page.css";
 @import "../js/pages/multiplayer-page/multiplayer-page.css";
