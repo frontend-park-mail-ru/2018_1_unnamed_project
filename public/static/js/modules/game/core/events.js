@@ -1,6 +1,6 @@
 'use strict';
 
-define('game/core/events', (require) => {
+define('game/core/events', () => {
     return {
         CREATE_BATTLEFIELD: 'create_battlefield',
         APPROVE: 'approve',
@@ -11,7 +11,8 @@ define('game/core/events', (require) => {
         RCLICK: 'rclick',
         REQUEST_GAME_PERMISSION: 'game_permission',
         REQUEST_SETUP_PERMISSION: 'setup_permission',
-        REQUEST_REMOVE_PERMISSION: 'remove_permission',
+        REQUEST_FREE_PERMISSION: 'remove_permission',
         SETUP_TIMEOUT: 'setup_timeout',
+        START_OFFLINE_GAME: 'start_offline_game',
     };
 });

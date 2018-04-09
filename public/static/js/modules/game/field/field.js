@@ -114,7 +114,7 @@ define('game/field/GameField', (require) => {
          * @param {Number} playersCount
          * @return {GameField}
          */
-        init(playersCount = 2) {
+        init(playersCount = 4) {
             if (!playersCount) return this;
 
             this._calcDelegate.playersCount = playersCount;
