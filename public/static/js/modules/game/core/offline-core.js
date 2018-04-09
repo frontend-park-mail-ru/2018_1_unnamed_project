@@ -3,6 +3,8 @@
 define('game/core/OfflineCore', (require) => {
     const CellStatus = require('game/cell/status');
     const GameEvents = require('game/core/events');
+    // const Push = require('Push');
+    // const PushLevels = require('Push/levels');
     const rand = require('random');
 
     const gameBus = require('game/core/bus');
@@ -86,7 +88,27 @@ define('game/core/OfflineCore', (require) => {
         constructor() {
             this._players = [];
 
-            this.setStartGameHandler();
+            this._moveEnabled = true;
+
+            this.setStartGameHandler()
+                .setMakeMoveHandler();
+        }
+
+        /**
+         * @param {Number} ms
+         * @return {number}
+         */
+        setTimeout(ms) {
+            console.log('BEGIN');
+
+            this._moveEnabled = true;
+            gameBus.emit(GameEvents.ENABLE_SCENE);
+            return setTimeout(() => {
+                console.log('END');
+
+                this._moveEnabled = false;
+                gameBus.emit(GameEvents.DISABLE_SCENE);
+            }, ms);
         }
 
         /**
@@ -184,36 +206,55 @@ define('game/core/OfflineCore', (require) => {
                         gameBus.emit(GameEvents.DRAW, {i, j, status: CellStatus.DESTROYED_OTHER});
                         continue;
                     }
-
-                    // let cnt = 0;
-                    // let drawToUser = false;
-                    // let draw = false;
-                    //
-                    // this._players.forEach((p) => {
-                    //     switch (p.gameField[i][j]) {
-                    //     case CellStatus.BUSY:
-                    //         cnt += 1;
-                    //         draw = true;
-                    //
-                    //         if (p.name !== player.name) {
-                    //             drawToUser = p.name === 'user';
-                    //         }
-                    //     case CellStatus.BUSY && p.name !== player.name:
-                    //         p.gameField[i][j] = CellStatus.DESTROYED;
-                    //         cnt += 1;
-                    //         draw = true;
-                    //     case CellStatus.BUSY && p.name === player.name:
-                    //         p.gameField[i][j] = CellStatus.DESTROYED;
-                    //         cnt -= 2;
-                    //         draw = true;
-                    //     }
-                    // });
                 }
 
                 endOfGame = this._players.filter((p) => p.shipsAliveCount !== 0).length === 1;
 
                 this.currentPlayerIdx = (++this.currentPlayerIdx) % this._players.length;
             }
+        }
+
+        /**
+         * @return {OfflineCore}
+         */
+        setMakeMoveHandler() {
+            let lastTimeout = null;
+
+            gameBus.on(GameEvents.REQUEST_GAME_PERMISSION, () => {
+                // const player = this._players[this.currentPlayerIdx];
+                // const push = new Push();
+
+                if (!this._moveEnabled) {
+                    console.log('no move you bastard');
+                    return;
+                }
+
+                if (lastTimeout) {
+                    clearTimeout(lastTimeout);
+                }
+
+                lastTimeout = this.setTimeout(2000);
+
+                // switch (player.gameField[i][j]) {
+                // case CellStatus.EMPTY:
+                // case CellStatus.BUSY:
+                //     // makeMove;
+                //     push.clear();
+                //
+                //     if (!this._moveEnabled) {
+                //         return;
+                //     }
+                //
+                //     this.setTimeout(2000);
+                //
+                //     break;
+                // default:
+                //     push.addMessage('Нельзя стрелять в эту клетку');
+                //     push.render({level: PushLevels.ERROR});
+                //     break;
+                // }
+            });
+            return this;
         }
     };
 });
