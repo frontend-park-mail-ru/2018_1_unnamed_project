@@ -13,5 +13,7 @@ define('game/core/events', (require) => {
         REQUEST_SETUP_PERMISSION: 'setup_permission',
         REQUEST_REMOVE_PERMISSION: 'remove_permission',
         SETUP_TIMEOUT: 'setup_timeout',
+        OFFLINE_PLAYERS_COUNT_SELECTED: 'offline_players_count_selected',
+        ONLINE_PLAYERS_COUNT_SELECTED: 'online_players_count_selected',
     };
 });

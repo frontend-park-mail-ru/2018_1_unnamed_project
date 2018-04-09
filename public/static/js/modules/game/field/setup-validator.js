@@ -19,11 +19,29 @@ define('game/field/SetupValidator', (require) => {
         }
 
         /**
+         * @param {Number} fieldSize
+         * @return {Number} количество клеток на игрока
+         */
+        static computeShipsLimit(fieldSize) {
+            switch (fieldSize) {
+            case 10:
+                return 20;
+            case 15:
+                return 30;
+            case 40:
+                return 40;
+            default:
+                return 10;
+            }
+        }
+
+        /**
          * Prepare field by empty cells
          * @param {*} fieldSize
          */
         prepareField(fieldSize) {
-            this._battlefield = Array.from(Array(fieldSize), () => (new Array(fieldSize)).fill(cellStatuses.EMPTY))
+            this._shipsLimit = SetupValidator.computeShipsLimit(fieldSize);
+            this._battlefield = Array.from(Array(fieldSize), () => (new Array(fieldSize)).fill(cellStatuses.EMPTY));
         };
 
         /**
@@ -34,7 +52,12 @@ define('game/field/SetupValidator', (require) => {
         fillCell(i, j) {
             switch (this._battlefield[i][j]) {
             case cellStatuses.EMPTY:
+                if (this._shipsLimit === 0) {
+                    this._push.addMessage('Корабли закончились');
+                    break;
+                }
                 this._battlefield[i][j] = cellStatuses.BUSY;
+                this._shipsLimit--;
                 gameBus.emit(gameEvents.DRAW, {i, j, status: cellStatuses.BUSY});
                 this._push.clearMessages();
                 break;
@@ -62,6 +85,7 @@ define('game/field/SetupValidator', (require) => {
                 break;
             case cellStatuses.BUSY:
                 this._battlefield[i][j] = cellStatuses.EMPTY;
+                this._shipsLimit++;
                 gameBus.emit(gameEvents.DRAW, {i, j, status: cellStatuses.EMPTY});
                 this._push.clearMessages();
                 break;
