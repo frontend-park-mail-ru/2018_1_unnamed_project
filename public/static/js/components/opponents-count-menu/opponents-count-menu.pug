@@ -1,0 +1,6 @@
+include ../../components/menu-ref/menu-ref.pug
+p Выберите количество противников
+div.opponentsCounts
+    - var n = 1;
+    while n < this.attrs.maxOpponentsCount
+        button(type='button' value=`${n}` class='game__opponents-count-button form__control-bordered') #{n++}

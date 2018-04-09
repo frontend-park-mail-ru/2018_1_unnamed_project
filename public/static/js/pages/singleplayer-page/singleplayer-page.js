@@ -9,7 +9,7 @@ define('SingleplayerPage', (require) => {
     const Page = require('Page');
     const gameModes = require('game/modes');
     const gameEvents = require('game/core/events');
-    const PlayersCountMenu = require('PlayersCountMenu');
+    const OpponentsCountMenu = require('OpponentsCountMenu');
 
     /**
      * Страница одиночной игры.
@@ -21,7 +21,7 @@ define('SingleplayerPage', (require) => {
         constructor() {
             super(singleplayerPageTemplate);
             this.setWindowResizeHandler();
-            bus.on(gameEvents.OFFLINE_PLAYERS_COUNT_SELECTED, ({playersCount}) => this.renderBattleField(playersCount));
+            bus.on(gameEvents.OFFLINE_OPPONENTS_COUNT_SELECTED, ({opponentsCount}) => this.renderBattleField(opponentsCount));
         }
 
         /**
@@ -66,11 +66,11 @@ define('SingleplayerPage', (require) => {
         render(attrs) {
             super.render(attrs);
             const pcm = document.createElement('div');
-            pcm.className = 'pcm';
+            pcm.className = 'ocm';
             this.element.appendChild(pcm);
-            const playersCountMenu = new PlayersCountMenu({
-                element: pcm, attrs: {maxPlayersCount: 4}});
-            playersCountMenu.render({gameMode: gameModes.OFFLINE_MODE});
+            const opponentsCountMenu = new OpponentsCountMenu({
+                element: pcm, attrs: {maxOpponentsCount: 4}});
+            opponentsCountMenu.render({gameMode: gameModes.OFFLINE_MODE});
             return this;
         }
 

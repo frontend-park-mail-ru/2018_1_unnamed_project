@@ -28,7 +28,7 @@ define('game/field/SetupValidator', (require) => {
                 return 20;
             case 15:
                 return 30;
-            case 40:
+            case 20:
                 return 40;
             default:
                 return 10;
