@@ -15,7 +15,7 @@ app.use(cookie());
 
 app.get('/*', (req, res) => {
     logger(`${req.url} ${req.method}`);
-    res.sendFile(path.join(public + 'template/index.html'));
+    res.sendFile(path.join(public + 'index.html'));
 });
 
 app.listen(process.env.PORT || 5000);
