@@ -59,6 +59,6 @@ typings/
 # Precompiled templates
 public/static/precompiled/
 
-public/sw.js
-
 .idea/
+
+/public/sw.js
