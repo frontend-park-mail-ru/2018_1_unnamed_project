@@ -34,6 +34,7 @@ define('game/core/GameBot', (require) => {
                 shipsCount++;
             }
 
+            console.log(ships);
             return ships;
         }
 

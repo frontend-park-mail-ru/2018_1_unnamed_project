@@ -177,6 +177,8 @@ define('game/core/OfflineCore', (require) => {
                 switch (current.gameField[i][j]) {
                 case CellStatus.BUSY:
                     current.gameField[i][j] = CellStatus.DESTROYED;
+                    player.gameField[i][j] = CellStatus.DESTROYED_OTHER;
+
                     current.shipsAliveCount -= 1;
 
                     if (current.name === player.name) {
@@ -191,7 +193,7 @@ define('game/core/OfflineCore', (require) => {
 
                     break;
                 case CellStatus.EMPTY:
-                    current.gameField[i][j] = CellStatus.MISSED;
+                    player.gameField[i][j] = CellStatus.MISSED;
                     break;
                 default:
                     break;
@@ -240,6 +242,7 @@ define('game/core/OfflineCore', (require) => {
                     level = PushLevels.MSG_SUCCESS;
                     status = CellStatus.DESTROYED_OTHER;
                 } else if (moveResult.userAffected) {
+                    this._player.score -= 1;
                     message = 'По вам попали';
                     level = PushLevels.MSG_ERROR;
                     status = CellStatus.DESTROYED;
@@ -255,6 +258,7 @@ define('game/core/OfflineCore', (require) => {
                     level = PushLevels.MSG_SUCCESS;
                     status = CellStatus.DESTROYED_OTHER;
                 } else if (moveResult.userAffected) {
+                    this._player.score -= 1;
                     message = 'По вам попали';
                     level = PushLevels.MSG_ERROR;
                     status = CellStatus.DESTROYED;
@@ -270,7 +274,6 @@ define('game/core/OfflineCore', (require) => {
                 } else {
                     message = `Игрок ${player.name} никуда не попал`;
                     level = PushLevels.MSG_INFO;
-                    status = CellStatus.MISSED;
                 }
             }
 
@@ -281,6 +284,10 @@ define('game/core/OfflineCore', (require) => {
 
             if (status) {
                 gameBus.emit(GameEvents.DRAW, {i, j, status});
+            }
+
+            if (moveResult.userMove || moveResult.userAffected) {
+                gameBus.emit(GameEvents.SET_SCORE, this._player.score);
             }
 
             return true;

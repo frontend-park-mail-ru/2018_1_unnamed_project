@@ -102,6 +102,8 @@ define('SingleplayerPage', (require) => {
 
             gameBus.clear();
 
+            gameBus.on(GameEvents.SET_SCORE, (score) => this._score.score = score);
+
             this._game = new Game({
                 canvas: this._canvas,
                 playersCount,

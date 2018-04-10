@@ -15,13 +15,12 @@ define('Score', (require) => {
 
             this._active = true;
 
-            gameBus.on(GameEvents.SET_SCORE, (score) => {
-                if (!this._active) return;
-
-                this._value.innerText = `Очков ${score}`;
-            });
-
             this.render({score: 'Очков 0'});
+        }
+
+        set score(score) {
+            if (!this._active) return;
+            this._value.innerText = `Очков ${score}`;
         }
 
         /**
