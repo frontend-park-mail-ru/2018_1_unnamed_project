@@ -62,7 +62,7 @@ define('SingleplayerPage', (require) => {
          * @param {*} playersCount
          */
         renderBattleField(playersCount) {
-            this._canvas = document.querySelector('#singleplayer__canvas');
+            this._canvas = this.element.querySelector('#singleplayer-page__canvas');
             [this._canvas.width, this._canvas.height] = SingleplayerPage.computeCanvasSize();
             gameBus.clear();
             this._gameField = new GameField(this._canvas, playersCount);
