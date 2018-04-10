@@ -24,7 +24,8 @@ define('SingleplayerPage', (require) => {
          * @return {*[]}
          */
         static computeCanvasSize() {
-            return [window.innerWidth * 0.75, window.innerHeight * 0.75];
+            const size = (window.innerWidth > window.innerHeight) ? window.innerHeight : window.innerWidth;
+            return [size * 0.75, size * 0.75];
         }
 
         /**
