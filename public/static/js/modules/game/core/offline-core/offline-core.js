@@ -44,6 +44,22 @@ define('game/core/OfflineCore', (require) => {
         }
 
         /**
+         * Управляет рендерингом сообщения об окончании игры.
+         */
+        emitEndOfGame() {
+            this._push.clear();
+
+            const message = (this._player.shipsAliveCount) ? 'Вы выиграли!' : 'Вы проиграли (в голос) :(';
+
+            const scoreboard = this._players.map((p) => {
+                return {username: p.name, rank: p.score};
+            }).sort((a, b) => a.rank - b.rank);
+
+            gameBus.emit(GameEvents.END_OF_GAME, {scoreboard, message});
+            console.log('EOG');
+        }
+
+        /**
          * Ход игрока.
          * @private
          */
@@ -51,7 +67,9 @@ define('game/core/OfflineCore', (require) => {
             if (this._userMoveInProgress) return;
 
             const secPassed = () => {
-                if (--this._moveTimeCounter) {
+                this._moveTimeCounter--;
+
+                if (this._moveTimeCounter > 0) {
                     this._moveTimeHamdler.renderProgress(this._moveTimeCounter);
                     this._userMoveInProgress = true;
                     this._lastTimeout = setTimeout(secPassed, 1000);
@@ -62,6 +80,7 @@ define('game/core/OfflineCore', (require) => {
                 }
             };
 
+            this._moveTimeCounter = MAX_SECONDS_TO_MOVE;
             this._moveTimeHamdler.renderProgress(this._moveTimeCounter);
             this._userMoveInProgress = true;
             this._lastTimeout = setTimeout(secPassed, 1000);
@@ -74,7 +93,9 @@ define('game/core/OfflineCore', (require) => {
          */
         endUserMove({i, j}) {
             gameBus.emit(GameEvents.DISABLE_SCENE);
+
             this._moveEnabled = false;
+            this._userMoveInProgress = false;
 
             if (this.resolveMove({i, j, player: this._player})) {
                 if (this._lastTimeout) {
@@ -82,7 +103,12 @@ define('game/core/OfflineCore', (require) => {
                     this._lastTimeout = null;
                 }
 
-                setTimeout(() => this.doBotsMove(), 1000);
+                if (this.isEndOfGame()) {
+                    this.emitEndOfGame();
+                    return;
+                }
+
+                setTimeout(() => this.doBotsMove(), BOT_MOVE_SECONDS * 1000);
             } else {
                 gameBus.emit(GameEvents.ENABLE_SCENE);
                 this._moveEnabled = true;
@@ -113,14 +139,21 @@ define('game/core/OfflineCore', (require) => {
                 const [i, j] = current.bot.makeMove();
                 this.resolveMove({i, j, player: current});
 
-                if (++currentBotIdx < this._bots.length) {
-                    renderBotMove();
-                    setTimeout(botMove, BOT_MOVE_SECONDS * 1000);
-                } else {
-                    gameBus.emit(GameEvents.ENABLE_SCENE);
-                    this._moveEnabled = true;
-                    this.beginUserMove();
-                }
+                setTimeout(() => {
+                    if (++currentBotIdx < this._bots.length) {
+                        if (this.isEndOfGame()) {
+                            this.emitEndOfGame();
+                            return;
+                        }
+
+                        renderBotMove();
+                        setTimeout(botMove, BOT_MOVE_SECONDS * 1000);
+                    } else {
+                        gameBus.emit(GameEvents.ENABLE_SCENE);
+                        this._moveEnabled = true;
+                        this.beginUserMove();
+                    }
+                }, BOT_MOVE_SECONDS * 1000);
             };
 
             renderBotMove();

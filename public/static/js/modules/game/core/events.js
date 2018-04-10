@@ -17,5 +17,6 @@ define('game/core/events', (require) => {
         OFFLINE_OPPONENTS_COUNT_SELECTED: 'offline_opponents_count_selected',
         ONLINE_OPPONENTS_COUNT_SELECTED: 'online_opponents_count_selected',
         SET_SCORE: 'set_score',
+        END_OF_GAME: 'end_of_game',
     };
 });
