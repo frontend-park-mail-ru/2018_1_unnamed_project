@@ -4,8 +4,12 @@ define('SingleplayerPage', (require) => {
     const AccessTypes = require('Page/access');
     const Controllers = require('game/Controllers');
     const GameField = require('game/field/GameField');
+    const bus = require('bus');
     const gameBus = require('game/core/bus');
     const Page = require('Page');
+    const gameModes = require('game/modes');
+    const gameEvents = require('game/core/events');
+    const OpponentsCountMenu = require('OpponentsCountMenu');
 
     /**
      * Страница одиночной игры.
@@ -17,6 +21,7 @@ define('SingleplayerPage', (require) => {
         constructor() {
             super(singleplayerPageTemplate);
             this.setWindowResizeHandler();
+            bus.on(gameEvents.OFFLINE_OPPONENTS_COUNT_SELECTED, ({opponentsCount}) => this.renderBattleField(opponentsCount));
         }
 
         /**
@@ -42,21 +47,31 @@ define('SingleplayerPage', (require) => {
         }
 
         /**
+         * ha-ha fuck you jslint
+         * @param {*} playersCount
+         */
+        renderBattleField(playersCount) {
+            this._canvas = document.querySelector('#singleplayer__canvas');
+            [this._canvas.width, this._canvas.height] = SingleplayerPage.computeCanvasSize();
+            gameBus.clear();
+            this._gameField = new GameField(this._canvas, playersCount);
+            this._controllers = new Controllers(this._canvas);
+            this._canvas.hidden = false;
+        }
+
+        /**
          * @override
          * @param {Object} attrs
          * @return {SingleplayerPage}
          */
         render(attrs) {
             super.render(attrs);
-
-            this._canvas = this.element.querySelector('#singleplayer__canvas');
-            [this._canvas.width, this._canvas.height] = SingleplayerPage.computeCanvasSize();
-
-            gameBus.clear();
-            this._gameField = new GameField(this._canvas);
-            // noinspection JSUnusedGlobalSymbols
-            this._controllers = new Controllers(this._canvas);
-
+            const pcm = document.createElement('div');
+            pcm.className = 'ocm';
+            this.element.appendChild(pcm);
+            const opponentsCountMenu = new OpponentsCountMenu({
+                element: pcm, attrs: {maxOpponentsCount: 4}});
+            opponentsCountMenu.render({gameMode: gameModes.OFFLINE_MODE});
             return this;
         }
 

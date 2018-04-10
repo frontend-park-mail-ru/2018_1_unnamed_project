@@ -14,8 +14,9 @@ define('game/field/GameField', (require) => {
     return class GameField {
         /**
          * @param {*} canvas
+         * @param {int} playersCount
          */
-        constructor(canvas) {
+        constructor(canvas, playersCount = 2) {
             this.canvas = canvas;
             // noinspection JSUnusedGlobalSymbols
             this.setupValidator = new SetupValidator();
@@ -33,7 +34,7 @@ define('game/field/GameField', (require) => {
                 .setEnableSceneHandler()
                 .setDisableSceneHandler();
 
-            this.init();
+            this.init(playersCount);
         }
 
         /**
@@ -114,7 +115,7 @@ define('game/field/GameField', (require) => {
          * @param {Number} playersCount
          * @return {GameField}
          */
-        init(playersCount = 2) {
+        init(playersCount) {
             if (!playersCount) return this;
 
             this._calcDelegate.playersCount = playersCount;
