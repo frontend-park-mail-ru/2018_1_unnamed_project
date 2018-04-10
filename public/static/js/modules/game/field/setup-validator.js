@@ -41,8 +41,28 @@ define('game/field/SetupValidator', (require) => {
          */
         prepareField(fieldSize) {
             this._shipsLimit = SetupValidator.computeShipsLimit(fieldSize);
+
+            this._push.addMessage('Расставьте корабли на поле. ЛКМ - поставить, ПКМ - убрать.');
+            this._push.addMessage(`Доступно кораблей для расстановки: ${this._shipsLimit}`);
+            this._push.render({level: PushLevels.MSG_INFO});
+
             this._battlefield = Array.from(Array(fieldSize), () => (new Array(fieldSize)).fill(cellStatuses.EMPTY));
         };
+
+        /**
+         *
+         */
+        renderShipCount() {
+            this._push.clearMessages();
+
+            if (this._shipsLimit) {
+                this._push.addMessage(`Доступно кораблей для расстановки: ${this._shipsLimit}`);
+                this._push.render({level: PushLevels.MSG_INFO});
+            } else {
+                this._push.addMessage('Больше корабли ставить нельзя');
+                this._push.render({level: PushLevels.MSG_WARNING});
+            }
+        }
 
         /**
          * Try to fill cell or raise error
@@ -59,8 +79,8 @@ define('game/field/SetupValidator', (require) => {
                 this._battlefield[i][j] = cellStatuses.BUSY;
                 this._shipsLimit--;
                 gameBus.emit(gameEvents.DRAW, {i, j, status: cellStatuses.BUSY});
-                this._push.clearMessages();
-                break;
+                this.renderShipCount();
+                return;
             case cellStatuses.BUSY:
                 this._push.addMessage('Ячейка уже занята!');
                 break;
@@ -87,8 +107,8 @@ define('game/field/SetupValidator', (require) => {
                 this._battlefield[i][j] = cellStatuses.EMPTY;
                 this._shipsLimit++;
                 gameBus.emit(gameEvents.DRAW, {i, j, status: cellStatuses.EMPTY});
-                this._push.clearMessages();
-                break;
+                this.renderShipCount();
+                return;
             case cellStatuses.DESTROYED:
                 this._push.addMessage('Ячейка уничтожена! (как ты вообще умудрился?)');
                 break;
