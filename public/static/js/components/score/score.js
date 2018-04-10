@@ -2,9 +2,6 @@
 
 define('Score', (require) => {
     const Component = require('Component');
-    const GameEvents = require('game/core/events');
-
-    const gameBus = require('game/core/bus');
 
     return class Score extends Component {
         /**
