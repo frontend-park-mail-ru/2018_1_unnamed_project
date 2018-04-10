@@ -32,6 +32,9 @@ define('Game', (require) => {
          */
         startGame() {
             gameBus.emit(GameEvents.ENABLE_SCENE);
+
+            this.gameField.gameStarted = true;
+
             this._core.start();
         }
     };

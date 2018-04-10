@@ -23,6 +23,9 @@ define('game/field/GameField', (require) => {
             const ctx = canvas.getContext('2d');
             this.ctx = ctx;
 
+            this.gameStarted = false;
+            this._enabled = true;
+
             this._cells = [];
 
             this._scene = new Scene(ctx);
@@ -53,6 +56,8 @@ define('game/field/GameField', (require) => {
          */
         setCoordMapper(event) {
             gameBus.on(event, ({x, y}) => {
+                if (!this._enabled) return;
+
                 const [cellWidth, cellHeight] = this.computeCellParams();
 
                 const j = Math.floor(x / cellWidth);
@@ -61,10 +66,16 @@ define('game/field/GameField', (require) => {
                 console.log(i, j);
                 switch (event) {
                 case gameEvents.LCLICK:
-                    gameBus.emit(gameEvents.REQUEST_SETUP_PERMISSION, {i, j});
+                    if (this.gameStarted) {
+                        gameBus.emit(gameEvents.REQUEST_SETUP_PERMISSION, {i, j});
+                    } else {
+                        gameBus.emit(gameEvents.REQUEST_GAME_PERMISSION, {i, j});
+                    }
                     break;
                 case gameEvents.RCLICK:
-                    gameBus.emit(gameEvents.REQUEST_FREE_PERMISSION, {i, j});
+                    if (this.gameStarted) {
+                        gameBus.emit(gameEvents.REQUEST_FREE_PERMISSION, {i, j});
+                    }
                     break;
                 default:
                     break;
@@ -95,6 +106,7 @@ define('game/field/GameField', (require) => {
          */
         setEnableSceneHandler() {
             gameBus.on(gameEvents.ENABLE_SCENE, () => {
+                this._enabled = true;
                 this._scene.figures.forEach((figure) => {
                     figure.enabled = true;
                 });
@@ -109,6 +121,7 @@ define('game/field/GameField', (require) => {
          */
         setDisableSceneHandler() {
             gameBus.on(gameEvents.DISABLE_SCENE, () => {
+                this._enabled = false;
                 this._scene.figures.forEach((figure) => {
                     figure.enabled = false;
                 });

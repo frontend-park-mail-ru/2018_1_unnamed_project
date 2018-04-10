@@ -8,11 +8,12 @@ define('game/core/OfflineCore', (require) => {
     const MoveTimeHandler = require('game/core/MoveTimeHandler');
     const Push = require('Push');
     const PushLevels = require('Push/levels');
-    const rand = require('random');
+    const SetupValidator = require('game/field/SetupValidator');
 
     const gameBus = require('game/core/bus');
 
     const MAX_SECONDS_TO_MOVE = 20;
+    const BOT_MOVE_SECONDS = 1;
 
     return class OfflineCore extends Core {
         /**
@@ -31,16 +32,15 @@ define('game/core/OfflineCore', (require) => {
             this._lastTimeout = null;
             // Счетчик времени хода
             this._moveTimeCounter = MAX_SECONDS_TO_MOVE;
-
-            this.setStartGameHandler()
-                .setMakeMoveHandler();
         }
 
         /**
+         * Игра заканчивается, когда только у одного игрока есть "живые" корабли.
          * @return {boolean}
          */
         isEndOfGame() {
-            return false;
+            return this._player.shipsAliveCount === 0 ||
+                this._players.filter((p) => p.shipsAliveCount !== 0).length === 1;
         }
 
         /**
@@ -58,7 +58,7 @@ define('game/core/OfflineCore', (require) => {
                 } else {
                     this._userMoveInProgress = false;
                     this._push.clear();
-                    this.beginBotsMove();
+                    this.doBotsMove();
                 }
             };
 
@@ -68,10 +68,32 @@ define('game/core/OfflineCore', (require) => {
         }
 
         /**
+         * Заканчивает ход пользователя (когда он уложился в срок).
+         * @param {Number} i
+         * @param {Number} j
+         */
+        endUserMove({i, j}) {
+            gameBus.emit(GameEvents.DISABLE_SCENE);
+            this._moveEnabled = false;
+
+            if (this.resolveMove({i, j, player: this._player})) {
+                if (this._lastTimeout) {
+                    clearTimeout(this._lastTimeout);
+                    this._lastTimeout = null;
+                }
+
+                this.doBotsMove();
+            } else {
+                gameBus.emit(GameEvents.ENABLE_SCENE);
+                this._moveEnabled = true;
+            }
+        }
+
+        /**
          * Ходы ботов
          * @private
          */
-        beginBotsMove() {
+        doBotsMove() {
             gameBus.emit(GameEvents.DISABLE_SCENE);
 
             if (this._lastTimeout) {
@@ -79,176 +101,225 @@ define('game/core/OfflineCore', (require) => {
                 this._lastTimeout = null;
             }
 
-            if (this.isEndOfGame()) {
-                console.log('EOG');
+            let currentBotIdx = 0;
+
+            const renderBotMove = () => {
+                this._push.addMessage(`Игрок ${this._bots[currentBotIdx]} ходит`);
+                this._push.render({level: PushLevels.MSG_INFO});
+            };
+
+            const botMove = () => {
+                const current = this._bots[currentBotIdx];
+                const {i, j} = current.makeMove();
+                this.resolveMove({i, j, player: current});
+
+                if (++currentBotIdx < this._bots.length) {
+                    renderBotMove();
+                    setTimeout(botMove, BOT_MOVE_SECONDS * 1000);
+                } else {
+                    gameBus.emit(GameEvents.ENABLE_SCENE);
+                    this._moveEnabled = true;
+                    this.beginUserMove();
+                }
+            };
+
+            renderBotMove();
+            setTimeout(botMove, BOT_MOVE_SECONDS * 1000);
+        }
+
+        /**
+         * Проверяет, что сюда можно ходить.
+         * @param {Number} i
+         * @param {Number} j
+         * @param {Object} player
+         * @return {boolean}
+         */
+        checkMoveCorrect({i, j, player}) {
+            const gameFieldDim = player.gameField.length;
+
+            if (i >= gameFieldDim || j >= gameFieldDim) {
+                this._push.addMessage('Такой клетки нет на поле');
+            } else {
+                const cellStatus = player.gameField[i][j];
+
+                switch (cellStatus) {
+                case CellStatus.EMPTY:
+                case CellStatus.BUSY:
+                    return true;
+                default:
+                    this._push.addMessage('Эта клетка недоступна для выстрела');
+                    break;
+                }
             }
 
-            this._push.addMessage('Ходят боты');
-            this._push.render({level: PushLevels.MSG_INFO});
+            this._push.render({level: PushLevels.MSG_ERROR});
         }
 
         /**
-         * @param {Number} ms
-         * @return {number}
+         * Отдает результат хода (в кого попали, сколько раз, задели ли себя и т.п.).
+         * @param {Number} i
+         * @param {Number} j
+         * @param {Object} player
+         * @return {{}}
          */
-        setTimeout(ms) {
-            console.log('BEGIN');
+        getMoveResult({i, j, player}) {
+            const moveResult = {};
 
-            this._moveEnabled = true;
-            gameBus.emit(GameEvents.ENABLE_SCENE);
-            return setTimeout(() => {
-                console.log('END');
+            moveResult.userMove = player.name === this._player.name;
+            moveResult.destroyedSelf = false;
+            moveResult.destroyedShipsCount = 0;
+            moveResult.userAffected = false;
 
-                this._moveEnabled = false;
-                gameBus.emit(GameEvents.DISABLE_SCENE);
-            }, ms);
-        }
+            for (let i = 0; i < this._players.length; i++) {
+                const current = this._players[i];
 
-        /**
-         * @private
-         * @return {OfflineCore}
-         */
-        setStartGameHandler() {
-            gameBus.on(GameEvents.START_OFFLINE_GAME, ({name, playersCount, gameField}) => {
-                const maxShipCount = getMaxShipCount(gameField.length);
+                if (current.gameField[i][j] === CellStatus.BUSY) {
+                    current.shipsAliveCount -= 1;
 
-                this._players = [
-                    {
-                        name,
-                        gameField,
-                        score: 0,
-                        shipsAliveCount: maxShipCount,
-                        player: 'user',
-                        isBot: false,
-                    },
-                ];
-
-                for (let i = 0; i < playersCount - 1; i++) {
-                    const bot = new GameBot(gameField.length);
-
-                    this._players.push(
-                        {
-                            name: `bot${i + 1}`,
-                            gameField: bot.randomizeShips(),
-                            score: 0,
-                            shipsAliveCount: maxShipCount,
-                            player: bot,
-                            isBot: true,
+                    if (current.name === player.name) {
+                        moveResult.destroyedSelf = true;
+                    } else {
+                        if (current.name === this._player.name) {
+                            moveResult.userAffected = true;
                         }
-                    );
+                        moveResult.destroyedShipsCount ++;
+                    }
                 }
+            }
 
-                this.start();
-            });
-            return this;
+            return moveResult;
         }
 
         /**
-         * Игра.
+         * Дает фидбек по ходу.
+         * @param {Number} i
+         * @param {Number} j
+         * @param {Object} player
+         * @return {boolean}
          */
-        start() {
+        resolveMove({i, j, player}) {
+            if (!this.checkMoveCorrect({i, j, player})) {
+                return false;
+            }
+
+            const moveResult = this.getMoveResult({i, j, player});
+
+            let message = null;
+            let level = null;
+            let status = null;
+
+            if (moveResult.destroyedSelf && moveResult.destroyedShipsCount === 0) {
+                player.score -= 2;
+
+                if (moveResult.userMove) {
+                    message = 'Вы попали только по себе. Дизлайк, отписка :(';
+                    level = PushLevels.MSG_ERROR;
+                    status = CellStatus.DESTROYED;
+                } else {
+                    message = `Игрок ${player.name} попал только по себе`;
+                    level = PushLevels.MSG_WARNING;
+                }
+            } else if (moveResult.destroyedSelf && moveResult.destroyedShipsCount) {
+                player.score += 2 * moveResult.destroyedShipsCount;
+
+                if (moveResult.userMove) {
+                    message = `${moveResult.destroyedShipsCount} X 2, молодца!`;
+                    level = PushLevels.MSG_SUCCESS;
+                    status = CellStatus.DESTROYED_OTHER;
+                } else if (moveResult.userAffected) {
+                    message = 'По вам попали';
+                    level = PushLevels.MSG_ERROR;
+                    status = CellStatus.DESTROYED;
+                } else {
+                    message = `Игрок ${player.name} выбил ${moveResult.destroyedShipsCount} X 2`;
+                    level = PushLevels.MSG_INFO;
+                }
+            } else if (moveResult.destroyedShipsCount) {
+                player.score += moveResult.destroyedShipsCount;
+
+                if (moveResult.userMove) {
+                    message = `+${moveResult.destroyedShipsCount}`;
+                    level = PushLevels.MSG_SUCCESS;
+                    status = CellStatus.DESTROYED_OTHER;
+                } else if (moveResult.userAffected) {
+                    message = 'По вам попали';
+                    level = PushLevels.MSG_ERROR;
+                    status = CellStatus.DESTROYED;
+                } else {
+                    message = `Игрок ${player.name} выбил ${moveResult.destroyedShipsCount}`;
+                    level = PushLevels.MSG_INFO;
+                }
+            } else {
+                if (moveResult.userMove) {
+                    message = 'Вы никуда не попали';
+                    level = PushLevels.MSG_INFO;
+                    status = CellStatus.MISSED;
+                } else {
+                    message = `Игрок ${player.name} никуда не попал`;
+                    level = PushLevels.MSG_INFO;
+                    status = CellStatus.MISSED;
+                }
+            }
+
+            if (message && level) {
+                this._push.addMessage(message);
+                this._push.render({level});
+            }
+
+            if (status) {
+                gameBus.emit(GameEvents.DRAW, {i, j, status});
+            }
+
+            return true;
+        }
+
+        /**
+         * Начало игры.
+         * @param {Array<string>} gameField
+         */
+        start(gameField) {
+            const shipsLimit = SetupValidator.computeShipsLimit(gameField.length);
+
+            this._players = [
+                {
+                    name,
+                    gameField,
+                    score: 0,
+                    shipsAliveCount: shipsLimit,
+                    player: 'user',
+                    isUser: true,
+                },
+            ];
+
+            for (let i = 0; i < playersCount - 1; i++) {
+                const bot = new GameBot(gameField.length);
+
+                this._players.push(
+                    {
+                        name: `bot${i + 1}`,
+                        gameField: bot.randomizeShips(),
+                        score: 0,
+                        shipsAliveCount: shipsLimit,
+                        player: bot,
+                        isUser: false,
+                    }
+                );
+            }
+
+            // Ссылка на не бота.
+            this._player = this._players[0];
+            this._bots = this._players.slice(1);
+
             this.beginUserMove();
-            // let endOfGame = false;
-            //
-            // this.currentPlayerIdx = 0;
-            //
-            // while (true) {
-            //     if (endOfGame) {
-            //         break;
-            //     }
-            //
-            //     const player = this._players[this.currentPlayerIdx];
-            //
-            //     if (player.isBot) {
-            //         const [i, j] = player.player.makeMove();
-            //
-            //         let destroyedShipsCount = 0;
-            //         let selfDestroyed = false;
-            //         let userDestroyed = false;
-            //         let destroyed = false;
-            //
-            //         for (let i = 0; i < this._players.length; i++) {
-            //             const current = this._players[i];
-            //
-            //             if (current.gameField[i][j] === CellStatus.BUSY) {
-            //                 if (current.name === player.name) {
-            //                     selfDestroyed = true;
-            //                 } else {
-            //                     if (current.name === this._players[this.currentPlayerIdx].name) {
-            //                         userDestroyed = true;
-            //                     }
-            //                     destroyedShipsCount ++;
-            //                 }
-            //                 destroyed = true;
-            //             }
-            //         }
-            //
-            //         if (selfDestroyed && destroyedShipsCount === 0) {
-            //             player.score -= 2;
-            //         } else if (selfDestroyed && destroyedShipsCount !== 0) {
-            //             player.score += destroyedShipsCount * 1.5;
-            //         } else {
-            //             player.score += destroyedShipsCount;
-            //         }
-            //
-            //         if (userDestroyed) {
-            //             gameBus.emit(GameEvents.DRAW, {i, j, status: CellStatus.DESTROYED});
-            //             continue;
-            //         }
-            //
-            //         if (destroyed) {
-            //             gameBus.emit(GameEvents.DRAW, {i, j, status: CellStatus.DESTROYED_OTHER});
-            //             continue;
-            //         }
-            //     }
-            //
-            //     endOfGame = this._players.filter((p) => p.shipsAliveCount !== 0).length === 1;
-            //
-            //     this.currentPlayerIdx = (++this.currentPlayerIdx) % this._players.length;
-            // }
-        }
 
-        /**
-         * @return {OfflineCore}
-         */
-        setMakeMoveHandler() {
-            let lastTimeout = null;
-
-            gameBus.on(GameEvents.REQUEST_GAME_PERMISSION, () => {
-                // const player = this._players[this.currentPlayerIdx];
-                // const push = new Push();
-
+            gameBus.on(GameEvents.REQUEST_GAME_PERMISSION, ({i, j}) => {
                 if (!this._moveEnabled) {
                     console.log('no move you bastard');
                     return;
                 }
 
-                if (lastTimeout) {
-                    clearTimeout(lastTimeout);
-                }
-
-                lastTimeout = this.setTimeout(2000);
-
-                // switch (player.gameField[i][j]) {
-                // case CellStatus.EMPTY:
-                // case CellStatus.BUSY:
-                //     // makeMove;
-                //     push.clear();
-                //
-                //     if (!this._moveEnabled) {
-                //         return;
-                //     }
-                //
-                //     this.setTimeout(2000);
-                //
-                //     break;
-                // default:
-                //     push.addMessage('Нельзя стрелять в эту клетку');
-                //     push.render({level: PushLevels.ERROR});
-                //     break;
-                // }
+                this.endUserMove({i, j});
             });
-            return this;
         }
     };
 });
