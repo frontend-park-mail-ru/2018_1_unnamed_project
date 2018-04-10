@@ -35,7 +35,8 @@ define('Game', (require) => {
 
             this.gameField.gameStarted = true;
 
-            this._core.start();
+            const battlefield = this.gameField.setupValidator.battlefield;
+            this._core.start(battlefield, this.playersCount);
         }
     };
 });

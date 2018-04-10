@@ -1,11 +1,12 @@
 'use strict';
 
 define('game/field/SetupValidator', (require) => {
-    const gameBus = require('game/core/bus');
+    const CellStatus = require('game/cell/status');
     const GameEvents = require('game/core/events');
-    const cellStatuses = require('game/cell/status');
     const Push = require('Push');
     const PushLevels = require('Push/levels');
+
+    const gameBus = require('game/core/bus');
 
     return class SetupValidator {
         /**
@@ -27,7 +28,7 @@ define('game/field/SetupValidator', (require) => {
         static computeShipsLimit(fieldSize) {
             switch (fieldSize) {
             case 10:
-                return 2;
+                return 10;
             case 15:
                 return 30;
             case 20:
@@ -59,7 +60,7 @@ define('game/field/SetupValidator', (require) => {
             this._push.addMessage(`Доступно кораблей для расстановки: ${this._shipsLimit}`);
             this._push.render({level: PushLevels.MSG_INFO});
 
-            this._battlefield = Array.from(Array(fieldSize), () => (new Array(fieldSize)).fill(cellStatuses.EMPTY));
+            this._battlefield = Array.from(Array(fieldSize), () => (new Array(fieldSize)).fill(CellStatus.EMPTY));
         };
 
         /**
@@ -88,20 +89,20 @@ define('game/field/SetupValidator', (require) => {
             if (this._setupFinished) return;
 
             switch (this._battlefield[i][j]) {
-            case cellStatuses.EMPTY:
+            case CellStatus.EMPTY:
                 if (this._shipsLimit === 0) {
                     this._push.addMessage('Корабли закончились');
                     break;
                 }
-                this._battlefield[i][j] = cellStatuses.BUSY;
+                this._battlefield[i][j] = CellStatus.BUSY;
                 this._shipsLimit--;
-                gameBus.emit(GameEvents.DRAW, {i, j, status: cellStatuses.BUSY});
+                gameBus.emit(GameEvents.DRAW, {i, j, status: CellStatus.BUSY});
                 this.renderShipCount();
                 return;
-            case cellStatuses.BUSY:
+            case CellStatus.BUSY:
                 this._push.addMessage('Ячейка уже занята!');
                 break;
-            case cellStatuses.DESTROYED:
+            case CellStatus.DESTROYED:
                 this._push.addMessage('Ячейка уничтожена! (как ты вообще умудрился?)');
                 break;
             default:
@@ -119,16 +120,16 @@ define('game/field/SetupValidator', (require) => {
             if (this._setupFinished) return;
 
             switch (this._battlefield[i][j]) {
-            case cellStatuses.EMPTY:
+            case CellStatus.EMPTY:
                 this._push.addMessage('Ячейка уже свободна!');
                 break;
-            case cellStatuses.BUSY:
-                this._battlefield[i][j] = cellStatuses.EMPTY;
+            case CellStatus.BUSY:
+                this._battlefield[i][j] = CellStatus.EMPTY;
                 this._shipsLimit++;
-                gameBus.emit(GameEvents.DRAW, {i, j, status: cellStatuses.EMPTY});
+                gameBus.emit(GameEvents.DRAW, {i, j, status: CellStatus.EMPTY});
                 this.renderShipCount();
                 return;
-            case cellStatuses.DESTROYED:
+            case CellStatus.DESTROYED:
                 this._push.addMessage('Ячейка уничтожена! (как ты вообще умудрился?)');
                 break;
             default:

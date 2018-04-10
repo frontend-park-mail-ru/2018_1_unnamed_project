@@ -82,7 +82,7 @@ define('game/core/OfflineCore', (require) => {
                     this._lastTimeout = null;
                 }
 
-                this.doBotsMove();
+                setTimeout(() => this.doBotsMove(), 1000);
             } else {
                 gameBus.emit(GameEvents.ENABLE_SCENE);
                 this._moveEnabled = true;
@@ -104,13 +104,13 @@ define('game/core/OfflineCore', (require) => {
             let currentBotIdx = 0;
 
             const renderBotMove = () => {
-                this._push.addMessage(`Игрок ${this._bots[currentBotIdx]} ходит`);
+                this._push.addMessage(`Игрок ${this._bots[currentBotIdx].name} ходит`);
                 this._push.render({level: PushLevels.MSG_INFO});
             };
 
             const botMove = () => {
                 const current = this._bots[currentBotIdx];
-                const {i, j} = current.makeMove();
+                const [i, j] = current.bot.makeMove();
                 this.resolveMove({i, j, player: current});
 
                 if (++currentBotIdx < this._bots.length) {
@@ -153,6 +153,7 @@ define('game/core/OfflineCore', (require) => {
             }
 
             this._push.render({level: PushLevels.MSG_ERROR});
+            return false;
         }
 
         /**
@@ -170,20 +171,30 @@ define('game/core/OfflineCore', (require) => {
             moveResult.destroyedShipsCount = 0;
             moveResult.userAffected = false;
 
-            for (let i = 0; i < this._players.length; i++) {
-                const current = this._players[i];
+            for (let playerIdx = 0; playerIdx < this._players.length; playerIdx++) {
+                const current = this._players[playerIdx];
 
-                if (current.gameField[i][j] === CellStatus.BUSY) {
+                switch (current.gameField[i][j]) {
+                case CellStatus.BUSY:
+                    current.gameField[i][j] = CellStatus.DESTROYED;
                     current.shipsAliveCount -= 1;
 
                     if (current.name === player.name) {
                         moveResult.destroyedSelf = true;
                     } else {
-                        if (current.name === this._player.name) {
-                            moveResult.userAffected = true;
-                        }
                         moveResult.destroyedShipsCount ++;
                     }
+
+                    if (current.name === this._player.name) {
+                        moveResult.userAffected = true;
+                    }
+
+                    break;
+                case CellStatus.EMPTY:
+                    current.gameField[i][j] = CellStatus.MISSED;
+                    break;
+                default:
+                    break;
                 }
             }
 
@@ -215,6 +226,8 @@ define('game/core/OfflineCore', (require) => {
                     message = 'Вы попали только по себе. Дизлайк, отписка :(';
                     level = PushLevels.MSG_ERROR;
                     status = CellStatus.DESTROYED;
+
+                    gameBus.emit(GameEvents.SET_SCORE, this._player.score);
                 } else {
                     message = `Игрок ${player.name} попал только по себе`;
                     level = PushLevels.MSG_WARNING;
@@ -276,17 +289,16 @@ define('game/core/OfflineCore', (require) => {
         /**
          * Начало игры.
          * @param {Array<string>} gameField
+         * @param {Number} playersCount
          */
-        start(gameField) {
+        start(gameField, playersCount) {
             const shipsLimit = SetupValidator.computeShipsLimit(gameField.length);
 
             this._players = [
                 {
-                    name,
                     gameField,
                     score: 0,
                     shipsAliveCount: shipsLimit,
-                    player: 'user',
                     isUser: true,
                 },
             ];
@@ -296,12 +308,12 @@ define('game/core/OfflineCore', (require) => {
 
                 this._players.push(
                     {
-                        name: `bot${i + 1}`,
+                        name: `Твоя мамаша-${i + 1}`,
                         gameField: bot.randomizeShips(),
                         score: 0,
                         shipsAliveCount: shipsLimit,
-                        player: bot,
                         isUser: false,
+                        bot,
                     }
                 );
             }

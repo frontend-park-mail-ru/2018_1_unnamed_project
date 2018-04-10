@@ -110,9 +110,6 @@ define('SingleplayerPage', (require) => {
             this._canvas.hidden = false;
             this.setDisableSceneHandler()
                 .setStartGameHandler();
-
-            // this._gameField = new GameField(this._canvas, playersCount);
-            // this._controllers = new Controllers(this._canvas);
         }
 
         /**

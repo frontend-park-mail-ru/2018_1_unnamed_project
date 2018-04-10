@@ -67,13 +67,13 @@ define('game/field/GameField', (require) => {
                 switch (event) {
                 case gameEvents.LCLICK:
                     if (this.gameStarted) {
-                        gameBus.emit(gameEvents.REQUEST_SETUP_PERMISSION, {i, j});
-                    } else {
                         gameBus.emit(gameEvents.REQUEST_GAME_PERMISSION, {i, j});
+                    } else {
+                        gameBus.emit(gameEvents.REQUEST_SETUP_PERMISSION, {i, j});
                     }
                     break;
                 case gameEvents.RCLICK:
-                    if (this.gameStarted) {
+                    if (!this.gameStarted) {
                         gameBus.emit(gameEvents.REQUEST_FREE_PERMISSION, {i, j});
                     }
                     break;

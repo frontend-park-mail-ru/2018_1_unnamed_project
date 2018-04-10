@@ -2,6 +2,7 @@
 
 define('game/field/cell/Cell', (require) => {
     const Rectangle = require('graphics/Rectangle');
+    const StatusMapper = require('game/cell/StatusMapper');
     const status = require('game/cell/status');
 
     return class Cell extends Rectangle {
@@ -28,12 +29,12 @@ define('game/field/cell/Cell', (require) => {
 
         /**
          * @private
-         * @param {Object} status
+         * @param {Number} status
          * @return {Cell}
          */
         changeStatus(status = null) {
             if (status !== null) {
-                this.status = status;
+                this.status = StatusMapper.mapStatus(status);
             }
 
             const colors = (this._enabled) ? this.status.enabled : this.status.disabled;
@@ -45,7 +46,7 @@ define('game/field/cell/Cell', (require) => {
 
         /**
          * Устанавливает статус клетки и при необходимости доступность для взаимодействия.
-         * @param {string} status
+         * @param {Number} status
          * @param {boolean|null} enabled
          * @return {Cell}
          */

@@ -1,8 +1,9 @@
 'use strict';
 
 define('game/core/GameBot', (require) => {
+    const CellStatus = require('game/cell/status');
     const SetupValidator = require('game/field/SetupValidator');
-    const rand = require('random');
+    const rand = require('rand');
 
     return class GameBot {
         /**
@@ -14,20 +15,23 @@ define('game/core/GameBot', (require) => {
         }
 
         /**
-         * @return {Set<any>}
+         * @return {Array<string>}
          */
         randomizeShips() {
-            const ships = new Set();
-            const shipsCount = SetupValidator.computeShipsLimit(this.fieldSize);
+            const ships = Array.from(Array(this.fieldSize), () => (new Array(this.fieldSize)).fill(CellStatus.EMPTY));
+            const shipsLimit = SetupValidator.computeShipsLimit(this.fieldSize);
 
-            while (ships.size !== shipsCount) {
-                const cell = [rand(0, this.fieldSize), rand(0, this.fieldSize)];
+            let shipsCount = 0;
 
-                if (ships.has(cell)) {
+            while (shipsCount !== shipsLimit) {
+                const [i, j] = [rand(0, this.fieldSize), rand(0, this.fieldSize)];
+
+                if (ships[i][j] !== CellStatus.EMPTY) {
                     continue;
                 }
 
-                ships.add(cell);
+                ships[i][j] = CellStatus.BUSY;
+                shipsCount++;
             }
 
             return ships;
