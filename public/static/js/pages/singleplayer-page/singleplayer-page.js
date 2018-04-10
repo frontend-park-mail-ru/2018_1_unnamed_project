@@ -20,8 +20,8 @@ define('SingleplayerPage', (require) => {
          */
         constructor() {
             super(singleplayerPageTemplate);
-            this.setWindowResizeHandler();
-            bus.on(gameEvents.OFFLINE_OPPONENTS_COUNT_SELECTED, ({opponentsCount}) => this.renderBattleField(opponentsCount));
+            this.setWindowResizeHandler()
+                .setOpponentsCountSelectedHandler();
         }
 
         /**
@@ -42,6 +42,17 @@ define('SingleplayerPage', (require) => {
                 if (!this._canvas) return;
                 [this._canvas.width, this._canvas.height] = SingleplayerPage.computeCanvasSize();
                 this._gameField.init();
+            });
+            return this;
+        }
+
+        /**
+         * @private
+         * @return {SingleplayerPage}
+         */
+        setOpponentsCountSelectedHandler() {
+            bus.on(gameEvents.OFFLINE_OPPONENTS_COUNT_SELECTED, ({opponentsCount}) => {
+                this.renderBattleField(opponentsCount);
             });
             return this;
         }

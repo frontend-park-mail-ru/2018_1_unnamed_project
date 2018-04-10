@@ -115,11 +115,12 @@ define('game/field/GameField', (require) => {
          * @param {Number} playersCount
          * @return {GameField}
          */
-        init(playersCount) {
-            if (!playersCount) return this;
+        init(playersCount = null) {
+            if (playersCount) {
+                this._calcDelegate.playersCount = playersCount;
+                this._fieldParams = this._calcDelegate.gameFieldParams;
+            }
 
-            this._calcDelegate.playersCount = playersCount;
-            this._fieldParams = this._calcDelegate.gameFieldParams;
             gameBus.emit(gameEvents.CREATE_BATTLEFIELD, this._fieldParams.dim);
 
             const [cellWidth, cellHeight] = this.computeCellParams();
