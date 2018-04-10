@@ -45,7 +45,7 @@ define('SingleplayerPage', (require) => {
             window.addEventListener('resize', () => {
                 if (!this._canvas) return;
                 [this._canvas.width, this._canvas.height] = SingleplayerPage.computeCanvasSize();
-                this._gameField.init();
+                this._game.gameField.init();
             });
             return this;
         }

@@ -17,8 +17,8 @@ define('Game', (require) => {
          */
         constructor({canvas, playersCount, mode = GameModes.OFFLINE_MODE} = {}) {
             this.playersCount = playersCount;
-            this._controllers = new Controllers(canvas);
-            this._gameField = new GameField(canvas, playersCount);
+            this.controllers = new Controllers(canvas);
+            this.gameField = new GameField(canvas, playersCount);
 
             if (mode === GameModes.OFFLINE_MODE) {
                 this._core = new OfflineCore();
@@ -32,6 +32,7 @@ define('Game', (require) => {
          */
         startGame() {
             gameBus.emit(GameEvents.ENABLE_SCENE);
+            this._core.start();
         }
     };
 });
