@@ -42,8 +42,8 @@ define('game/field/GameField', (require) => {
          */
         computeCellParams() {
             return [
-                Math.round(this.canvas.width / this._fieldParams.dim),
-                Math.round(this.canvas.height / this._fieldParams.dim),
+                Math.round(this.canvas.width * .99 / this._fieldParams.dim),
+                Math.round(this.canvas.height * .99 / this._fieldParams.dim),
             ];
         }
 
