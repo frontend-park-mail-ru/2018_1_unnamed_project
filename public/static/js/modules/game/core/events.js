@@ -16,5 +16,6 @@ define('game/core/events', (require) => {
         START_OFFLINE_GAME: 'start_offline_game',
         OFFLINE_OPPONENTS_COUNT_SELECTED: 'offline_opponents_count_selected',
         ONLINE_OPPONENTS_COUNT_SELECTED: 'online_opponents_count_selected',
+        SET_SCORE: 'set_score',
     };
 });

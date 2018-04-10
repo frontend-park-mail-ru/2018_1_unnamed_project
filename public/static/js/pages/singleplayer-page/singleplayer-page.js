@@ -6,6 +6,7 @@ define('SingleplayerPage', (require) => {
     const GameModes = require('game/modes');
     const OpponentsCountMenu = require('OpponentsCountMenu');
     const Page = require('Page');
+    const Score = require('Score');
 
     const Game = require('Game');
 
@@ -81,6 +82,7 @@ define('SingleplayerPage', (require) => {
                 evt.preventDefault();
 
                 this._startGameButton.setAttribute('hidden', 'hidden');
+                this._score.show();
 
                 this._gameStarted = true;
                 this._game.startGame();
@@ -120,12 +122,19 @@ define('SingleplayerPage', (require) => {
          */
         render(attrs) {
             super.render(attrs);
+
+            this._scoreRoot = this.element.querySelector('.score__root');
+            this._score = new Score(this._scoreRoot);
+            this._score.hide();
+
             const pcm = document.createElement('div');
             pcm.className = 'ocm';
             this.element.appendChild(pcm);
+
             const opponentsCountMenu = new OpponentsCountMenu({
                 element: pcm, attrs: {maxOpponentsCount: 4}});
             opponentsCountMenu.render({gameMode: GameModes.OFFLINE_MODE});
+
             return this;
         }
 
