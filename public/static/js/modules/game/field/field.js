@@ -94,9 +94,12 @@ define('game/field/GameField', (require) => {
          * @return {GameField}
          */
         setEnableSceneHandler() {
-            gameBus.on(gameEvents.ENABLE_SCENE, () => this._scene.figures.forEach((figure) => {
-                figure.enabled = true;
-            }));
+            gameBus.on(gameEvents.ENABLE_SCENE, () => {
+                this._scene.figures.forEach((figure) => {
+                    figure.enabled = true;
+                });
+                this.renderScene();
+            });
             return this;
         }
 
@@ -105,9 +108,12 @@ define('game/field/GameField', (require) => {
          * @return {GameField}
          */
         setDisableSceneHandler() {
-            gameBus.on(gameEvents.DISABLE_SCENE, () => this._scene.figures.forEach((figure) => {
-                figure.enabled = false;
-            }));
+            gameBus.on(gameEvents.DISABLE_SCENE, () => {
+                this._scene.figures.forEach((figure) => {
+                    figure.enabled = false;
+                });
+                this.renderScene();
+            });
             return this;
         }
 

@@ -2,9 +2,8 @@
 
 define('OpponentsCountMenu', (require) => {
     const Component = require('Component');
-    const gameBus = require('game/core/bus');
+    const GameEvents = require('game/core/events');
     const bus = require('bus');
-    const gameEvents = require('game/core/events');
 
     return class OpponentsCountMenu extends Component {
         /**
@@ -17,16 +16,19 @@ define('OpponentsCountMenu', (require) => {
         }
 
         /**
+         * @override
          * @param {Object} attrs
+         * @return {OpponentsCountMenu}
          */
         render(attrs) {
             super.render(attrs);
             const buttons = this.element.querySelectorAll('.game__opponents-count-button');
             Object.values(buttons).forEach((btn) => btn.addEventListener('click', (evt) => {
                 evt.preventDefault();
-                bus.emit(gameEvents.OFFLINE_OPPONENTS_COUNT_SELECTED, {opponentsCount: parseInt(evt.target.value) + 1});
+                bus.emit(GameEvents.OFFLINE_OPPONENTS_COUNT_SELECTED, {opponentsCount: parseInt(evt.target.value) + 1});
                 this.element.hidden = true;
             }));
+            return this;
         };
     };
 });

@@ -2,7 +2,7 @@
 
 define('game/field/SetupValidator', (require) => {
     const gameBus = require('game/core/bus');
-    const gameEvents = require('game/core/events');
+    const GameEvents = require('game/core/events');
     const cellStatuses = require('game/cell/status');
     const Push = require('Push');
     const PushLevels = require('Push/levels');
@@ -13,9 +13,11 @@ define('game/field/SetupValidator', (require) => {
          */
         constructor() {
             this._push = new Push();
-            gameBus.on(gameEvents.CREATE_BATTLEFIELD, (fieldSize) => this.prepareField(fieldSize));
-            gameBus.on(gameEvents.REQUEST_SETUP_PERMISSION, ({i, j}) => this.fillCell(i, j));
-            gameBus.on(gameEvents.REQUEST_FREE_PERMISSION, ({i, j}) => this.freeCell(i, j));
+            this._setupFinished = false;
+
+            gameBus.on(GameEvents.CREATE_BATTLEFIELD, (fieldSize) => this.prepareField(fieldSize));
+            gameBus.on(GameEvents.REQUEST_SETUP_PERMISSION, ({i, j}) => this.fillCell(i, j));
+            gameBus.on(GameEvents.REQUEST_FREE_PERMISSION, ({i, j}) => this.freeCell(i, j));
         }
 
         /**
@@ -25,7 +27,7 @@ define('game/field/SetupValidator', (require) => {
         static computeShipsLimit(fieldSize) {
             switch (fieldSize) {
             case 10:
-                return 20;
+                return 2;
             case 15:
                 return 30;
             case 20:
@@ -33,6 +35,17 @@ define('game/field/SetupValidator', (require) => {
             default:
                 return 10;
             }
+        }
+
+        /**
+         * @return {*}
+         */
+        get battlefield() {
+            if (this._shipsLimit) {
+                throw new Error('Battlefield is not ready');
+            }
+
+            return this._battlefield;
         }
 
         /**
@@ -59,8 +72,10 @@ define('game/field/SetupValidator', (require) => {
                 this._push.addMessage(`Доступно кораблей для расстановки: ${this._shipsLimit}`);
                 this._push.render({level: PushLevels.MSG_INFO});
             } else {
-                this._push.addMessage('Больше корабли ставить нельзя');
+                this._setupFinished = true;
+                this._push.addMessage('Корабли расставлены! Нажмите > , чтобы начать игру');
                 this._push.render({level: PushLevels.MSG_WARNING});
+                gameBus.emit(GameEvents.DISABLE_SCENE);
             }
         }
 
@@ -70,6 +85,8 @@ define('game/field/SetupValidator', (require) => {
          * @param {int} j Column
          */
         fillCell(i, j) {
+            if (this._setupFinished) return;
+
             switch (this._battlefield[i][j]) {
             case cellStatuses.EMPTY:
                 if (this._shipsLimit === 0) {
@@ -78,7 +95,7 @@ define('game/field/SetupValidator', (require) => {
                 }
                 this._battlefield[i][j] = cellStatuses.BUSY;
                 this._shipsLimit--;
-                gameBus.emit(gameEvents.DRAW, {i, j, status: cellStatuses.BUSY});
+                gameBus.emit(GameEvents.DRAW, {i, j, status: cellStatuses.BUSY});
                 this.renderShipCount();
                 return;
             case cellStatuses.BUSY:
@@ -99,6 +116,8 @@ define('game/field/SetupValidator', (require) => {
          * @param {int} j Column
          */
         freeCell(i, j) {
+            if (this._setupFinished) return;
+
             switch (this._battlefield[i][j]) {
             case cellStatuses.EMPTY:
                 this._push.addMessage('Ячейка уже свободна!');
@@ -106,7 +125,7 @@ define('game/field/SetupValidator', (require) => {
             case cellStatuses.BUSY:
                 this._battlefield[i][j] = cellStatuses.EMPTY;
                 this._shipsLimit++;
-                gameBus.emit(gameEvents.DRAW, {i, j, status: cellStatuses.EMPTY});
+                gameBus.emit(GameEvents.DRAW, {i, j, status: cellStatuses.EMPTY});
                 this.renderShipCount();
                 return;
             case cellStatuses.DESTROYED:

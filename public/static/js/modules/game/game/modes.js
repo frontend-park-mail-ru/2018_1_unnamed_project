@@ -1,6 +1,6 @@
 'use strict';
 
-define('game/modes', (require) => {
+define('game/modes', () => {
     return {
         ONLINE_NODE: 'online_mode',
         OFFLINE_MODE: 'offline_mode',

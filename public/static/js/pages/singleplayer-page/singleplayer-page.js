@@ -2,14 +2,15 @@
 
 define('SingleplayerPage', (require) => {
     const AccessTypes = require('Page/access');
-    const Controllers = require('game/Controllers');
-    const GameField = require('game/field/GameField');
+    const GameEvents = require('game/core/events');
+    const GameModes = require('game/modes');
+    const OpponentsCountMenu = require('OpponentsCountMenu');
+    const Page = require('Page');
+
+    const Game = require('Game');
+
     const bus = require('bus');
     const gameBus = require('game/core/bus');
-    const Page = require('Page');
-    const gameModes = require('game/modes');
-    const gameEvents = require('game/core/events');
-    const OpponentsCountMenu = require('OpponentsCountMenu');
 
     /**
      * Страница одиночной игры.
@@ -20,6 +21,9 @@ define('SingleplayerPage', (require) => {
          */
         constructor() {
             super(singleplayerPageTemplate);
+
+            this._gameStarted = false;
+
             this.setWindowResizeHandler()
                 .setOpponentsCountSelectedHandler();
         }
@@ -51,8 +55,35 @@ define('SingleplayerPage', (require) => {
          * @return {SingleplayerPage}
          */
         setOpponentsCountSelectedHandler() {
-            bus.on(gameEvents.OFFLINE_OPPONENTS_COUNT_SELECTED, ({opponentsCount}) => {
+            bus.on(GameEvents.OFFLINE_OPPONENTS_COUNT_SELECTED, ({opponentsCount}) => {
                 this.renderBattleField(opponentsCount);
+            });
+            return this;
+        }
+
+        /**
+         * @return {SingleplayerPage}
+         */
+        setDisableSceneHandler() {
+            gameBus.on(GameEvents.DISABLE_SCENE, () => {
+                if (this._gameStarted || !this._startGameButton) return;
+
+                this._startGameButton.removeAttribute('hidden');
+            });
+            return this;
+        }
+
+        /**
+         * @return {SingleplayerPage}
+         */
+        setStartGameHandler() {
+            this._startGameButton.addEventListener('click', (evt) => {
+                evt.preventDefault();
+
+                this._startGameButton.setAttribute('hidden', 'hidden');
+
+                this._gameStarted = true;
+                this._game.startGame();
             });
             return this;
         }
@@ -64,10 +95,22 @@ define('SingleplayerPage', (require) => {
         renderBattleField(playersCount) {
             this._canvas = this.element.querySelector('#singleplayer-page__canvas');
             [this._canvas.width, this._canvas.height] = SingleplayerPage.computeCanvasSize();
+
+            this._startGameButton = this.element.querySelector('.singleplayer-page__start-game-button');
+
             gameBus.clear();
-            this._gameField = new GameField(this._canvas, playersCount);
-            this._controllers = new Controllers(this._canvas);
+
+            this._game = new Game({
+                canvas: this._canvas,
+                playersCount,
+            });
+
             this._canvas.hidden = false;
+            this.setDisableSceneHandler()
+                .setStartGameHandler();
+
+            // this._gameField = new GameField(this._canvas, playersCount);
+            // this._controllers = new Controllers(this._canvas);
         }
 
         /**
@@ -82,7 +125,7 @@ define('SingleplayerPage', (require) => {
             this.element.appendChild(pcm);
             const opponentsCountMenu = new OpponentsCountMenu({
                 element: pcm, attrs: {maxOpponentsCount: 4}});
-            opponentsCountMenu.render({gameMode: gameModes.OFFLINE_MODE});
+            opponentsCountMenu.render({gameMode: GameModes.OFFLINE_MODE});
             return this;
         }
 
