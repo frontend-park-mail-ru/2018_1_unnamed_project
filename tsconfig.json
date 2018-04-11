@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./public/static",
+    "outDir": "./dist/",
+    "noImplicitAny": false,
+    "module": "es6",
+    "target": "es2015",
+    "allowJs": false,
+    "alwaysStrict": true,
+    "strict": false,
+    "lib": [
+      "es2017",
+      "dom",
+      "dom.iterable"
+    ]
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

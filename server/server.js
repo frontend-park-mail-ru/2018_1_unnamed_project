@@ -9,9 +9,11 @@ const uuid = require('uuid/v4');
 const logger = debug('mylogger');
 const public = __dirname + '/../public/';
 
-app.use('/static', express.static(path.join(__dirname + '/../public/static')));
 app.use(body.json());
 app.use(cookie());
+
+app.use('/bundle.css', express.static(path.join(__dirname + '/../dist/bundle.css')));
+app.use('/bundle.js', express.static(path.join(__dirname + '/../dist/bundle.js')));
 
 app.get('/sw.js', (req, res) => {
     logger(`${req.url} ${req.method}`);

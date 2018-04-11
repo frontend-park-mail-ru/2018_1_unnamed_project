@@ -62,3 +62,5 @@ public/static/precompiled/
 .idea/
 
 /public/sw.js
+
+/public/dist/

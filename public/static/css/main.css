@@ -1,21 +1,5 @@
 @import "system-font.css";
 
-@import "../js/components/form/form.css";
-@import "../js/components/push/push.css";
-@import "../js/components/profile-bar/profile-bar.css";
-@import "../js/components/scoreboard/scoreboard.css";
-@import "../js/components/opponents-count-menu/opponents-count-menu.css";
-
-@import "../js/pages/menu-page/menu-page.css";
-@import "../js/pages/multiplayer-page/multiplayer-page.css";
-@import "../js/pages/profile-page/profile-page.css";
-@import "../js/pages/rules-page/rules-page.css";
-@import "../js/pages/scoreboard-page/scoreboard-page.css";
-@import "../js/pages/settings-page/settings-page.css";
-@import "../js/pages/signin-page/signin-page.css";
-@import "../js/pages/signup-page/signup-page.css";
-@import "../js/pages/singleplayer-page/singleplayer-page.css";
-
 html,
 body {
     width: 100%;
@@ -82,11 +66,11 @@ a:hover {
     font-size: 21px;
 }
 
-.uxui td{
+.uxui td {
     outline: thin solid;
     padding: 19px;
 }
 
-[data-section='uxui']:not(:hover){
+[data-section='uxui']:not(:hover) {
     opacity: 0;
 }

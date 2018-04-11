@@ -1,2 +1,6 @@
 *.json
 *.md
+node_modules
+*.pug.js
+**/dist/**
+public/static/precompiled
