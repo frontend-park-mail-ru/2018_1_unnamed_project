@@ -33,7 +33,7 @@ export class Game {
 
         this.gameField.gameStarted = true;
 
-        const username = User.currentUser.username;
+        const username = (User.currentUser) ? User.currentUser.username : 'Игрок';
         const battlefield = this.gameField.setupValidator.battlefield;
         this._core.start(username, battlefield, this.playersCount);
     }
