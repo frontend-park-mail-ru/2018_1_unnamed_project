@@ -19,6 +19,11 @@ export class Cell extends Rectangle {
         this.changeStatus(CellStatus.Empty);
     }
 
+    public set enabled(enabled: boolean) {
+        this._enabled = enabled;
+        this.changeStatus();
+    }
+    
     /**
      * @private
      * @param {Number} status

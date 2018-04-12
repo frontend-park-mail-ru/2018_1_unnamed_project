@@ -60,8 +60,10 @@ export class SetupValidator {
             this._push.render({level: PushLevels.Info});
         } else {
             this._setupFinished = true;
+            
             this._push.addMessage('Корабли расставлены! Нажмите > , чтобы начать игру');
             this._push.render({level: PushLevels.Warning});
+            
             gameBus.emit(GameEvents.DisableScene);
         }
     }

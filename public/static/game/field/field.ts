@@ -11,7 +11,7 @@ export class GameField {
     protected ctx;
     protected setupValidator;
     private _calcDelegate: CalcDelegate;
-    private _cells;
+    private _cells: Cell[];
     private _enabled: boolean;
     private _fieldParams;
     private _scene;
@@ -110,11 +110,8 @@ export class GameField {
      */
     setEnableSceneHandler() {
         gameBus.on(GameEvents.EnableScene, () => {
-            this._enabled = true;
-            this._scene.figures.forEach((figure) => {
-                figure.enabled = true;
-            });
-            this.renderScene();
+            console.log('ENABLE HANDLER');
+            this.changeEnabledStatus(true);
         });
         return this;
     }
@@ -125,11 +122,8 @@ export class GameField {
      */
     setDisableSceneHandler() {
         gameBus.on(GameEvents.DisableScene, () => {
-            this._enabled = false;
-            this._scene.figures.forEach((figure) => {
-                figure.enabled = false;
-            });
-            this.renderScene();
+            console.log('DISABLE SCENE');
+            this.changeEnabledStatus(false);
         });
         return this;
     }
@@ -168,7 +162,7 @@ export class GameField {
      * @private
      * @return {GameField}
      */
-    renderScene() {
+    private renderScene(): GameField {
         this._scene.removeAll();
         
         for (const cell of this._cells) {
@@ -178,5 +172,15 @@ export class GameField {
         this._scene.render();
         
         return this;
+    }
+    
+    private changeEnabledStatus(enabled: boolean): GameField {
+        this._enabled = enabled;
+        
+        for (const cell of this._cells) {
+            cell.enabled = enabled;
+        }
+        
+        return this.renderScene();
     }
 }
