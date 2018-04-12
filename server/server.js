@@ -13,17 +13,21 @@ const public = __dirname + '/../public/';
 app.use(body.json());
 app.use(cookie());
 
-app.use('/bundle.css', express.static(path.join(__dirname + '/../dist/bundle.css')));
-app.use('/bundle.js', express.static(path.join(__dirname + '/../dist/bundle.js')));
+app.use('/sw.js', express.static(path.join(__dirname + '/../dist/sw.js')));
+
+app.get('/dist/*', (req, res) => {
+    logger(`BUNDLE: ${req.url} ${req.method}`);
+    res.sendFile(path.join(__dirname, '/../', req.url));
+});
 
 app.get('/media/*', (req, res) => {
-    logger(`STATIC FILE: ${req.url} ${req.method}`);
+    logger(`STATIC FILE: ${req.url} ${req.method} ${path.join(public, 'static', req.url)}`);
     res.sendFile(path.join(public, 'static', req.url));
 });
 
 app.get('/*', (req, res) => {
     logger(`${req.url} ${req.method}`);
-    res.sendFile(path.join(public + 'index.html'));
+    res.sendFile(path.join(public, 'index.html'));
 });
 
 app.listen(process.env.PORT || 5000);

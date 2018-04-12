@@ -14,7 +14,7 @@ import {SingleplayerPage} from "./pages/singleplayer-page/singleplayer-page";
 import registerServiceWorker from "./utils/add-sw";
 
 document.addEventListener('DOMContentLoaded', () => {
-    // registerServiceWorker();
+    registerServiceWorker();
     
     const root = document.querySelector('#application');
     

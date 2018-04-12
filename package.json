@@ -6,8 +6,9 @@
   "scripts": {
     "build": "webpack",
     "build:dev": "webpack -w",
-    "start": "npm run build && npm run start:raw",
-    "start:raw": "DEBUG=* node server/server.js"
+    "start": "npm run build && npm run sw && npm run start:raw",
+    "start:raw": "DEBUG=* node server/server.js",
+    "sw": "node generate-sw.js"
   },
   "contributors": [
     "Artem Ikchurin",
@@ -37,10 +38,11 @@
     "eslint": "^4.18.2",
     "eslint-config-google": "^0.9.1",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "sw-cache-plugin": "^0.1.2",
     "tslint": "^5.9.1",
     "webpack": "^4.5.0",
     "webpack-cli": "^2.0.14",
-    "workbox-webpack-plugin": "^3.0.1"
+    "workbox-webpack-plugin": "^3.1.0"
   },
   "moduleFileExtensions": [
     "ts",

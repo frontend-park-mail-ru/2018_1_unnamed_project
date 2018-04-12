@@ -3,8 +3,6 @@ require('webpack');
 
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const extractCSS = new ExtractTextPlugin({filename: 'bundle.css'});
-
 module.exports = {
     mode: 'development',
     entry: './public/index.ts',
@@ -12,7 +10,7 @@ module.exports = {
         rules: [
             {
                 test: /\.css$/,
-                use: extractCSS.extract(
+                use: ExtractTextPlugin.extract(
                     {
                         fallback: 'style-loader',
                         use: ['css-loader']
@@ -38,7 +36,9 @@ module.exports = {
         extensions: ['.ts', '.tsx', '.js', '.css', '.pug'],
     },
     plugins: [
-        extractCSS,
+        new ExtractTextPlugin({
+            filename: 'bundle.css'
+        }),
     ],
     output: {
         filename: 'bundle.js',
