@@ -28,6 +28,12 @@ interface IMoveResult {
     destroyedShipsCount: number;
 }
 
+enum ResolveMoveResult {
+    Missed,
+    Wrong,
+    Hit,
+}
+
 export class OfflineCore extends Core {
     private _players: PlayersArray;
 
@@ -119,7 +125,13 @@ export class OfflineCore extends Core {
         this._moveEnabled = false;
         this._userMoveInProgress = false;
 
-        if (this.resolveMove({i, j, player: this._player})) {
+        const moveResult = this.resolveMove({i, j, player: this._player});
+        
+
+        if (moveResult === ResolveMoveResult.Wrong) {
+            gameBus.emit(GameEvents.EnableScene);
+            this._moveEnabled = true;
+        } else {
             if (this._lastTimeout) {
                 clearTimeout(this._lastTimeout);
                 this._lastTimeout = null;
@@ -130,10 +142,14 @@ export class OfflineCore extends Core {
                 return;
             }
 
-            setTimeout(() => this.doBotsMove(), BOT_MOVE_SECONDS * 1000);
-        } else {
-            gameBus.emit(GameEvents.EnableScene);
-            this._moveEnabled = true;
+            if (moveResult === ResolveMoveResult.Hit) {
+                gameBus.emit(GameEvents.EnableScene);
+                this._moveEnabled = true;
+                this._userMoveInProgress = false;
+                this.beginUserMove();
+            } else {
+                setTimeout(() => this.doBotsMove(), BOT_MOVE_SECONDS * 1000);
+            }
         }
     }
 
@@ -159,10 +175,13 @@ export class OfflineCore extends Core {
         const botMove = () => {
             const current = this._bots[currentBotIdx];
             const [i, j] = current.bot.makeMove();
-            this.resolveMove({i, j, player: current});
+            
+            if (this.resolveMove({i, j, player: current}) === ResolveMoveResult.Missed) {
+                ++currentBotIdx;
+            }
 
             setTimeout(() => {
-                if (++currentBotIdx < this._bots.length) {
+                if (currentBotIdx < this._bots.length) {
                     if (this.isEndOfGame()) {
                         this.emitEndOfGame();
                         return;
@@ -189,7 +208,7 @@ export class OfflineCore extends Core {
      * @param {Object} player
      * @return {boolean}
      */
-    checkMoveCorrect({i, j, player}): boolean {
+    checkMoveMissed({i, j, player}): boolean {
         const gameFieldDim = player.gameField.length;
 
         if (i >= gameFieldDim || j >= gameFieldDim) {
@@ -263,9 +282,9 @@ export class OfflineCore extends Core {
      * @param {Object} player
      * @return {boolean}
      */
-    resolveMove({i, j, player}): boolean {
-        if (!this.checkMoveCorrect({i, j, player})) {
-            return false;
+    resolveMove({i, j, player}): ResolveMoveResult {
+        if (!this.checkMoveMissed({i, j, player})) {
+            return ResolveMoveResult.Wrong;
         }
 
         const moveResult = this.getMoveResult({i, j, player});
@@ -273,6 +292,8 @@ export class OfflineCore extends Core {
         let message = null;
         let level = null;
         let status = null;
+
+        let resolveMoveResult: ResolveMoveResult = ResolveMoveResult.Missed;
 
         if (moveResult.isDestroyedSelf && moveResult.destroyedShipsCount === 0) {
             player.score -= 2;
@@ -303,6 +324,8 @@ export class OfflineCore extends Core {
                 message = `Игрок ${player.username} выбил ${moveResult.destroyedShipsCount} X 2`;
                 level = PushLevels.Info;
             }
+
+            resolveMoveResult = ResolveMoveResult.Hit;
         } else if (moveResult.destroyedShipsCount) {
             player.score += moveResult.destroyedShipsCount;
 
@@ -319,6 +342,8 @@ export class OfflineCore extends Core {
                 message = `Игрок ${player.username} выбил ${moveResult.destroyedShipsCount}`;
                 level = PushLevels.Info;
             }
+
+            resolveMoveResult = ResolveMoveResult.Hit;
         } else {
             if (moveResult.isUserMove) {
                 message = 'Вы никуда не попали';
@@ -343,7 +368,7 @@ export class OfflineCore extends Core {
             gameBus.emit(GameEvents.SetScore, this._player.score);
         }
 
-        return true;
+        return resolveMoveResult;
     }
 
     start(username: string, gameField: GameFieldData, playersCount: number) {
