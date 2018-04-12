@@ -73,7 +73,7 @@ export class OfflineCore extends Core {
      * Игра заканчивается, когда только у одного игрока есть "живые" корабли.
      * @return {boolean}
      */
-    isEndOfGame() {
+    isGameOver() {
         return this._player.shipsAliveCount === 0 ||
             this._players.filter((p) => p.shipsAliveCount !== 0).length === 1;
     }
@@ -81,17 +81,16 @@ export class OfflineCore extends Core {
     /**
      * Управляет рендерингом сообщения об окончании игры.
      */
-    emitEndOfGame() {
+    emitGameOver() {
         this.push.clear();
-
-        const message = (this._player.shipsAliveCount) ? 'Вы выиграли!' : 'Вы проиграли (в голос) :(';
-
+        
         const scoreboard = this._players.map((p) => {
             return {username: p.username, rank: p.score};
         }).sort((a, b) => a.rank - b.rank);
-
-        gameBus.emit(GameEvents.EndOfGame, {scoreboard, message});
-        console.log('EOG');
+        
+        debugger;
+        const isWinner: boolean = !!this._player.shipsAliveCount;
+        gameBus.emit(GameEvents.GameOver, {scoreboard, isWinner});
     }
 
     /**
@@ -143,8 +142,9 @@ export class OfflineCore extends Core {
                 this._lastTimeout = null;
             }
 
-            if (this.isEndOfGame()) {
-                this.emitEndOfGame();
+            if (this.isGameOver()) {
+                this.emitGameOver();
+                this.push.clear();
                 return;
             }
 
@@ -188,23 +188,23 @@ export class OfflineCore extends Core {
 
             setTimeout(() => {
                 if (currentBotIdx < this._bots.length) {
-                    if (this.isEndOfGame()) {
-                        this.emitEndOfGame();
+                    if (this.isGameOver()) {
+                        this.emitGameOver();
                         return;
                     }
 
                     renderBotMove();
-                    setTimeout(botMove, BOT_MOVE_SECONDS * 1000);
+                    setTimeout(botMove, BOT_MOVE_SECONDS * 300);
                 } else {
                     gameBus.emit(GameEvents.EnableScene);
                     this._moveEnabled = true;
                     this.beginUserMove();
                 }
-            }, BOT_MOVE_SECONDS * 1000);
+            }, BOT_MOVE_SECONDS * 300);
         };
 
         renderBotMove();
-        setTimeout(botMove, BOT_MOVE_SECONDS * 1000);
+        setTimeout(botMove, BOT_MOVE_SECONDS * 300);
     }
 
     /**
@@ -435,7 +435,7 @@ export class OfflineCore extends Core {
     
             setTimeout(() => this.push.clear(), 4000);
     
-            gameBus.emit(GameEvents.EndOfGame);
+            gameBus.emit(GameEvents.GameOver);
         });
     }
 }

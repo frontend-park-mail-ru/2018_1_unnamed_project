@@ -7,6 +7,7 @@ import {GameModes} from "../../game/game-modes";
 import bus from "../../modules/bus";
 import {Page, PageAccessTypes} from "../page";
 import singleplayerPageTemplate from "./singleplayer-page.pug";
+import {GameOver} from "./../../components/game-over/game-over"
 
 import "./singleplayer-page.css";
 
@@ -27,6 +28,7 @@ export class SingleplayerPage extends Page {
     private _startGameButton;
     private _scoreRoot;
     private _score: Score;
+    private _gameOver: GameOver
 
     /**
      *
@@ -35,7 +37,6 @@ export class SingleplayerPage extends Page {
         super(singleplayerPageTemplate);
 
         this._gameStarted = false;
-
         this.setWindowResizeHandler()
             .setOpponentsCountSelectedHandler();
     }
@@ -46,7 +47,7 @@ export class SingleplayerPage extends Page {
      */
     setWindowResizeHandler() {
         window.addEventListener('resize', () => {
-            if (!this._canvas) return;
+            if (!(this._canvas && this._gameStarted)) return;
             [this._canvas.width, this._canvas.height] = SingleplayerPage.computeCanvasSize();
             this._game.gameField.init();
         });
@@ -61,6 +62,24 @@ export class SingleplayerPage extends Page {
         bus.on(GameEvents.OfflineComponentsCountSelected, ({opponentsCount}) => {
             this.renderBattleField(opponentsCount);
         });
+        return this;
+    }
+
+    /**
+     * @private
+     * @return {SingleplayerPage}
+     */
+    setGameOverHandler() {       
+        const gameOverElement = document.createElement('div');
+        gameOverElement.className = 'game__gameover';
+        this.element.appendChild(gameOverElement)
+        this._gameOver = new GameOver({element:gameOverElement})        
+        gameBus.on(GameEvents.GameOver, 
+            ({scoreboard, isWinner}) => {
+                this._gameStarted = false;
+                this._canvas.hidden = true;
+                this._gameOver.render({win: isWinner});
+            });
         return this;
     }
 
@@ -82,7 +101,6 @@ export class SingleplayerPage extends Page {
     setStartGameHandler() {
         this._startGameButton.addEventListener('click', (evt) => {
             evt.preventDefault();
-
             this._startGameButton.setAttribute('hidden', 'hidden');
             this._score.show();
 
@@ -105,13 +123,14 @@ export class SingleplayerPage extends Page {
         gameBus.clear();
 
         gameBus.on(GameEvents.SetScore, (score) => this._score.score = score);
-        gameBus.on(GameEvents.EndOfGame, () => gameBus.clear());
+        gameBus.on(GameEvents.GameOver, () => gameBus.clear());
 
         this._game = new Game(this._canvas, playersCount);
 
         this._canvas.hidden = false;
         this.setDisableSceneHandler()
-            .setStartGameHandler();
+            .setStartGameHandler()
+            .setGameOverHandler();
     }
 
     /**
@@ -132,7 +151,6 @@ export class SingleplayerPage extends Page {
 
         const opponentsCountMenu = new OpponentsCountMenu({element: pcm, attrs: {maxOpponentsCount: 4}} as any);
         opponentsCountMenu.render({gameMode: GameModes.Offline});
-
         return this;
     }
 

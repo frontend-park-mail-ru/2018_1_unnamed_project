@@ -13,5 +13,5 @@ export enum GameEvents {
     OnlineComponentsCountSelected = 'online_opponents_count_selected',
     SetScore = 'set_score',
     Terminate = 'terminate',
-    EndOfGame = 'end_of_game',
+    GameOver = 'game_over',
 }
