@@ -39,7 +39,7 @@ export class SingleplayerPage extends Page {
         this.setWindowResizeHandler()
             .setOpponentsCountSelectedHandler();
     }
-
+    
     /**
      * @private
      * @return {SingleplayerPage}
@@ -105,6 +105,7 @@ export class SingleplayerPage extends Page {
         gameBus.clear();
 
         gameBus.on(GameEvents.SetScore, (score) => this._score.score = score);
+        gameBus.on(GameEvents.EndOfGame, () => gameBus.clear());
 
         this._game = new Game(this._canvas, playersCount);
 

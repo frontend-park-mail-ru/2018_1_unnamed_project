@@ -1,4 +1,7 @@
 import {ProfileBar} from "./components/profile-bar/profile-bar";
+import {Push} from "./components/push/push";
+import {GameEvents} from "./game/events";
+import gameBus from "./game/game-bus";
 import {User, UserEvents} from "./models/user";
 import bus from "./modules/bus";
 import {Router, RouterEvents} from "./modules/router";
@@ -49,4 +52,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     bus.on(RouterEvents.Navigated, () => profileBar.show());
+    
+    const push = new Push();
+    // Если пользователь переходит на другую страницу во время игры, мы заканчиваем игру, то есть
+    // посылаем по игровой шине сигнал "принудительно заверши игру".
+    bus.on(RouterEvents.Navigated, (route: string) => {
+        // this.push.sharedSize проверяется из-за того, что возможен редирект
+        // типа /profile -> /signin. Если sharedMessages заполнены, то второй раз писать туда не надо.
+        if (!route || route === ApplicationRoutes.Singleplayer || push.sharedSize) {
+            return;
+        }
+        
+        gameBus.emit(GameEvents.Terminate);
+    });
 });
