@@ -90,7 +90,7 @@ export class Router {
         const page = this._routes.get(route);
 
         if (!page || page === this._activePage) {
-            bus.emit(RouterEvents.Navigated);
+            bus.emit(RouterEvents.Navigated, null);
             return this;
         }
 
@@ -103,7 +103,7 @@ export class Router {
                     default:
                         this.renderRoute(route, page);
                 }
-                bus.emit(RouterEvents.Navigated);
+                bus.emit(RouterEvents.Navigated, route);
             })
             .catch(() => {
                 switch (page.accessType()) {
@@ -118,7 +118,7 @@ export class Router {
                     default:
                         this.renderRoute(route, page);
                 }
-                bus.emit(RouterEvents.Navigated);
+                bus.emit(RouterEvents.Navigated, route);
             });
 
         return this;

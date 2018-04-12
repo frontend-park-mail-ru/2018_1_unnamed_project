@@ -11,6 +11,7 @@ import {SettingsPage} from "./pages/settings-page/settings-page";
 import {SigninPage} from "./pages/signin-page/signin-page";
 import {SignupPage} from "./pages/signup-page/signup-page";
 import {SingleplayerPage} from "./pages/singleplayer-page/singleplayer-page";
+import {ApplicationRoutes} from "./routes";
 import registerServiceWorker from "./utils/add-sw";
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -27,15 +28,15 @@ document.addEventListener('DOMContentLoaded', () => {
     root.insertAdjacentElement('afterbegin', profileBarRoot);
     
     new Router(root)
-        .addRoute('/', MenuPage)
-        .addRoute('/multiplayer', MultiplayerPage)
-        .addRoute('/profile', ProfilePage)
-        .addRoute('/profile/settings', SettingsPage)
-        .addRoute('/rules', RulesPage)
-        .addRoute('/scoreboard', ScoreboardPage)
-        .addRoute('/signin', SigninPage)
-        .addRoute('/signup', SignupPage)
-        .addRoute('/singleplayer', SingleplayerPage)
+        .addRoute(ApplicationRoutes.Menu, MenuPage)
+        .addRoute(ApplicationRoutes.Multiplayer, MultiplayerPage)
+        .addRoute(ApplicationRoutes.Profile, ProfilePage)
+        .addRoute(ApplicationRoutes.Settings, SettingsPage)
+        .addRoute(ApplicationRoutes.Rules, RulesPage)
+        .addRoute(ApplicationRoutes.Scoreboard, ScoreboardPage)
+        .addRoute(ApplicationRoutes.Signin, SigninPage)
+        .addRoute(ApplicationRoutes.Signup, SignupPage)
+        .addRoute(ApplicationRoutes.Singleplayer, SingleplayerPage)
         .start();
     
     const profileBar = new ProfileBar({element: profileBarRoot});

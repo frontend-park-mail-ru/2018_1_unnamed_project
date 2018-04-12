@@ -1,4 +1,7 @@
 import {PushLevels} from "../components/push/push";
+import bus from "../modules/bus";
+import {Router, RouterEvents} from "../modules/router";
+import {ApplicationRoutes} from "../routes";
 import {GameBot} from "./bots/bot";
 import {Core, GameFieldData} from "./core";
 import {GameEvents} from "./events";
@@ -40,10 +43,17 @@ export class OfflineCore extends Core {
     private _player: IPlayer;
     private _bots: PlayersArray;
 
+    // Объект, который умеет красиво показывать пользователю фидбек
+    // о времени хода.
     private _moveTimeHandler: MoveTimeHandler;
+    // Последний результат выполняния setTimeout для того,
+    // чтобы его можно было отменить.
     private _lastTimeout;
+    // Счетчик секунд, оставшихся дл конца хода.
     private _moveTimeCounter: number;
+    // Можно ли ходить (пользователю).
     private _moveEnabled: boolean;
+    // Флаг того, что пользователь ходит.
     private _userMoveInProgress: boolean;
 
     /**
@@ -60,6 +70,30 @@ export class OfflineCore extends Core {
         this._moveTimeCounter = MAX_SECONDS_TO_MOVE;
         this._moveEnabled = true;
         this._userMoveInProgress = false;
+        
+        // Если пользователь переходит на другую страницу во время игры, мы заканчиваем игру.
+        bus.on(RouterEvents.Navigated, (route: string) => {
+            // this.push.sharedSize проверяется из-за того, что возможен редирект
+            // типа /profile -> /signin. Если sharedMessages заполнены, то второй раз писать туда не надо.
+            if (!route || route === ApplicationRoutes.Singleplayer || this.push.sharedSize) {
+                return;
+            }
+            
+            if (this._lastTimeout) {
+                clearTimeout(this._lastTimeout);
+                this._lastTimeout = null;
+            }
+            
+            this.push
+                .clear()
+                .addSharedMessage('Игра окончена!')
+                .renderShared({level: PushLevels.Warning});
+    
+            setTimeout(() => this.push.clear(), 4000);
+            
+            gameBus.emit(GameEvents.EndOfGame);
+            return;
+        });
     }
 
     /**
@@ -126,7 +160,6 @@ export class OfflineCore extends Core {
         this._userMoveInProgress = false;
 
         const moveResult = this.resolveMove({i, j, player: this._player});
-        
 
         if (moveResult === ResolveMoveResult.Wrong) {
             gameBus.emit(GameEvents.EnableScene);
