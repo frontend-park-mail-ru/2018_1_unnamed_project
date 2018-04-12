@@ -1,0 +1,27 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended"
+  ],
+  "exclude": [
+    "node_modules",
+    "public/static/precompiled"
+  ],
+  "jsRules": {},
+  "rules": {
+    "curly": false,
+    "member-access": false,
+    "no-console": false,
+    "no-trailing-whitespace": false,
+    "max-classes-per-file": [true, 3],
+    "object-literal-sort-keys": false,
+    "quotemark": false,
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore"
+    ]
+  },
+  "rulesDirectory": []
+}

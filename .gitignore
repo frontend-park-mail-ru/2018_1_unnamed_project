@@ -28,9 +28,6 @@ build/Release
 node_modules/
 jspm_packages/
 
-# Typescript v1 declaration files
-typings/
-
 # Optional npm cache directory
 .npm
 
@@ -39,9 +36,6 @@ typings/
 
 # Optional REPL history
 .node_repl_history
-
-# Output of 'npm pack'
-*.tgz
 
 # Yarn Integrity file
 .yarn-integrity
@@ -56,9 +50,8 @@ typings/
 .DS_Store
 .vscode/
 
-# Precompiled templates
-public/static/precompiled/
-
-public/sw.js
-
 .idea/
+
+/dist/
+
+.awcache/

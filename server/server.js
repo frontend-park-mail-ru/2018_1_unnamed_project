@@ -7,21 +7,27 @@ const express = require('express');
 const app = express();
 const uuid = require('uuid/v4');
 const logger = debug('mylogger');
+
 const public = __dirname + '/../public/';
 
-app.use('/static', express.static(path.join(__dirname + '/../public/static')));
 app.use(body.json());
 app.use(cookie());
 
-app.get('/sw.js', (req, res) => {
-    logger(`${req.url} ${req.method}`);
-    res.header('Content-Type', 'application/javascript');
-    res.sendFile(path.join(public + 'sw.js'));
+app.use('/sw.js', express.static(path.join(__dirname + '/../dist/sw.js')));
+
+app.get('/dist/*', (req, res) => {
+    logger(`BUNDLE: ${req.url} ${req.method}`);
+    res.sendFile(path.join(__dirname, '/../', req.url));
+});
+
+app.get('/media/*', (req, res) => {
+    logger(`STATIC FILE: ${req.url} ${req.method} ${path.join(public, 'static', req.url)}`);
+    res.sendFile(path.join(public, 'static', req.url));
 });
 
 app.get('/*', (req, res) => {
     logger(`${req.url} ${req.method}`);
-    res.sendFile(path.join(public + 'index.html'));
+    res.sendFile(path.join(public, 'index.html'));
 });
 
 app.listen(process.env.PORT || 5000);

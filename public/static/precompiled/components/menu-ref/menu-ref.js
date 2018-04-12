@@ -1,0 +1,1 @@
+function menuRefTemplate(locals) {var pug_html = "", pug_mixins = {}, pug_interp;pug_html = pug_html + "\u003Cdiv class=\"back\"\u003E\u003Ca href=\"\u002F\"\u003E↺ в меню\u003C\u002Fa\u003E\u003C\u002Fdiv\u003E";;return pug_html;}

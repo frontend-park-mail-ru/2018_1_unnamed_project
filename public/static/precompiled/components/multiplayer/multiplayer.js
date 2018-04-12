@@ -1,0 +1,1 @@
+function multiplayerTemplate(locals) {var pug_html = "", pug_mixins = {}, pug_interp;pug_html = pug_html + "\u003Cimg src=\"static\u002Fmedia\u002Fshingis.jpg\"\u002F\u003E";;return pug_html;}

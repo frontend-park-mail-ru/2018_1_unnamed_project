@@ -1,0 +1,10 @@
+.score__text {
+    display: inline-block;
+    font-size: 36pt;
+}
+
+#score {
+    position: absolute;
+    top: 2%;
+    right: 45%;
+}

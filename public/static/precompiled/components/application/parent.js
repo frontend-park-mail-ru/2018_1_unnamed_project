@@ -1,0 +1,1 @@
+function parentTemplate(locals) {var pug_html = "", pug_mixins = {}, pug_interp;pug_html = pug_html + "\u003Cdiv class=\"msg\"\u003E\u003C\u002Fdiv\u003E\u003Cdiv class=\"back\" id=\"back\" hidden=\"hidden\"\u003E\u003Ca class=\"back\" href=\"#\" data-section=\"menu\"\u003Eback t↺ menu\u003C\u002Fa\u003E\u003C\u002Fdiv\u003E";;return pug_html;}
