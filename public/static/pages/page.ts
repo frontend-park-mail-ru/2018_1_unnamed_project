@@ -7,19 +7,18 @@ export enum PageAccessTypes {
 }
 
 export class Page {
-    protected attrs;
-    protected element;
-    protected templateFunction;
+    protected attrs: object;
+    protected element: Element;
+    protected templateFunction: (locals) => any;
     protected push: Push;
     private _active: boolean;
 
     /**
      * @param {function} templateFunction Функция отрисовки pug.
      */
-    constructor(templateFunction) {
+    constructor(templateFunction?: (locals) => any) {
         this.templateFunction = templateFunction;
         this.attrs = {};
-
         this.push = new Push();
 
         this._active = false;
@@ -32,14 +31,14 @@ export class Page {
      * Показывается ли эта страница сейчас.
      * @return {boolean}
      */
-    get active() {
+    public get active(): boolean {
         return this._active;
     }
 
     /**
      * @return {Page}
      */
-    hide() {
+    public hide(): Page {
         this.element.setAttribute('hidden', 'hidden');
         this._active = false;
         return this;
@@ -48,7 +47,7 @@ export class Page {
     /**
      * @return {Page}
      */
-    show() {
+    public show(): Page {
         this.element.removeAttribute('hidden');
         this._active = true;
         return this;
@@ -57,7 +56,7 @@ export class Page {
     /**
      * @return {Page}
      */
-    clear() {
+    public clear(): Page {
         this.element.innerHTML = '';
         return this;
     }
@@ -67,7 +66,7 @@ export class Page {
      * @param {Object} attrs Атрибуты отрисовки.
      * @return {Page}
      */
-    render(attrs) {
+    public render(attrs: object): Page {
         const renderAttrs = attrs || this.attrs;
         this.element.innerHTML = this.templateFunction(renderAttrs);
         return this;
@@ -79,7 +78,7 @@ export class Page {
      * @param {Object} attrs  Атрибуты отрисовки.
      * @return {Page}
      */
-    renderTo(parent, attrs = null) {
+    public renderTo(parent: Element, attrs: object = null): Page {
         this.render(attrs);
         parent.insertAdjacentElement('beforeend', this.element);
         return this;
@@ -89,14 +88,14 @@ export class Page {
      * @param {Object} attrs Атрибуты отрисовки.
      * @return {Page}
      */
-    create(attrs) {
+    public create(attrs: object): Page {
         return this.render(attrs).show();
     }
 
     /**
      * @return {Page}
      */
-    destroy() {
+    public destroy(): Page {
         return this.hide().clear();
     }
 
@@ -108,7 +107,7 @@ export class Page {
      * @abstract
      * @return {string}
      */
-    accessType() {
+    public accessType(): PageAccessTypes {
         throw new Error('This method must be overridden');
     }
 }

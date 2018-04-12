@@ -64,3 +64,5 @@ public/static/precompiled/
 /public/sw.js
 
 /public/dist/
+
+.awcache/

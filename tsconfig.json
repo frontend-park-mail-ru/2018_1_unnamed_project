@@ -4,17 +4,22 @@
     "outDir": "./dist/",
     "noImplicitAny": false,
     "module": "es6",
-    "target": "es2015",
-    "allowJs": false,
-    "alwaysStrict": true,
+    "target": "es5",
     "strict": false,
+    "allowJs": true,
+    "alwaysStrict": true,
+    "downlevelIteration": true,
     "lib": [
-      "es2017",
+      "es5",
       "dom",
-      "dom.iterable"
+      "es2017"
     ]
   },
   "exclude": [
     "node_modules"
-  ]
+  ],
+  "awesomeTypescriptLoaderOptions": {
+    "useBabel": true,
+    "useCache": true
+  }
 }

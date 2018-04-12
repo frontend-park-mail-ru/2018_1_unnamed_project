@@ -1,13 +1,16 @@
 /**
  * Модуль для работы с сетью.
  */
+
+export type HttpResponse = Promise<any>;
+
 export class Http {
     /**
      * Метод DELETE.
      * @param {string | *} uri
      * @return {Promise<Response>}
      */
-    static doDelete({uri = '/'} = {}) {
+    public static doDelete({uri = '/'} = {}): HttpResponse {
         return this.doRequest({
             method: 'DELETE',
             uri,
@@ -19,7 +22,7 @@ export class Http {
      * @param {string | *} uri
      * @return {Promise<Response>}
      */
-    static doGet({uri = '/'} = {}) {
+    public static doGet({uri = '/'} = {}): HttpResponse {
         return this.doRequest({
             uri,
         });
@@ -31,7 +34,7 @@ export class Http {
      * @param {string | *}  uri
      * @return {Promise<Response>}
      */
-    static doHead({uri = '/'} = {}) {
+    public static doHead({uri = '/'} = {}): HttpResponse {
         return this.doRequest({
             method: 'HEAD',
             uri,
@@ -46,7 +49,7 @@ export class Http {
      * @param {Object} data
      * @return {Promise<Response>}
      */
-    static doPatch({uri = '/', contentType = 'application/json', data = null} = {}) {
+    public static doPatch({uri = '/', contentType = 'application/json', data = null} = {}): HttpResponse {
         return this.doRequest({
             method: 'PATCH',
             uri,
@@ -62,7 +65,7 @@ export class Http {
      * @param {Object} data
      * @return {Promise<Response>}
      */
-    static doPost({uri = '/', contentType = 'application/json', data = null} = {}) {
+    public static doPost({uri = '/', contentType = 'application/json', data = null} = {}): HttpResponse {
         return this.doRequest({
             method: 'POST',
             uri,
@@ -79,7 +82,8 @@ export class Http {
      * @param {Object | HTMLFormElement} data Данные.
      * @return {Promise<Response>}
      */
-    private static doRequest({method = 'GET', uri = '/', contentType = 'application/json', data = null} = {}) {
+    private static doRequest({method = 'GET', uri = '/', contentType = 'application/json', data = null} = {}):
+    HttpResponse  {
         const options: RequestInit = {
             method,
             headers:     {
@@ -97,30 +101,31 @@ export class Http {
             case method === 'PUT':
                 if (contentType === 'application/json') {
                     options.headers['Content-Type'] = contentType;
-                    (options as any).body = JSON.stringify(data);
+                    options.body = JSON.stringify(data);
                 } else {
-                    (options as any).body = new FormData(data);
+                    options.body = new FormData(data);
                 }
                 break;
             default:
                 break;
         }
-
+        
         return fetch(uri, options)
-            .then((response) => {
+            .then((response: Response) => {
                 return response.json();
             })
-            .then((response) => {
+            .then((response: any) => {
                 if ((response.status >= 200 && response.status <= 304) || !(response.status)) {
                     return response;
                 } else {
-                    if ((response as any).errors) {
-                        throw (response as any).errors.map((error) => {
-                            return `${(error as any).field}: ${(error as any).defaultMessage}`;
-                        });
+                    if ((response.status >= 200 && response.status <= 304) || !(response.status)) {
+                        return response;
                     } else {
-                        // eslint-disable-next-line
-                        throw [response.message];
+                        if (response.errors) {
+                            throw response.errors.map((error) => `${error.field}: ${error.defaultMessage}`);
+                        } else {
+                            throw [response.message];
+                        }
                     }
                 }
             })

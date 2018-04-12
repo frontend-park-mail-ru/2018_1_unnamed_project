@@ -1,7 +1,10 @@
 import {Push, PushLevels} from "../components/push/push";
 import {API} from "../modules/api";
 import bus from "../modules/bus";
+import {HttpResponse} from "../modules/http";
 import {RouterEvents} from "../modules/router";
+
+export type UserResponse = Promise<User>;
 
 export enum UserEvents {
     AuthenticationDone = 'authentication_done',
@@ -19,13 +22,12 @@ let currentUser = null;
  * Вспомогатльная функция для отрисовки ошибок.
  * @param {Array} errors
  */
-function renderErrors(errors) {
+function renderErrors(errors: Iterable<string>): void {
     const push = new Push();
 
-    errors.forEach((err) => {
+    for (const err of errors) {
         push.addMessage(err);
-        console.log(err);
-    });
+    }
 
     push.render({level: PushLevels.Error});
 }
@@ -34,7 +36,7 @@ function renderErrors(errors) {
  * Вспомогательная функция для рендеринга приветственного сообщения.
  * @param {string} username
  */
-function renderHello(username) {
+function renderHello(username: string): void {
     const push = new Push();
     push.addSharedMessage(`Добро пожаловать, ${username}`);
 }
@@ -47,7 +49,7 @@ export class User {
     /**
      * @return {User|*}
      */
-    static get currentUser() {
+    public static get currentUser(): User {
         return currentUser;
     }
     
@@ -55,22 +57,17 @@ export class User {
      * Проверяет авторизацию пользователя.
      * @return {Promise<Object>}
      */
-    static checkCurrentUser() {
+    public static checkCurrentUser(): UserResponse {
         return api
             .getMe()
-            .then((response) => {
-                // noinspection ReuseOfLocalVariableJS
+            .then((response: HttpResponse) => {
                 currentUser = new User(response);
                 bus.emit(UserEvents.CurrentUserChanged, currentUser);
-                
                 return currentUser;
             })
-            .catch((errors) => {
-                console.log(errors);
-                // noinspection ReuseOfLocalVariableJS
+            .catch(() => {
                 currentUser = null;
                 bus.emit(UserEvents.CurrentUserChanged, currentUser);
-                
                 throw new Error();
             });
     }
@@ -79,11 +76,10 @@ export class User {
      * Авторизует пользователя.
      * @param {*} credentials
      */
-    static signIn(credentials) {
+    public static signIn(credentials: any) {
         api
             .signIn(credentials)
-            .then((response) => {
-                // noinspection ReuseOfLocalVariableJS
+            .then((response: HttpResponse) => {
                 currentUser = new User(response);
                 renderHello(currentUser.username);
                 
@@ -91,9 +87,8 @@ export class User {
                 bus.emit(UserEvents.AuthenticationDone, currentUser);
                 bus.emit(RouterEvents.NavigateToNextPageOrRoot, null);
             })
-            .catch((errors) => {
+            .catch((errors: any) => {
                 renderErrors(errors);
-                // noinspection ReuseOfLocalVariableJS
                 currentUser = null;
                 bus.emit(UserEvents.CurrentUserChanged, currentUser);
             });
@@ -103,11 +98,10 @@ export class User {
      * Создает пользователя.
      * @param {*} credentials
      */
-    static signUp(credentials) {
+    public static signUp(credentials: any) {
         api
             .signUp(credentials)
-            .then((response) => {
-                // noinspection ReuseOfLocalVariableJS
+            .then((response: HttpResponse) => {
                 currentUser = new User(response);
                 renderHello(currentUser.username);
                 
@@ -115,9 +109,8 @@ export class User {
                 bus.emit(UserEvents.AuthenticationDone, currentUser);
                 bus.emit(RouterEvents.NavigateToNextPageOrRoot, null);
             })
-            .catch((errors) => {
+            .catch((errors: any) => {
                 renderErrors(errors);
-                // noinspection ReuseOfLocalVariableJS
                 currentUser = null;
                 bus.emit(UserEvents.CurrentUserChanged, currentUser);
             });
@@ -127,7 +120,7 @@ export class User {
      * Обновляет данные пользователя.
      * @param {*} data
      */
-    static update(data) {
+    public static update(data: any) {
         api
             .updateProfile(data)
             .then((response) => {
@@ -147,7 +140,7 @@ export class User {
      * Изменяет аватар пользователя.
      * @param {*} form
      */
-    static changeAvatar(form) {
+    public static changeAvatar(form: any) {
         api
             .uploadAvatar(form)
             .then((response) => {
@@ -166,7 +159,7 @@ export class User {
     /**
      * Удаляет аватар пользователя.
      */
-    static deleteAvatar() {
+    public static deleteAvatar() {
         api
             .deleteAvatar()
             .then((response) => {
@@ -174,7 +167,6 @@ export class User {
                 push.addMessage('Аватар пользователя удален');
                 push.render({level: PushLevels.Error});
                 
-                // noinspection ReuseOfLocalVariableJS
                 currentUser = new User(response);
                 bus.emit(UserEvents.CurrentUserChanged, currentUser);
             })
@@ -186,7 +178,7 @@ export class User {
     /**
      * Осуществляет выход пользователя.
      */
-    static logout() {
+    public static logout() {
         api
             .logout()
             .then(() => {
@@ -208,7 +200,7 @@ export class User {
     /**
      * @param {Object} data
      */
-    constructor(data) {
+    constructor(data: any) {
         this.username = data.username;
         this.email = data.email;
         this.rank = data.rank;
@@ -227,7 +219,7 @@ export class User {
      * @param {string} avatarLink
      * @return {*}
      */
-    private resolveAvatarLink(avatarLink) {
+    private resolveAvatarLink(avatarLink: string): string {
         switch (true) {
             case !avatarLink:
                 return DEFAULT_AVATAR_LINK;

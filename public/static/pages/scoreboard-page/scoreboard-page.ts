@@ -28,26 +28,6 @@ export class ScoreboardPage extends Page {
     }
 
     /**
-     * @private
-     * @return {ScoreboardPage}
-     */
-    setLoadPageHandler() {
-        bus.on(ScoreboardEvents.LoadPage, (pagination) => {
-            this._api
-                .scoreboard(pagination)
-                .then((response) => {
-                    if (this._scoreboard) {
-                        this._scoreboard.clear();
-                        this._scoreboard.render(response);
-                    }
-                })
-                .catch((err) => console.log(err));
-        });
-
-        return this;
-    }
-
-    /**
      * @override
      * @param {Object} attrs
      * @return {ScoreboardPage}
@@ -70,5 +50,25 @@ export class ScoreboardPage extends Page {
      */
     accessType() {
         return PageAccessTypes.AnyUser;
+    }
+    
+    /**
+     * @private
+     * @return {ScoreboardPage}
+     */
+    private setLoadPageHandler() {
+        bus.on(ScoreboardEvents.LoadPage, (pagination) => {
+            this._api
+                .scoreboard(pagination)
+                .then((response) => {
+                    if (this._scoreboard) {
+                        this._scoreboard.clear();
+                        this._scoreboard.render(response);
+                    }
+                })
+                .catch(() => null);
+        });
+        
+        return this;
     }
 }

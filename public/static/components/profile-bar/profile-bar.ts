@@ -17,13 +17,15 @@ export class ProfileBar extends Component {
 
         super({element, templateFunction: profileBarTemplate, attrs});
 
+        this
+            .render(attrs)
+            .setUnauthorized()
+            .hide();
+    
         this.element.querySelector('#profile-bar__logout').addEventListener('click', (evt) => {
             evt.preventDefault();
             User.logout();
         });
-
-        this.setUnauthorized();
-        this.hide();
 
         ProfileBar._Instance = this;
     }
@@ -66,6 +68,7 @@ export class ProfileBar extends Component {
     setUnauthorized() {
         this.username = 'вы не авторизованы';
         this.logoutAvailable = false;
+        return this;
     }
 
     /**

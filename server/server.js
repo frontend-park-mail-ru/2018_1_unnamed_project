@@ -7,6 +7,7 @@ const express = require('express');
 const app = express();
 const uuid = require('uuid/v4');
 const logger = debug('mylogger');
+
 const public = __dirname + '/../public/';
 
 app.use(body.json());
@@ -15,10 +16,9 @@ app.use(cookie());
 app.use('/bundle.css', express.static(path.join(__dirname + '/../dist/bundle.css')));
 app.use('/bundle.js', express.static(path.join(__dirname + '/../dist/bundle.js')));
 
-app.get('/sw.js', (req, res) => {
-    logger(`${req.url} ${req.method}`);
-    res.header('Content-Type', 'application/javascript');
-    res.sendFile(path.join(public + 'sw.js'));
+app.get('/media/*', (req, res) => {
+    logger(`STATIC FILE: ${req.url} ${req.method}`);
+    res.sendFile(path.join(public, 'static', req.url));
 });
 
 app.get('/*', (req, res) => {

@@ -6,6 +6,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const extractCSS = new ExtractTextPlugin({filename: 'bundle.css'});
 
 module.exports = {
+    mode: 'development',
     entry: './public/index.ts',
     module: {
         rules: [
@@ -23,18 +24,18 @@ module.exports = {
                 use: 'pug-loader'
             },
             {
-                test: /\.png|woff2?|eot|ttf|svg$/,
+                test: /(\.jpg|\.png|woff2?|eot|ttf)$/,
                 use: 'url-loader'
             },
             {
                 test: /\.tsx?$/,
-                use: 'ts-loader',
+                use: 'awesome-typescript-loader',
                 exclude: /node_modules/
             },
         ],
     },
     resolve: {
-        extensions: ['.ts', '.js', '.css', '.pug'],
+        extensions: ['.ts', '.tsx', '.js', '.css', '.pug'],
     },
     plugins: [
         extractCSS,

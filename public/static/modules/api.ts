@@ -1,10 +1,19 @@
-import {Http} from "./http";
+import {Http, HttpResponse} from "./http";
 
 const BACKEND_URI = 'https://dev-api-shipcollision.herokuapp.com';
 
+interface IRouteMappings {
+    me: string;
+    signIn: string;
+    signUp: string;
+    logout: string;
+    scoreboard: string;
+    avatar: string;
+}
+
 export class API {
-    private _http;
-    private _routeMappings;
+    private _http: typeof Http;
+    private _routeMappings: IRouteMappings;
 
     /**
      *
@@ -26,7 +35,7 @@ export class API {
      * Возвращает текущий базовый URI бекенда.
      * @return {string}
      */
-    get backendURI() {
+    public get backendURI(): string {
         return BACKEND_URI;
     }
 
@@ -34,9 +43,9 @@ export class API {
      * GET /me
      * @return {*}
      */
-    getMe() {
+    public getMe(): HttpResponse {
         return this._http.doGet({
-            url: this._routeMappings.me,
+            uri: this._routeMappings.me,
         });
     }
 
@@ -45,9 +54,9 @@ export class API {
      * @param {Object} data Данные пользователя.
      * @return {*}
      */
-    signIn(data) {
+    public signIn(data): HttpResponse {
         return this._http.doPost({
-            url: this._routeMappings.signIn,
+            uri: this._routeMappings.signIn,
             data,
         });
     }
@@ -57,9 +66,9 @@ export class API {
      * @param {Object} data Данные пользователя.
      * @return {*}
      */
-    signUp(data) {
+    public signUp(data): HttpResponse {
         return this._http.doPost({
-            url: this._routeMappings.signUp,
+            uri: this._routeMappings.signUp,
             data,
         });
     }
@@ -68,9 +77,9 @@ export class API {
      * DELETE /signout
      * @return {*}
      */
-    logout() {
+    public logout(): HttpResponse {
         return this._http.doDelete({
-            url: this._routeMappings.logout,
+            uri: this._routeMappings.logout,
         });
     }
 
@@ -79,9 +88,9 @@ export class API {
      * @param {string} pagination offset and limit
      * @return {*}
      */
-    scoreboard(pagination) {
+    public scoreboard(pagination): HttpResponse {
         return this._http.doGet({
-            url: this._routeMappings.scoreboard + pagination,
+            uri: this._routeMappings.scoreboard + pagination,
         });
     }
 
@@ -90,13 +99,13 @@ export class API {
      * @param {Object} data Файл с картинкой.
      * @return {*}
      */
-    uploadAvatar(data) {
+    public uploadAvatar(data): HttpResponse {
         /**
          * Content-Type выставляется в null для того, чтобы
          * браузер сам коректно выставил boundaries для multipart/form-messages.
          */
         return this._http.doPost({
-            url:         this._routeMappings.avatar,
+            uri:         this._routeMappings.avatar,
             contentType: null,
             data,
         });
@@ -106,9 +115,9 @@ export class API {
      * DELETE /me/avatar
      * @return {*}
      */
-    deleteAvatar() {
+    public deleteAvatar(): HttpResponse {
         return this._http.doDelete({
-            url: this._routeMappings.avatar,
+            uri: this._routeMappings.avatar,
         });
     }
 
@@ -117,9 +126,9 @@ export class API {
      * @param {Object} data Изменённые поля
      * @return {*}
      */
-    updateProfile(data) {
+    public updateProfile(data): HttpResponse {
         return this._http.doPatch({
-            url: this._routeMappings.me,
+            uri: this._routeMappings.me,
             data,
         });
     }

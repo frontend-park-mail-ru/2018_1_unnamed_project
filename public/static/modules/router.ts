@@ -1,6 +1,6 @@
 import {Push} from "../components/push/push";
 import {User} from "../models/user";
-import {PageAccessTypes} from "../pages/page";
+import {Page, PageAccessTypes} from "../pages/page";
 import bus from "./bus";
 
 export enum RouterEvents {
@@ -12,23 +12,23 @@ export enum RouterEvents {
 export class Router {
     private static _Instance: Router;
     
-    private _activePage;
-    private _nextRoute;
+    private _activePage: Page;
+    private _nextRoute: string;
     private _push: Push;
-    private _root;
-    private _routes;
+    private _root: Element;
+    private _routes: Map<string, Page>;
 
     /**
      * @param {HTMLElement} root
      * @return {Router|*}
      */
-    constructor(root) {
+    constructor(root: Element) {
         if (Router._Instance) {
             return Router._Instance;
         }
 
         this._root = root;
-        this._routes = {};
+        this._routes = new Map<string, Page>();
         this._activePage = null;
 
         this._nextRoute = null;
@@ -41,7 +41,7 @@ export class Router {
     /**
      * @return {string|null}
      */
-    get nextRoute() {
+    public get nextRoute(): string {
         return this._nextRoute;
     }
 
@@ -51,8 +51,8 @@ export class Router {
      * @param {Page} PageClass
      * @return {Router}
      */
-    addRoute(route, PageClass) {
-        this._routes[route] = new PageClass().renderTo(this._root);
+    public addRoute(route: string, PageClass: typeof Page): Router {
+        this._routes.set(route, new PageClass().renderTo(this._root));
         return this;
     }
 
@@ -62,7 +62,7 @@ export class Router {
      * @param {Page} page
      * @return {Router}
      */
-    renderRoute(route, page) {
+    public renderRoute(route: string, page: Page): Router {
         if (route === this._nextRoute) {
             this._nextRoute = null;
         }
@@ -86,8 +86,8 @@ export class Router {
      * @param {string} route
      * @return {Router}
      */
-    navigateTo(route) {
-        const page = this._routes[route];
+    public navigateTo(route: string): Router {
+        const page = this._routes.get(route);
 
         if (!page || page === this._activePage) {
             bus.emit(RouterEvents.Navigated);
@@ -127,13 +127,13 @@ export class Router {
     /**
      * Запуск роутера.
      */
-    start() {
+    public start(): void {
         window.addEventListener('popstate', () => this.navigateTo(window.location.pathname));
 
         this._root.addEventListener('click', (evt) => {
-            if (evt.target.tagName.toLowerCase() === 'a') {
+            if ((evt.target as any).tagName.toLowerCase() === 'a') {
                 evt.preventDefault();
-                this.navigateTo(evt.target.pathname);
+                this.navigateTo((evt.target as any).pathname);
             }
         });
 
