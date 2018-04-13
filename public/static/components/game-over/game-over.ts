@@ -25,7 +25,6 @@ export class GameOver extends Component {
         const playAgain = this.element.querySelector('.game__game_over__play_again__button');
         playAgain.addEventListener('click', (evt) => {
             evt.preventDefault();
-            // это костыль, но завтра РК, а я хочу спать
             this.element.parentElement.querySelector('.ocm').hidden = false;
             this.element.remove();
         })
