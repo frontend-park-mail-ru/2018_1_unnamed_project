@@ -7,60 +7,71 @@ export class StatusMapper {
      * @return {*}
      */
     static mapStatus(cellStatus) {
+        enum colors {
+            black = '#000000',
+            grey = '#B0B0B0',
+            white = '#FFFFFF',
+            darkerGrey = '#4F4F4F',
+            darkerRed = '#B23553',
+            almostPink = '#EF476F',
+            yellow = '#FFCD1F',
+            smokerSyellow = '#D6A31A',
+        }
+
         switch (cellStatus) {
             case CellStatus.Empty:
                 return {
                     disabled: {
-                        borderColor: '#B0B0B0',
-                        fillColor:   '#4F4F4F',
+                        borderColor: colors.grey,
+                        fillColor:   colors.darkerGrey,
                     },
                     enabled:  {
-                        borderColor: '#FFFFFF',
-                        fillColor:   '#000000',
+                        borderColor: colors.white,
+                        fillColor:   colors.black,
                     },
                 };
             case CellStatus.Busy:
                 return {
                     disabled: {
-                        borderColor: '#B0B0B0',
-                        fillColor:   '#B0B0B0',
+                        borderColor: colors.grey,
+                        fillColor:   colors.grey,
                     },
                     enabled:  {
-                        borderColor: '#FFFFFF',
-                        fillColor:   '#FFFFFF',
+                        borderColor: colors.white,
+                        fillColor:   colors.white,
                     },
                 };
             case CellStatus.Destroyed:
                 return {
                     disabled: {
-                        borderColor: '#B23553',
-                        fillColor:   '#B23553',
+                        borderColor: colors.darkerRed,
+                        fillColor:   colors.darkerRed,
                     },
                     enabled:  {
-                        borderColor: '#EF476F',
-                        fillColor:   '#EF476F',
+                        borderColor: colors.almostPink,
+                        fillColor:   colors.almostPink,
                     },
                 };
             case CellStatus.DestroyedOther:
                 return {
                     disabled: {
-                        borderColor: '#B23553',
-                        fillColor:   '#B23553',
+                        borderColor: colors.darkerRed,
+                        fillColor:   colors.darkerRed,
                     },
                     enabled:  {
-                        borderColor: '#B23553',
-                        fillColor:   '#B23553',
+                        borderColor: colors.darkerRed,
+                        fillColor:   colors.darkerRed,
                     },
                 };
             case CellStatus.Missed:
                 return {
                     disabled: {
-                        borderColor: '#D6A31A',
-                        fillColor:   '#D6A31A',
+                        borderColor: colors.smokerSyellow,
+                        fillColor:   colors.smokerSyellow,
                     },
                     enabled:  {
-                        borderColor: '#FFCD1F',
-                        fillColor:   '#FFCD1F',
+                        borderColor: colors.yellow,
+                        fillColor:   colors.yellow,
                     },
                 };
             default:
