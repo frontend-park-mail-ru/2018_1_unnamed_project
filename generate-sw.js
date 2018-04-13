@@ -23,15 +23,9 @@ this.addEventListener('install', (evt) => {
     evt.waitUntil(
         caches
             .open(CACHE_NAME)
-            .then((cache) => cache.addAll(cacheUrls))
-            .catch((err) => console.log('Cache error!!!', err))
-    );
-});
-this.addEventListener('install', (evt) => {
-    evt.waitUntil(
-        caches
-            .open(CACHE_NAME)
-            .then((cache) => cache.addAll(cacheUrls))
+            .then((cache) => {
+                return cache.addAll(cacheUrls)
+            })
             .catch((err) => console.log('Cache error!!!', err))
     );
 });
@@ -45,9 +39,8 @@ this.addEventListener('fetch', (evt) => {
             .then((cachedResponse) => {
                 if (cachedResponse) {
                     return cachedResponse;
-                } else {
-                    return fetch(evt.request);
-                }
+                } 
+                return fetch(evt.request);
             })
             .catch((err) => console.log('unable to fetch resource ', evt.request.url, err))
     );

@@ -1,3 +1,4 @@
+import {GameOver} from "../../components/game-over/game-over";
 import {OpponentsCountMenu} from "../../components/opponents-count-menu/opponents-count-menu";
 import {Score} from "../../components/score/score";
 import {GameEvents} from "../../game/events";
@@ -7,7 +8,6 @@ import {GameModes} from "../../game/game-modes";
 import bus from "../../modules/bus";
 import {Page, PageAccessTypes} from "../page";
 import singleplayerPageTemplate from "./singleplayer-page.pug";
-import {GameOver} from "./../../components/game-over/game-over"
 
 import "./singleplayer-page.css";
 
@@ -28,7 +28,7 @@ export class SingleplayerPage extends Page {
     private _startGameButton;
     private _scoreRoot;
     private _score: Score;
-    private _gameOver: GameOver
+    private _gameOver: GameOver;
 
     /**
      *
@@ -72,9 +72,9 @@ export class SingleplayerPage extends Page {
     setGameOverHandler() {       
         const gameOverElement = document.createElement('div');
         gameOverElement.className = 'game__gameover';
-        this.element.appendChild(gameOverElement)
-        this._gameOver = new GameOver({element:gameOverElement})        
-        gameBus.on(GameEvents.GameOver, 
+        this.element.appendChild(gameOverElement);
+        this._gameOver = new GameOver({element: gameOverElement});
+        gameBus.on(GameEvents.GameOver,
             ({scoreboard, isWinner}) => {
                 this._gameStarted = false;
                 this._canvas.hidden = true;

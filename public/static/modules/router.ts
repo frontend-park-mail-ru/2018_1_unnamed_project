@@ -110,7 +110,10 @@ export class Router {
                 switch (page.accessType()) {
                     case PageAccessTypes.LoggedInUser:
                         const push = new Push();
-                        push.addSharedMessage('Вы должны войти');
+                        push
+                            .clearMessages()
+                            .clearSharedMessages()
+                            .addSharedMessage('Вы должны войти');
 
                         this._nextRoute = route;
                         this.navigateTo('/signin');
