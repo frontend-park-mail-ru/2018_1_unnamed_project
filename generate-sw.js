@@ -27,14 +27,6 @@ this.addEventListener('install', (evt) => {
             .catch((err) => console.log('Cache error!!!', err))
     );
 });
-this.addEventListener('install', (evt) => {
-    evt.waitUntil(
-        caches
-            .open(CACHE_NAME)
-            .then((cache) => cache.addAll(cacheUrls))
-            .catch((err) => console.log('Cache error!!!', err))
-    );
-});
 this.addEventListener('fetch', (evt) => {
     if (navigator.onLine) {
         return fetch(evt.request);

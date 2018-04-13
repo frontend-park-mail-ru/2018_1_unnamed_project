@@ -1,5 +1,6 @@
 import {User} from "../../models/user";
 import {Component} from "../component";
+import {Push} from "../push/push";
 import profileBarTemplate from "./profile-bar.pug";
 
 import "./profile-bar.css";
@@ -10,20 +11,24 @@ export class ProfileBar extends Component {
     /**
      *
      */
-    constructor({element, attrs = {}}) {
+    constructor({element}) {
         if (ProfileBar._Instance) {
             return ProfileBar._Instance;
         }
-
-        super({element, templateFunction: profileBarTemplate, attrs});
-
+        
+        super({element, templateFunction: profileBarTemplate, attrs: {mainActionHref: '/signin'} as object});
+        
         this
-            .render(attrs)
+            .render(this.attrs)
             .setUnauthorized()
             .hide();
     
         this.element.querySelector('#profile-bar__logout').addEventListener('click', (evt) => {
             evt.preventDefault();
+            
+            const push = new Push();
+            push.clearSharedMessages();
+            
             User.logout();
         });
 
@@ -39,12 +44,16 @@ export class ProfileBar extends Component {
         this.element.querySelector('#profile-bar__username').innerText = text;
     }
 
+    private set href(mainActionHref) {
+        this.element.querySelector('#profile-bar__username').href = mainActionHref;
+    }
+    
     /**
      * Задает доступность ссылки "выход".
      * @private
      * @param {boolean} available
      */
-    set logoutAvailable(available) {
+    private set logoutAvailable(available) {
         const logout = this.element.querySelector('#profile-bar__logout');
         if (available) {
             logout.removeAttribute('hidden');
@@ -59,6 +68,7 @@ export class ProfileBar extends Component {
      */
     setAuthorized(username) {
         this.username = username;
+        this.href = '/profile';
         this.logoutAvailable = true;
     }
 
@@ -66,7 +76,8 @@ export class ProfileBar extends Component {
      * Устанавливат компонент в состояние "не авторизован".
      */
     setUnauthorized() {
-        this.username = 'вы не авторизованы';
+        this.username = 'войти';
+        this.href = '/signin';
         this.logoutAvailable = false;
         return this;
     }
