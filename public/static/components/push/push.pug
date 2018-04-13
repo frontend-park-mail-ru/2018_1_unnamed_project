@@ -1,0 +1,5 @@
+div.msg
+    if messages
+        each message in messages
+            <!--suppress HtmlUnknownAttribute -->
+            div(class=`msg_${level}`)= message

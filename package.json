@@ -4,9 +4,11 @@
   "description": "Multi-player version of sea battle",
   "main": "index.js",
   "scripts": {
-    "build": "pug -cD --name-after-file public/static/js -o public/static/precompiled",
-    "start": "npm run build && DEBUG=* node server/server.js",
-    "start:raw": "node server.js"
+    "build": "webpack",
+    "build:dev": "webpack -w",
+    "start": "npm run build && npm run sw && npm run start:raw",
+    "start:raw": "DEBUG=* node server/server.js",
+    "sw": "node generate-sw.js"
   },
   "contributors": [
     "Artem Ikchurin",
@@ -23,10 +25,28 @@
     "logger": "0.0.1",
     "pug": "^2.0.1",
     "pug-cli": "^1.0.0-alpha6",
+    "recursive-readdir": "^2.2.2",
+    "typescript": "^2.8.1",
     "uuid": "^3.2.1"
   },
   "devDependencies": {
+    "awesome-typescript-loader": "^5.0.0",
+    "css-loader": "^0.28.11",
     "eslint": "^4.18.2",
-    "eslint-config-google": "^0.9.1"
-  }
+    "eslint-config-google": "^0.9.1",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "pug-loader": "^2.4.0",
+    "style-loader": "^0.20.3",
+    "sw-cache-plugin": "^0.1.2",
+    "tslint": "^5.9.1",
+    "url-loader": "^1.0.1",
+    "webpack": "^4.5.0",
+    "webpack-cli": "^2.0.14",
+    "workbox-webpack-plugin": "^3.1.0"
+  },
+  "moduleFileExtensions": [
+    "ts",
+    "js",
+    "json"
+  ]
 }

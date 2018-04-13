@@ -1,12 +1,4 @@
-@font-face {
-    font-family: "Righteous-Regular";
-    src: url("../fonts/Righteous-Regular.ttf");
-}
-
-@font-face {
-    font-family: "Comfortaa-Light";
-    src: url("../fonts/Comfortaa-Light.ttf");
-}
+@import "system-font.css";
 
 html,
 body {
@@ -18,9 +10,12 @@ body {
     flex-direction: column;
     text-align: center;
     font-family: Comfortaa-Light, serif;
-    /* background: linear-gradient(to bottom right, rgb(36, 255, 235), #002542); */
     background: linear-gradient(to bottom right, #000000, rgb(0, 44, 58));
     background-size: cover;
+    color: white;
+}
+
+a {
     color: white;
 }
 
@@ -47,33 +42,35 @@ a {
     text-decoration: none;
 }
 
+.menu-item {
+    margin-bottom: 3px;
+}
+
 [data-section] {
     color: #FFFCF9;
 }
 
-[data-section]:hover {
+li:hover {
+    text-decoration-color: #EF476F;
+    color: #EF476F;
+}
+
+a:hover {
+    text-decoration-color: #EF476F;
     color: #EF476F;
 }
 
 .back {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     color: #99c2ff7c;
     font-size: 21px;
 }
 
-/*noinspection CssUnusedSymbol*/
-.or {
-    font-size: 15pt;
-    margin: 0 2px 0 0;
+.uxui td {
+    outline: thin solid;
+    padding: 19px;
 }
 
-/*noinspection CssUnusedSymbol*/
-#rules {
-    width: 60%;
-    margin: 10px auto;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    font-family: Arial, Helvetica, sans-serif;
-    color: white;
+[data-section='uxui']:not(:hover) {
+    opacity: 0;
 }

@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./public/static",
+    "outDir": "./dist/",
+    "noImplicitAny": false,
+    "module": "es6",
+    "target": "es5",
+    "strict": false,
+    "allowJs": true,
+    "alwaysStrict": true,
+    "downlevelIteration": true,
+    "lib": [
+      "es5",
+      "dom",
+      "es2017"
+    ]
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "awesomeTypescriptLoaderOptions": {
+    "useBabel": true,
+    "useCache": true
+  }
+}

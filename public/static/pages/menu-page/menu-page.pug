@@ -1,0 +1,11 @@
+section(class="menu menu-page")
+    div.header
+        | SHIP
+        br
+        | COLLISION
+    hr
+    div.menu
+        ul
+            each item in navItems
+                li.menu-item
+                    a(href=`${item.href}`) #{item.title}

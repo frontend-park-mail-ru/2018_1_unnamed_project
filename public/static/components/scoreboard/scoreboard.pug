@@ -1,0 +1,12 @@
+if users
+    table.scoreboard__table
+        tbody
+            each user in users
+                tr.scoreboard__row
+                    td= user.email
+                    td= user.username
+                    td= user.rank
+
+    div.pagination
+        a#prev(href="#") <
+        a#next(href="#") >
