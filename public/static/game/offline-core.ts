@@ -193,17 +193,17 @@ export class OfflineCore extends Core {
                     }
 
                     renderBotMove();
-                    setTimeout(botMove, BOT_MOVE_SECONDS * 300);
+                    setTimeout(botMove, BOT_MOVE_SECONDS * 1000);
                 } else {
                     gameBus.emit(GameEvents.EnableScene);
                     this._moveEnabled = true;
                     this.beginUserMove();
                 }
-            }, BOT_MOVE_SECONDS * 300);
+            }, BOT_MOVE_SECONDS * 1000);
         };
 
         renderBotMove();
-        setTimeout(botMove, BOT_MOVE_SECONDS * 300);
+        setTimeout(botMove, BOT_MOVE_SECONDS * 1000);
     }
 
     /**
