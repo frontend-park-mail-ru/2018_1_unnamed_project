@@ -1,19 +1,19 @@
 const validators = {
     username:             {
-        regex:       /^([a-zA-Z0-9]{7,})+$/,
-        description: 'minimum length is 7, only digits and english symbols are allowed',
+        regex:       /^([a-zA-Z0-9]{3,})+$/,
+        description: 'минимальная длина - 3 символа, разрешены латинские символы и цифры',
     },
     password:             {
         regex:       /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
-        description: 'minimum length is 6, only english symbols and at least one digit',
+        description: 'минимальная длина - 6, только латинские символы и как минимум 1 цифра',
     },
     passwordConfirmation: {
         regex:       /.+/,
-        description: 'minimum length is 6, only english symbols and at least one digit',
+        description: 'минимальная длина - 6, только латинские символы и как минимум 1 цифра',
     },
     email:                {
         regex:       /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/,
-        description: 'должен быть email-ом, а ты пашол вон',
+        description: 'некорректная форма email',
     },
 };
 
