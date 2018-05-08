@@ -132,7 +132,7 @@ export class GameField {
      * @param {Number} playersCount
      * @return {GameField}
      */
-    init(playersCount = null) {
+    init(playersCount = null, rebuild = false) {
         if (playersCount) {
             this._calcDelegate.playersCount = playersCount;
             this._fieldParams = this._calcDelegate.gameFieldParams;
@@ -142,15 +142,21 @@ export class GameField {
         
         const [cellWidth, cellHeight] = this.computeCellParams();
         
+        const oldCells = this._cells.slice();
         this._cells = [];
         
         const ctx = this.ctx;
         for (let i = 0; i < this._fieldParams.dim; i++) {
             for (let j = 0; j < this._fieldParams.dim; j++) {
-                const cell = new Cell(ctx, {width: cellWidth, height: cellHeight});
+                const cell = new Cell(ctx, {
+                    width: cellWidth, 
+                    height: cellHeight
+                });
                 cell.x = i * cellWidth + Math.round(cellWidth / 2);
                 cell.y = j * cellHeight + Math.round(cellHeight / 2);
-                
+                if (rebuild){ 
+                    cell.setStatusFromExisting(oldCells[i * this._fieldParams.dim + j].status)
+                }
                 this._cells.push(cell);
             }
         }
