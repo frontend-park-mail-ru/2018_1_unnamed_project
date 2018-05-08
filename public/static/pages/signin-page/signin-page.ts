@@ -44,7 +44,8 @@ export class SigninPage extends Page {
                 },
             ],
             formFooterLink: {
-                title: 'Нет аккаунта? Зарегистрируйтесь!',
+                question: 'Нет аккаунта?',
+                title: 'Зарегистрируйтесь!',
                 href:  '/signup',
             },
             resetText:      'Очистить',
