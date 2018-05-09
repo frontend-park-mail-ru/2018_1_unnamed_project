@@ -1,11 +1,9 @@
-import {GameEvents} from "../../game/events";
-import bus from "../../modules/bus";
 import {Component} from "../component";
-import gameOverTemplate from "./game-over.pug";
 import "./game-over.css";
+import gameOverTemplate from "./game-over.pug";
 
 export class GameOver extends Component {
-    
+
     /**
      * @param {object}   element          Элемент, в котором рендерить.
      * @param {function} templateFunction Функция отрисовки pug.
@@ -27,7 +25,7 @@ export class GameOver extends Component {
             evt.preventDefault();
             this.element.parentElement.querySelector('.ocm').hidden = false;
             this.element.remove();
-        })
+        });
         return this;
     }
 }

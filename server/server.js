@@ -6,7 +6,7 @@ const express = require('express');
 const app = express();
 const logger = debug('mylogger');
 
-const publicDir =  `${__dirname}/../public/`;
+const publicDir = `${__dirname}/../public/`;
 
 app.use(body.json());
 app.use(cookie());

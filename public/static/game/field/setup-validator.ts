@@ -20,7 +20,7 @@ export class SetupValidator {
                 return 10;
         }
     }
-    
+
     private _battlefield;
     private _push;
     private _setupFinished;
@@ -48,22 +48,22 @@ export class SetupValidator {
 
         return this._battlefield;
     }
-    
+
     /**
      *
      */
     private renderShipCount() {
         this._push.clearMessages();
-        
+
         if (this._shipsLimit) {
             this._push.addMessage(`Доступно кораблей для расстановки: ${this._shipsLimit}`);
             this._push.render({level: PushLevels.Info});
         } else {
             this._setupFinished = true;
-            
+
             this._push.addMessage('Корабли расставлены! Нажмите > , чтобы начать игру');
             this._push.render({level: PushLevels.Warning});
-            
+
             gameBus.emit(GameEvents.DisableScene);
         }
     }
@@ -73,6 +73,10 @@ export class SetupValidator {
      * @param {*} fieldSize
      */
     private prepareField(fieldSize) {
+        if (this._setupFinished) {
+            return;
+        }
+
         this._shipsLimit = SetupValidator.computeShipsLimit(fieldSize);
 
         this._push.addMessage('Расставьте корабли на поле. ЛКМ - поставить, ПКМ - убрать.');

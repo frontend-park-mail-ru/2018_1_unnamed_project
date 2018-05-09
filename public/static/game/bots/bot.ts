@@ -1,11 +1,11 @@
 import rand from "../../utils/rand";
 import {CellStatus} from "../field/cell/status";
 import {SetupValidator} from "../field/setup-validator";
-import gameBus from "../game-bus";
 
 export class GameBot {
     public ships: CellStatus[][];
     public fieldSize: number;
+
     /**
      * @param {Number} fieldSize
      */
@@ -34,7 +34,7 @@ export class GameBot {
         }
 
         console.log(this.ships);
-        
+
         return this.ships;
     }
 

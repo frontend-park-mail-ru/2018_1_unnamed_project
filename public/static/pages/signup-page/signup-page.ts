@@ -28,38 +28,39 @@ export class SignupPage extends Page {
      */
     static get defaultAttrs() {
         return {
-            fields:         [
+            fields: [
                 {
-                    type:        'text',
-                    name:        'username',
+                    type: 'text',
+                    name: 'username',
                     placeholder: 'Username',
-                    validator:   ValidatorFactory.buildUsernameValidator(),
+                    validator: ValidatorFactory.buildUsernameValidator(),
                 },
                 {
-                    type:        'email',
-                    name:        'email',
+                    type: 'email',
+                    name: 'email',
                     placeholder: 'Email',
-                    validator:   ValidatorFactory.buildEmailValidator(),
+                    validator: ValidatorFactory.buildEmailValidator(),
                 },
                 {
-                    type:        'password',
-                    name:        'password',
+                    type: 'password',
+                    name: 'password',
                     placeholder: 'Пароль',
-                    validator:   ValidatorFactory.buildPasswordValidator(),
+                    validator: ValidatorFactory.buildPasswordValidator(),
                 },
                 {
-                    type:        'password',
-                    name:        'password-confirmation',
+                    type: 'password',
+                    name: 'password-confirmation',
                     placeholder: 'Подтверждение пароля',
-                    validator:   ValidatorFactory.buildPasswordConfirmationValidator(),
+                    validator: ValidatorFactory.buildPasswordConfirmationValidator(),
                 },
             ],
             formFooterLink: {
-                title: 'Уже есть аккаунт? Войдите!',
-                href:  '/signin',
+                question: 'Уже есть аккаунт?',
+                title: 'Войдите!',
+                href: '/signin',
             },
-            resetText:      'Очистить',
-            submitText:     'Регистрация',
+            resetText: 'Очистить',
+            submitText: 'Регистрация',
         };
     }
 

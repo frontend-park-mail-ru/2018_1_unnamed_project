@@ -19,17 +19,17 @@ import registerServiceWorker from "./utils/add-sw";
 
 document.addEventListener('DOMContentLoaded', () => {
     registerServiceWorker();
-    
+
     const root = document.querySelector('#application');
-    
+
     const pushRoot = document.createElement('div');
     pushRoot.id = 'push-root';
     root.insertAdjacentElement('beforebegin', pushRoot);
-    
+
     const profileBarRoot = document.createElement('div');
     profileBarRoot.id = 'profile-bar-root';
     root.insertAdjacentElement('afterbegin', profileBarRoot);
-    
+
     new Router(root)
         .addRoute(ApplicationRoutes.Menu, MenuPage)
         .addRoute(ApplicationRoutes.Multiplayer, MultiplayerPage)
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .addRoute(ApplicationRoutes.Signup, SignupPage)
         .addRoute(ApplicationRoutes.Singleplayer, SingleplayerPage)
         .start();
-    
+
     const profileBar = new ProfileBar({element: profileBarRoot});
     bus.on(UserEvents.CurrentUserChanged, (newUser: User) => {
         if (newUser) {
@@ -50,9 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
             profileBar.setUnauthorized();
         }
     });
-    
-    bus.on(RouterEvents.Navigated, () => profileBar.show());
-    
+
     const push = new Push();
     // Если пользователь переходит на другую страницу во время игры, мы заканчиваем игру, то есть
     // посылаем по игровой шине сигнал "принудительно заверши игру".
@@ -60,9 +58,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // this.push.sharedSize проверяется из-за того, что возможен редирект
         // типа /profile -> /signin. Если sharedMessages заполнены, то второй раз писать туда не надо.
         if (!route || route === ApplicationRoutes.Singleplayer || push.sharedSize) {
+            profileBar.hide();
             return;
         }
-        
+
         gameBus.emit(GameEvents.Terminate);
+        profileBar.show();
     });
 });

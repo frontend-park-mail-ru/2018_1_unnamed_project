@@ -54,7 +54,7 @@ export class Scene {
         this._id = 0;
         return this;
     }
-    
+
     /**
      * Возвращает новый id для фигуры.
      * @private

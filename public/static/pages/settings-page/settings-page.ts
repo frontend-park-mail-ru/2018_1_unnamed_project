@@ -134,33 +134,33 @@ export class SettingsPage extends Page {
 
         if (currentUser) {
             this.attrs = {
-                fields:     [
+                fields: [
                     {
-                        type:        'text',
-                        name:        'username',
+                        type: 'text',
+                        name: 'username',
                         placeholder: currentUser.username,
-                        validator:   ValidatorFactory.buildUsernameOptionalValidator(),
+                        validator: ValidatorFactory.buildUsernameOptionalValidator(),
                     },
                     {
-                        type:        'email',
-                        name:        'email',
+                        type: 'email',
+                        name: 'email',
                         placeholder: currentUser.email,
-                        validator:   ValidatorFactory.buildEmailOptionalValidator(),
+                        validator: ValidatorFactory.buildEmailOptionalValidator(),
                     },
                     {
-                        type:        'password',
-                        name:        'password',
+                        type: 'password',
+                        name: 'password',
                         placeholder: 'Пароль',
-                        validator:   ValidatorFactory.buildPasswordOptionalValidator(),
+                        validator: ValidatorFactory.buildPasswordOptionalValidator(),
                     },
                     {
-                        type:        'password',
-                        name:        'password-confirmation',
+                        type: 'password',
+                        name: 'password-confirmation',
                         placeholder: 'Подтверждение пароля',
-                        validator:   ValidatorFactory.buildPasswordConfirmationOptionalValidator(),
+                        validator: ValidatorFactory.buildPasswordConfirmationOptionalValidator(),
                     },
                 ],
-                resetText:  'Очистить',
+                resetText: 'Очистить',
                 submitText: 'Обновить',
             };
         } else {

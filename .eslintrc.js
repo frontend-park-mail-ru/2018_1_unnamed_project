@@ -28,6 +28,6 @@ module.exports = {
             ignoreUrls: true,
             ignorePattern: '^goog\.(module|require)',
             ignorePattern: '.*\/.*\/'
-          }],
+        }],
     }
 };

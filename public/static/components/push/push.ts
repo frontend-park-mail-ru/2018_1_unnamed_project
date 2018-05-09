@@ -12,8 +12,8 @@ export enum PushLevels {
 
 export class Push extends Component {
     private static _Instance: Push;
-    private _messages: Set<string>;
-    private _sharedMessages: Set<string>;
+    private readonly _messages: Set<string>;
+    private readonly _sharedMessages: Set<string>;
 
     constructor() {
         if (Push._Instance) {
@@ -21,8 +21,8 @@ export class Push extends Component {
         }
 
         super({
-            attrs:            {},
-            element:          document.querySelector('#push-root'),
+            attrs: {},
+            element: document.querySelector('#push-root'),
             templateFunction: pushTemplate,
         });
 
@@ -38,11 +38,11 @@ export class Push extends Component {
     public get size(): number {
         return this._messages.size;
     }
-    
+
     public get sharedSize(): number {
         return this._sharedMessages.size;
     }
-    
+
     /**
      * Добавляет сообщение в буфер текущей страницы.
      * @param {string} message

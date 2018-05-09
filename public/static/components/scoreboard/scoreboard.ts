@@ -29,7 +29,7 @@ export class Scoreboard extends Component {
 
         return this;
     }
-    
+
     /**
      * @private
      * @param {string} elementId
@@ -38,7 +38,7 @@ export class Scoreboard extends Component {
      */
     private setPaginationHandler(elementId, pagination) {
         const button = document.getElementById(elementId);
-        
+
         if (pagination) {
             button.onclick = (evt) => {
                 evt.preventDefault();
@@ -47,7 +47,7 @@ export class Scoreboard extends Component {
         } else {
             button.hidden = true;
         }
-        
+
         return this;
     }
 }

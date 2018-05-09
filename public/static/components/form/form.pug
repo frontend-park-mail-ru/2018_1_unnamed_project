@@ -10,4 +10,6 @@ form(class="form js-form" novalidate=true)
         button.form__control-bordered(type="submit") #{submitText}
 
     if formFooterLink
-        a.form__footer-link(href=`${formFooterLink.href}`) #{formFooterLink.title}
+        a.form__footer-link(href=`${formFooterLink.href}`)
+            | #{formFooterLink.question}
+            u #{formFooterLink.title}

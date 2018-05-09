@@ -17,7 +17,6 @@ export class Game {
         this.playersCount = playersCount;
         this.controllers = new Controllers(canvas);
         this.gameField = new GameField(canvas, playersCount);
-
         if (mode === GameModes.Offline) {
             this._core = new OfflineCore();
         } else {
@@ -30,9 +29,7 @@ export class Game {
      */
     startGame() {
         gameBus.emit(GameEvents.EnableScene);
-
         this.gameField.gameStarted = true;
-
         const username = (User.currentUser) ? User.currentUser.username : 'Игрок';
         const battlefield = this.gameField.setupValidator.battlefield;
         this._core.start(username, battlefield, this.playersCount);

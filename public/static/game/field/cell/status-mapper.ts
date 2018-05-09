@@ -23,55 +23,55 @@ export class StatusMapper {
                 return {
                     disabled: {
                         borderColor: colors.grey,
-                        fillColor:   colors.darkerGrey,
+                        fillColor: colors.darkerGrey,
                     },
-                    enabled:  {
+                    enabled: {
                         borderColor: colors.white,
-                        fillColor:   colors.black,
+                        fillColor: colors.black,
                     },
                 };
             case CellStatus.Busy:
                 return {
                     disabled: {
                         borderColor: colors.grey,
-                        fillColor:   colors.grey,
+                        fillColor: colors.grey,
                     },
-                    enabled:  {
+                    enabled: {
                         borderColor: colors.white,
-                        fillColor:   colors.white,
+                        fillColor: colors.white,
                     },
                 };
             case CellStatus.Destroyed:
                 return {
                     disabled: {
                         borderColor: colors.darkerRed,
-                        fillColor:   colors.darkerRed,
+                        fillColor: colors.darkerRed,
                     },
-                    enabled:  {
+                    enabled: {
                         borderColor: colors.almostPink,
-                        fillColor:   colors.almostPink,
+                        fillColor: colors.almostPink,
                     },
                 };
             case CellStatus.DestroyedOther:
                 return {
                     disabled: {
                         borderColor: colors.darkerRed,
-                        fillColor:   colors.darkerRed,
+                        fillColor: colors.darkerRed,
                     },
-                    enabled:  {
+                    enabled: {
                         borderColor: colors.darkerRed,
-                        fillColor:   colors.darkerRed,
+                        fillColor: colors.darkerRed,
                     },
                 };
             case CellStatus.Missed:
                 return {
                     disabled: {
                         borderColor: colors.smokerSyellow,
-                        fillColor:   colors.smokerSyellow,
+                        fillColor: colors.smokerSyellow,
                     },
-                    enabled:  {
+                    enabled: {
                         borderColor: colors.yellow,
-                        fillColor:   colors.yellow,
+                        fillColor: colors.yellow,
                     },
                 };
             default:

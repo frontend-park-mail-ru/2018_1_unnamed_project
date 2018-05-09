@@ -14,7 +14,7 @@ export class OpponentsCountMenu extends Component {
     constructor({element, attrs = {}}) {
         super({element, templateFunction: opponentsCountMenuTemplate, attrs});
     }
-    
+
     /**
      * @override
      * @param {object} attrs
@@ -26,7 +26,7 @@ export class OpponentsCountMenu extends Component {
         Object.values(buttons).forEach((btn: HTMLElement) => {
             btn.addEventListener('click', (evt) => {
                 evt.preventDefault();
-                
+
                 bus.emit(
                     GameEvents.OfflineComponentsCountSelected,
                     {opponentsCount: parseInt((evt.target as any).value, 10) + 1},

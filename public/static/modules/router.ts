@@ -1,5 +1,4 @@
 import {Push} from "../components/push/push";
-import gameBus from "../game/game-bus";
 import {User} from "../models/user";
 import {Page, PageAccessTypes} from "../pages/page";
 import bus from "./bus";
@@ -12,11 +11,11 @@ export enum RouterEvents {
 
 export class Router {
     private static _Instance: Router;
-    
+
     private _activePage: Page;
     private _nextRoute: string;
     private _push: Push;
-    private _root: Element;
+    private readonly _root: Element;
     private _routes: Map<string, Page>;
 
     /**

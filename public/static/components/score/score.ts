@@ -4,7 +4,7 @@ import scoreTemplate from "./score.pug";
 import "./score.css";
 
 export class Score extends Component {
-    private _active: boolean;
+    private readonly _active: boolean;
     private _value;
 
     /**
