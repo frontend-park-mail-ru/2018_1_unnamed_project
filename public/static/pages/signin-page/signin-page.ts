@@ -29,27 +29,27 @@ export class SigninPage extends Page {
      */
     static get defaultAttrs() {
         return {
-            fields:         [
+            fields: [
                 {
-                    type:        'email',
-                    name:        'email',
+                    type: 'email',
+                    name: 'email',
                     placeholder: 'Email',
-                    validator:   ValidatorFactory.buildEmailValidator(),
+                    validator: ValidatorFactory.buildEmailValidator(),
                 },
                 {
-                    type:        'password',
-                    name:        'password',
+                    type: 'password',
+                    name: 'password',
                     placeholder: 'Пароль',
-                    validator:   ValidatorFactory.buildPasswordValidator(),
+                    validator: ValidatorFactory.buildPasswordValidator(),
                 },
             ],
             formFooterLink: {
                 question: 'Нет аккаунта?',
                 title: 'Зарегистрируйтесь!',
-                href:  '/signup',
+                href: '/signup',
             },
-            resetText:      'Очистить',
-            submitText:     'Вход',
+            resetText: 'Очистить',
+            submitText: 'Вход',
         };
     }
 

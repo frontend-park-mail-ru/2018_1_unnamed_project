@@ -15,20 +15,20 @@ export class ProfileBar extends Component {
         if (ProfileBar._Instance) {
             return ProfileBar._Instance;
         }
-        
+
         super({element, templateFunction: profileBarTemplate, attrs: {mainActionHref: '/signin'} as object});
-        
+
         this
             .render(this.attrs)
             .setUnauthorized()
             .hide();
-    
+
         this.element.querySelector('#profile-bar__logout').addEventListener('click', (evt) => {
             evt.preventDefault();
-            
+
             const push = new Push();
             push.clearSharedMessages();
-            
+
             User.logout();
         });
 
@@ -47,7 +47,7 @@ export class ProfileBar extends Component {
     private set href(mainActionHref) {
         this.element.querySelector('#profile-bar__username').href = mainActionHref;
     }
-    
+
     /**
      * Задает доступность ссылки "выход".
      * @private

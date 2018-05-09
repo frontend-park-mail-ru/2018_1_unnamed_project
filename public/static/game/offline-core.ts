@@ -83,11 +83,11 @@ export class OfflineCore extends Core {
      */
     emitGameOver() {
         this.push.clear();
-        
+
         const scoreboard = this._players.map((p) => {
             return {username: p.username, rank: p.score};
         }).sort((a, b) => a.rank - b.rank);
-        
+
         const isWinner: boolean = !!this._player.shipsAliveCount;
         gameBus.emit(GameEvents.GameOver, {scoreboard, isWinner});
     }
@@ -180,7 +180,7 @@ export class OfflineCore extends Core {
         const botMove = () => {
             const current = this._bots[currentBotIdx];
             const [i, j] = current.bot.makeMove();
-            
+
             if (this.resolveMove({i, j, player: current}) === ResolveMoveResult.Missed) {
                 ++currentBotIdx;
             }
@@ -244,9 +244,9 @@ export class OfflineCore extends Core {
      */
     getMoveResult({i, j, player}): IMoveResult {
         const moveResult: IMoveResult = {
-            isUserMove:          player.username === this._player.username,
-            isUserHit:           false,
-            isDestroyedSelf:     false,
+            isUserMove: player.username === this._player.username,
+            isUserHit: false,
+            isDestroyedSelf: false,
             destroyedShipsCount: 0,
         };
 
@@ -383,9 +383,9 @@ export class OfflineCore extends Core {
             {
                 username,
                 gameField,
-                score:           0,
+                score: 0,
                 shipsAliveCount: shipsLimit,
-                isUser:          true,
+                isUser: true,
             },
         ];
 
@@ -395,11 +395,11 @@ export class OfflineCore extends Core {
 
             this._players.push(
                 {
-                    username:        `Clone Trooper ${i + 1}`,
-                    gameField:       botGameField,
-                    score:           0,
+                    username: `Clone Trooper ${i + 1}`,
+                    gameField: botGameField,
+                    score: 0,
                     shipsAliveCount: shipsLimit,
-                    isUser:          false,
+                    isUser: false,
                     bot,
                 },
             );
@@ -420,15 +420,15 @@ export class OfflineCore extends Core {
 
             this.endUserMove({i, j});
         });
-        
+
         gameBus.on(GameEvents.Terminate, () => {
             if (this._lastTimeout) {
                 clearTimeout(this._lastTimeout);
                 this._lastTimeout = null;
             }
-    
+
             setTimeout(() => this.push.clear(), 4000);
-            
+
             this.emitGameOver();
         });
     }

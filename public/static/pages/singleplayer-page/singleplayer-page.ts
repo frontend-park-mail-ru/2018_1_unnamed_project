@@ -20,10 +20,9 @@ export class SingleplayerPage extends Page {
         const size = (window.innerWidth > window.innerHeight) ? window.innerHeight : window.innerWidth;
         return [size * 0.75, size * 0.75];
     }
-    
+
     private _gameStarted;
     private _game: Game;
-
     private _canvas;
     private _startGameButton;
     private _scoreRoot;
@@ -40,13 +39,13 @@ export class SingleplayerPage extends Page {
         this.setWindowResizeHandler()
             .setOpponentsCountSelectedHandler();
     }
-    
+
     /**
      * @private
      * @return {SingleplayerPage}
      */
     setWindowResizeHandler() {
-        window.addEventListener('resize', (evt) => {
+        window.addEventListener('resize', () => {
             if (!(this._canvas && this._gameStarted)) return;
             [this._canvas.width, this._canvas.height] = SingleplayerPage.computeCanvasSize();
             this._game.gameField.init(null, true);
@@ -69,7 +68,7 @@ export class SingleplayerPage extends Page {
      * @private
      * @return {SingleplayerPage}
      */
-    setGameOverHandler() {       
+    setGameOverHandler() {
         const gameOverElement = document.createElement('div');
         gameOverElement.className = 'game__gameover';
         this.element.appendChild(gameOverElement);

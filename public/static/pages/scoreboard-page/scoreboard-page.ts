@@ -3,12 +3,11 @@ import {API} from "../../modules/api";
 import bus from "../../modules/bus";
 import scoreboardPageTemplate from "./scoreboard-page.pug";
 
-import "./scoreboard-page.css";
-
 /**
  * Страница списка лидеров.
  */
 import {Page, PageAccessTypes} from "../page";
+import "./scoreboard-page.css";
 
 export class ScoreboardPage extends Page {
     private _api: API;
@@ -51,7 +50,7 @@ export class ScoreboardPage extends Page {
     accessType() {
         return PageAccessTypes.AnyUser;
     }
-    
+
     /**
      * @private
      * @return {ScoreboardPage}
@@ -68,7 +67,7 @@ export class ScoreboardPage extends Page {
                 })
                 .catch(() => null);
         });
-        
+
         return this;
     }
 }

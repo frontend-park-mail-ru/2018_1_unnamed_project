@@ -4,9 +4,8 @@ import {StatusMapper} from "./status-mapper";
 
 export class Cell extends Rectangle {
     public status;
-    
     private _enabled: boolean;
-    
+
     /**
      * @param {Object} ctx
      * @param {Number} width
@@ -22,7 +21,7 @@ export class Cell extends Rectangle {
         this._enabled = enabled;
         this.changeStatus();
     }
-    
+
     /**
      * @private
      * @param {Number} status
@@ -42,10 +41,10 @@ export class Cell extends Rectangle {
 
     /**
      * Builds status from existing cell
-     * @param status 
+     * @param status
      */
-    setStatusFromExisting(status = {}){
+    setStatusFromExisting(status = {}) {
         this.status = status;
-        this.changeStatus()
+        this.changeStatus();
     }
 }

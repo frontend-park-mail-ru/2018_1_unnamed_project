@@ -13,7 +13,10 @@
     "member-access": false,
     "no-console": false,
     "no-trailing-whitespace": false,
-    "max-classes-per-file": [true, 3],
+    "max-classes-per-file": [
+      true,
+      3
+    ],
     "object-literal-sort-keys": false,
     "quotemark": false,
     "variable-name": [

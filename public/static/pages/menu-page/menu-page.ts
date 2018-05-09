@@ -22,19 +22,19 @@ export class MenuPage extends Page {
             navItems: [
                 {
                     title: 'Мультиплеер',
-                    href:  '/multiplayer',
+                    href: '/multiplayer',
                 },
                 {
                     title: 'Одиночная игра',
-                    href:  '/singleplayer',
+                    href: '/singleplayer',
                 },
                 {
                     title: 'Таблица лидеров',
-                    href:  '/scoreboard',
+                    href: '/scoreboard',
                 },
                 {
                     title: 'Правила',
-                    href:  '/rules',
+                    href: '/rules',
                 },
             ],
         };

@@ -52,7 +52,7 @@ export class User {
     public static get currentUser(): User {
         return currentUser;
     }
-    
+
     /**
      * Проверяет авторизацию пользователя.
      * @return {Promise<Object>}
@@ -71,7 +71,7 @@ export class User {
                 throw new Error();
             });
     }
-    
+
     /**
      * Авторизует пользователя.
      * @param {*} credentials
@@ -82,7 +82,7 @@ export class User {
             .then((response: HttpResponse) => {
                 currentUser = new User(response);
                 renderHello(currentUser.username);
-                
+
                 bus.emit(UserEvents.CurrentUserChanged, currentUser);
                 bus.emit(UserEvents.AuthenticationDone, currentUser);
                 bus.emit(RouterEvents.NavigateToNextPageOrRoot, null);
@@ -93,7 +93,7 @@ export class User {
                 bus.emit(UserEvents.CurrentUserChanged, currentUser);
             });
     }
-    
+
     /**
      * Создает пользователя.
      * @param {*} credentials
@@ -104,7 +104,7 @@ export class User {
             .then((response: HttpResponse) => {
                 currentUser = new User(response);
                 renderHello(currentUser.username);
-                
+
                 bus.emit(UserEvents.CurrentUserChanged, currentUser);
                 bus.emit(UserEvents.AuthenticationDone, currentUser);
                 bus.emit(RouterEvents.NavigateToNextPageOrRoot, null);
@@ -115,7 +115,7 @@ export class User {
                 bus.emit(UserEvents.CurrentUserChanged, currentUser);
             });
     }
-    
+
     /**
      * Обновляет данные пользователя.
      * @param {*} data
@@ -127,7 +127,7 @@ export class User {
                 const push = new Push();
                 push.addMessage('Настройки обновлены');
                 push.render({level: PushLevels.Info});
-                
+
                 currentUser = new User(response);
                 bus.emit(UserEvents.CurrentUserChanged, currentUser);
             })
@@ -135,7 +135,7 @@ export class User {
                 renderErrors(errors);
             });
     }
-    
+
     /**
      * Изменяет аватар пользователя.
      * @param {*} form
@@ -147,7 +147,7 @@ export class User {
                 const push = new Push();
                 push.addMessage('Аватар обновлен');
                 push.render({level: PushLevels.Info});
-                
+
                 currentUser = new User(response);
                 bus.emit(UserEvents.CurrentUserChanged, currentUser);
             })
@@ -155,7 +155,7 @@ export class User {
                 renderErrors(errors);
             });
     }
-    
+
     /**
      * Удаляет аватар пользователя.
      */
@@ -166,7 +166,7 @@ export class User {
                 const push = new Push();
                 push.addMessage('Аватар пользователя удален');
                 push.render({level: PushLevels.Error});
-                
+
                 currentUser = new User(response);
                 bus.emit(UserEvents.CurrentUserChanged, currentUser);
             })
@@ -174,7 +174,7 @@ export class User {
                 console.log(errors);
             });
     }
-    
+
     /**
      * Осуществляет выход пользователя.
      */
@@ -190,7 +190,7 @@ export class User {
                 console.log(errors);
             });
     }
-    
+
     public username: string;
     public email: string;
     public rank: number;

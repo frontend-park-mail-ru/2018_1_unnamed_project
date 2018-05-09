@@ -15,7 +15,7 @@ export class GameField {
     private _enabled: boolean;
     private _fieldParams;
     private _scene;
-    
+
     /**
      * @param {*} canvas
      * @param {int} playersCount
@@ -26,24 +26,24 @@ export class GameField {
         this.setupValidator = new SetupValidator();
         const ctx = canvas.getContext('2d');
         this.ctx = ctx;
-        
+
         this.gameStarted = false;
         this._enabled = true;
-        
+
         this._cells = [];
-        
+
         this._scene = new Scene(ctx);
         this._calcDelegate = new CalcDelegate();
-        
+
         this.setCoordMapper(GameEvents.LClick)
             .setCoordMapper(GameEvents.RClick)
             .setDrawHandler()
             .setEnableSceneHandler()
             .setDisableSceneHandler();
-        
+
         this.init(playersCount);
     }
-    
+
     /**
      * @return {*[]}
      */
@@ -53,7 +53,7 @@ export class GameField {
             Math.round(this.canvas.height * .99 / this._fieldParams.dim),
         ];
     }
-    
+
     /**
      * @param {Object} event
      * @return {GameField}
@@ -61,12 +61,12 @@ export class GameField {
     setCoordMapper(event) {
         gameBus.on(event, ({x, y}) => {
             if (!this._enabled) return;
-            
+
             const [cellWidth, cellHeight] = this.computeCellParams();
-            
+
             const j = Math.floor(x / cellWidth);
             const i = Math.floor(y / cellHeight);
-            
+
             console.log(i, j);
             switch (event) {
                 case GameEvents.LClick:
@@ -87,7 +87,7 @@ export class GameField {
         });
         return this;
     }
-    
+
     /**
      * Хендлер на событие перерисовки.
      * @return {GameField}
@@ -103,7 +103,7 @@ export class GameField {
         });
         return this;
     }
-    
+
     /**
      * Хендлер события "сделать сцену активной".
      * @return {GameField}
@@ -115,7 +115,7 @@ export class GameField {
         });
         return this;
     }
-    
+
     /**
      * Хендлер события "сделать сцену неактивной".
      * @return {GameField}
@@ -127,66 +127,69 @@ export class GameField {
         });
         return this;
     }
-    
+
     /**
-     * @param {Number} playersCount
-     * @return {GameField}
+     * @param {number} playersCount
+     * @param {boolean} rebuild
+     * @returns {GameField}
      */
     init(playersCount = null, rebuild = false) {
         if (playersCount) {
             this._calcDelegate.playersCount = playersCount;
             this._fieldParams = this._calcDelegate.gameFieldParams;
         }
-        
+
         gameBus.emit(GameEvents.CreateBattlefield, this._fieldParams.dim);
-        
+
         const [cellWidth, cellHeight] = this.computeCellParams();
-        
+
         const oldCells = this._cells.slice();
         this._cells = [];
-        
+
         const ctx = this.ctx;
         for (let i = 0; i < this._fieldParams.dim; i++) {
             for (let j = 0; j < this._fieldParams.dim; j++) {
                 const cell = new Cell(ctx, {
-                    width: cellWidth, 
-                    height: cellHeight
+                    width: cellWidth,
+                    height: cellHeight,
                 });
                 cell.x = i * cellWidth + Math.round(cellWidth / 2);
                 cell.y = j * cellHeight + Math.round(cellHeight / 2);
-                if (rebuild){ 
-                    cell.setStatusFromExisting(oldCells[i * this._fieldParams.dim + j].status)
+
+                if (rebuild) {
+                    cell.setStatusFromExisting(oldCells[i * this._fieldParams.dim + j].status);
                 }
+
                 this._cells.push(cell);
             }
         }
-        
+
         return this.renderScene();
     }
-    
+
     /**
      * @private
      * @return {GameField}
      */
     private renderScene(): GameField {
         this._scene.removeAll();
-        
+
         for (const cell of this._cells) {
             this._scene.addFigure(cell);
         }
-        
+
         this._scene.render();
-        
+
         return this;
     }
-    
+
     private changeEnabledStatus(enabled: boolean): GameField {
         this._enabled = enabled;
-        
+
         for (const cell of this._cells) {
             cell.enabled = enabled;
         }
-        
+
         return this.renderScene();
     }
 }
