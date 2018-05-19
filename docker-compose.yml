@@ -6,12 +6,15 @@ services:
             - "5000"
         volumes:
             - ./:/opt
-        command: bash -c "npm run build && npm run sw"
+        command: bash -c "npm install && npm run build && npm run sw"
     nginx:
         restart: always
         build: ./nginx
         ports:
             - "80:80"
+            - "443:443"
+        volumes:
+            - /etc/letsencrypt/copy/shipcollision.me:/etc/letsencrypt/live/shipcollision.me
         volumes_from:
             - app
         command: bash -c "nginx && tail -f /var/log/nginx/access.log && tail -f /var/log/nginx/error.log"

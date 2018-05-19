@@ -1,4 +1,5 @@
 FROM nginx
 RUN rm /etc/nginx/conf.d/default.conf
 ADD shipcollision.conf /etc/nginx/conf.d/
-EXPOSE 80
+RUN mkdir -p /etc/letsecnrypt/live/shipcollision.me
+EXPOSE 80 443
