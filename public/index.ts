@@ -1,4 +1,4 @@
-import './static/css/main.css';
-import './static/css/system-font.css';
+import './static/css/main.scss';
+import './static/css/system-font.scss';
 
 import './static/application.ts';
