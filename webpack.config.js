@@ -1,7 +1,14 @@
-const path = require('path');
 require('webpack');
 
+const path = require('path');
+
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const WebpackAssetsManifest = require('webpack-assets-manifest');
+
+const pathsToClean = [
+    'dist/*.*',
+];
 
 module.exports = {
     mode: 'development',
@@ -13,22 +20,22 @@ module.exports = {
                 use: ExtractTextPlugin.extract(
                     {
                         fallback: 'style-loader',
-                        use: ['css-loader']
+                        use: ['css-loader'],
                     }
-                )
+                ),
             },
             {
                 test: /\.pug$/,
-                use: 'pug-loader'
+                use: 'pug-loader',
             },
             {
                 test: /(\.jpg|\.png|woff2?|eot|ttf)$/,
-                use: 'url-loader'
+                use: 'url-loader',
             },
             {
                 test: /\.tsx?$/,
                 use: 'awesome-typescript-loader',
-                exclude: /node_modules/
+                exclude: /node_modules/,
             },
         ],
     },
@@ -36,12 +43,15 @@ module.exports = {
         extensions: ['.ts', '.tsx', '.js', '.css', '.pug'],
     },
     plugins: [
+        new CleanWebpackPlugin(pathsToClean, {verbose: true}),
         new ExtractTextPlugin({
-            filename: 'bundle.css'
+            filename: '[name]-[hash].css',
         }),
+        new WebpackAssetsManifest(),
     ],
     output: {
-        filename: 'bundle.js',
         path: path.join(__dirname, 'dist'),
+        filename: '[name]-[hash].js',
+        chunkFilename: '[id]-[chunkhash].js',
     },
 };
