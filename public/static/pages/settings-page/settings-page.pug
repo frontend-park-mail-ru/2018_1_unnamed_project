@@ -1,13 +1,13 @@
 section(class="menu settings-page")
     include ../../components/menu-ref/menu-ref.pug
-    div.settings__img-with-text
+    div.profile-page__img-with-text
         if avatarLink
-            img.avatar(src=`${avatarLink}`)
+            img.profile-page__avatar.settings-page__img-with-text--center(src=`${avatarLink}`)
         form(action=`${uploadAvatarLink}` method="post" id="upload-avatar" enctype="multipart/form-messages")
-            span.upload-btn-wrapper
-                button(class="btn update") Update
+            span.settings-page__upload-button
+                button.settings-page__btn--update Update
                 input(type="file" name="avatar")
-        button(class="btn delete" id="delete-avatar") Delete
+        button.settings-page__btn--delete#delete-avatar Delete
         hr
     div.js-settings-form-root
         include ../../components/form/form.pug

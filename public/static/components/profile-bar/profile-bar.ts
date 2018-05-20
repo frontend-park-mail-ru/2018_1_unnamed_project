@@ -1,9 +1,9 @@
-import {User} from "../../models/user";
-import {Component} from "../component";
-import {Push} from "../push/push";
-import profileBarTemplate from "./profile-bar.pug";
+import {User} from '../../models/user';
+import {Component} from '../component';
+import {Push} from '../push/push';
+import profileBarTemplate from './profile-bar.pug';
 
-import "./profile-bar.css";
+import './profile-bar.scss';
 
 export class ProfileBar extends Component {
     static _Instance: ProfileBar;

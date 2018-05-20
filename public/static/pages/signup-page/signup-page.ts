@@ -1,12 +1,10 @@
-import {Form, FormEvents} from "../../components/form/form";
-import {PushLevels} from "../../components/push/push";
-import {User} from "../../models/user";
-import bus from "../../modules/bus";
-import {ValidatorFactory} from "../../modules/validator-factory";
-import {Page, PageAccessTypes} from "../page";
-import signupPageTemplate from "./signup-page.pug";
-
-import "./signup-page.css";
+import {Form, FormEvents} from '../../components/form/form';
+import {PushLevels} from '../../components/push/push';
+import {User} from '../../models/user';
+import bus from '../../modules/bus';
+import {ValidatorFactory} from '../../modules/validator-factory';
+import {Page, PageAccessTypes} from '../page';
+import signupPageTemplate from './signup-page.pug';
 
 export class SignupPage extends Page {
     private _formRoot;

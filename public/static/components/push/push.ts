@@ -1,7 +1,7 @@
-import {Component} from "../component";
-import pushTemplate from "./push.pug";
+import {Component} from '../component';
+import pushTemplate from './push.pug';
 
-import "./push.css";
+import './push.scss';
 
 export enum PushLevels {
     Info = 'info',

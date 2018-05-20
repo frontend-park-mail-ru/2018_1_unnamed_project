@@ -1,15 +1,15 @@
-form(class="form js-form" novalidate=true)
+form.js-form.form(novalidate=true)
     if fields
-        div.form__fields
+        div.form__fields-container
             each field in fields
-                input.form__fields-input(required=true, type=`${field.type}`, name=`${field.name}` placeholder=`${field.placeholder}`)
+                input.form__input(required=true, type=`${field.type}`, name=`${field.name}` placeholder=`${field.placeholder}`)
 
-    div.form__controls
-        button.form__control-bordered(type="reset") #{resetText}
+    div.form__controls-container
+        button.form__control--bordered(type="reset") #{resetText}
         div.space
-        button.form__control-bordered(type="submit") #{submitText}
+        button.form__control--bordered(type="submit") #{submitText}
 
     if formFooterLink
-        a.form__footer-link(href=`${formFooterLink.href}`)
+        a.form__link(href=`${formFooterLink.href}`)
             | #{formFooterLink.question}
             u #{formFooterLink.title}

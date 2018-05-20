@@ -1,7 +1,7 @@
-import {Page, PageAccessTypes} from "../page";
-import rulesPageTemplate from "./rules-page.pug";
+import {Page, PageAccessTypes} from '../page';
+import rulesPageTemplate from './rules-page.pug';
 
-import "./rules-page.css";
+import './rules-page.scss';
 
 export class RulesPage extends Page {
     /**

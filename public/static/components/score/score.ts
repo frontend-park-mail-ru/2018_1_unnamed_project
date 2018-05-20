@@ -1,7 +1,7 @@
-import {Component} from "../component";
-import scoreTemplate from "./score.pug";
+import {Component} from '../component';
+import scoreTemplate from './score.pug';
 
-import "./score.css";
+import './score.scss';
 
 export class Score extends Component {
     private readonly _active: boolean;

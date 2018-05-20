@@ -1,10 +1,10 @@
-import {PushLevels} from "../../components/push/push";
-import {User, UserEvents} from "../../models/user";
-import bus from "../../modules/bus";
-import {Page, PageAccessTypes} from "../page";
-import profilePageTemplate from "./profile-page.pug";
+import {PushLevels} from '../../components/push/push';
+import {User, UserEvents} from '../../models/user';
+import bus from '../../modules/bus';
+import {Page, PageAccessTypes} from '../page';
+import profilePageTemplate from './profile-page.pug';
 
-import "./profile-page.css";
+import './profile-page.scss';
 
 export class ProfilePage extends Page {
     /**

@@ -1,6 +1,6 @@
 include ../menu-ref/menu-ref.pug
 if locals.win === true
-    p.game__game_over__result_label Ты подебил
+    p.game-over__result-label Победа!
 else
-    p.game__game_over__result_label Ты проиграл
-button(type='button' class='game__game_over__play_again__button form__control-bordered') Играть снова
+    p.game-over__result-label Ты проиграл
+button.form__control--bordered.game-over__play-again-button(type='button') Играть снова

@@ -1,10 +1,8 @@
-import {PushLevels} from "../../components/push/push";
-import {UserEvents} from "../../models/user";
-import bus from "../../modules/bus";
-import {Page, PageAccessTypes} from "../page";
-import multiplayerPageTemplate from "./multiplayer-page.pug";
-
-import "./multiplayer-page.css";
+import {PushLevels} from '../../components/push/push';
+import {UserEvents} from '../../models/user';
+import bus from '../../modules/bus';
+import {Page, PageAccessTypes} from '../page';
+import multiplayerPageTemplate from './multiplayer-page.pug';
 
 export class MultiplayerPage extends Page {
     /**

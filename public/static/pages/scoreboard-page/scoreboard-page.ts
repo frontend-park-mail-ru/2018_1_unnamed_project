@@ -1,13 +1,12 @@
-import {Scoreboard, ScoreboardEvents} from "../../components/scoreboard/scoreboard";
-import {API} from "../../modules/api";
-import bus from "../../modules/bus";
-import scoreboardPageTemplate from "./scoreboard-page.pug";
+import {Scoreboard, ScoreboardEvents} from '../../components/scoreboard/scoreboard';
+import {API} from '../../modules/api';
+import bus from '../../modules/bus';
+import {Page, PageAccessTypes} from "../page";
+import scoreboardPageTemplate from './scoreboard-page.pug';
 
 /**
  * Страница списка лидеров.
  */
-import {Page, PageAccessTypes} from "../page";
-import "./scoreboard-page.css";
 
 export class ScoreboardPage extends Page {
     private _api: API;

@@ -2,8 +2,8 @@
     position: absolute;
     top: 2%;
     right: 1%;
-}
 
-div.bar > a {
-    margin: 5px;
+    & > a {
+        margin: 5px;
+    }
 }

@@ -1,10 +1,10 @@
 section(class="menu profile-page")
     include ../../components/menu-ref/menu-ref.pug
-    div.img-with-text
+    div.profile-page__img-with-text
         if avatarLink
-            img.avatar(src=`${avatarLink}`)
-        a#settings(href="/profile/settings") Settings
-    div.profile-info
+            img.profile-page__avatar(src=`${avatarLink}`)
+        a(href="/profile/settings") Settings
+    div.profile-page__info
         h4
             i= 'Username: '
             b= `${username}`

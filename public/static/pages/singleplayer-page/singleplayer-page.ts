@@ -1,15 +1,15 @@
-import {GameOver} from "../../components/game-over/game-over";
-import {OpponentsCountMenu} from "../../components/opponents-count-menu/opponents-count-menu";
-import {Score} from "../../components/score/score";
-import {GameEvents} from "../../game/events";
-import {Game} from "../../game/game";
-import gameBus from "../../game/game-bus";
-import {GameModes} from "../../game/game-modes";
-import bus from "../../modules/bus";
-import {Page, PageAccessTypes} from "../page";
-import singleplayerPageTemplate from "./singleplayer-page.pug";
+import {GameOver} from '../../components/game-over/game-over';
+import {OpponentsCountMenu} from '../../components/opponents-count-menu/opponents-count-menu';
+import {Score} from '../../components/score/score';
+import {GameEvents} from '../../game/events';
+import {Game} from '../../game/game';
+import gameBus from '../../game/game-bus';
+import {GameModes} from '../../game/game-modes';
+import bus from '../../modules/bus';
+import {Page, PageAccessTypes} from '../page';
+import singleplayerPageTemplate from './singleplayer-page.pug';
 
-import "./singleplayer-page.css";
+import './singleplayer-page.scss';
 
 export class SingleplayerPage extends Page {
     /**

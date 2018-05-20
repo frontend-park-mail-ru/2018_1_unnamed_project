@@ -5,7 +5,7 @@
     padding: 10px;
 }
 
-.fields-container {
+.form__fields-container {
     display: block;
     margin-bottom: 10px;
     width: 100%;
@@ -17,7 +17,7 @@
     margin: 10px auto;
 }
 
-.input {
+.form__input {
     @extend %field;
 
     border: 40px;
@@ -35,7 +35,7 @@
     }
 }
 
-.controls-container {
+.form__controls-container {
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -51,11 +51,11 @@
     background-color: transparent;
 }
 
-.control {
+.form__control {
     @extend %control;
 }
 
-.control--bordered {
+.form__control--bordered {
     @extend %control;
 
     border: 2px solid #fffff8;
@@ -68,13 +68,13 @@
     }
 }
 
-.link {
+.form__link {
     display: flex;
     flex-direction: row;
     margin-top: 10px;
 }
 
-.space {
+.form__space {
     border: transparent;
     width: 10px;
 }
