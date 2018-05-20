@@ -1,7 +1,8 @@
 section(class="menu profile-page")
     include ../../components/menu-ref/menu-ref.pug
     div.img-with-text
-        img.avatar(src=`${avatarLink}`)
+        if avatarLink
+            img.avatar(src=`${avatarLink}`)
         a#settings(href="/profile/settings") Settings
     div.profile-info
         h4

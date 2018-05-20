@@ -11,7 +11,7 @@ export class ProfileBar extends Component {
     /**
      *
      */
-    constructor({element}) {
+    constructor({element = null} = {}) {
         if (ProfileBar._Instance) {
             return ProfileBar._Instance;
         }

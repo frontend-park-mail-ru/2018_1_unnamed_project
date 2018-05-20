@@ -13,6 +13,17 @@ export class RulesPage extends Page {
 
     /**
      * @override
+     * @param {object} attrs
+     * @returns {RulesPage}
+     */
+    render(attrs: object): RulesPage {
+        super.render(attrs);
+        this.profileBar.show();
+        return this;
+    }
+
+    /**
+     * @override
      * @return {string}
      */
     accessType() {

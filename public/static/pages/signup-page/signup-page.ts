@@ -106,6 +106,8 @@ export class SignupPage extends Page {
         this._formRoot = this.element.querySelector('.js-signup-form-root');
         this._form = new Form({element: this._formRoot, attrs: this.attrs});
 
+        this.profileBar.hide();
+
         return this;
     }
 

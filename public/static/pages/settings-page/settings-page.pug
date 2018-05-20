@@ -1,7 +1,8 @@
 section(class="menu settings-page")
     include ../../components/menu-ref/menu-ref.pug
     div.settings__img-with-text
-        img.avatar(src=`${avatarLink}`)
+        if avatarLink
+            img.avatar(src=`${avatarLink}`)
         form(action=`${uploadAvatarLink}` method="post" id="upload-avatar" enctype="multipart/form-messages")
             span.upload-btn-wrapper
                 button(class="btn update") Update

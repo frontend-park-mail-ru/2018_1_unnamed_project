@@ -1,9 +1,15 @@
 const fs = require('fs');
 const recursive = require('recursive-readdir');
 
+const excludeFiles = [
+    'dist/index.html',
+    'dist/manifest.json',
+    'dist/sw.js',
+];
+
 recursive('dist')
     .then((files) => {
-        files = files.filter((f) => f !== 'dist/sw.js').map((f) => '/' + f);
+        files = files.filter((f) => !excludeFiles.includes(f)).map((f) => '/' + f);
 
         const routes = [
             '/',

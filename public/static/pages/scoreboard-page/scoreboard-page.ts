@@ -40,6 +40,8 @@ export class ScoreboardPage extends Page {
         // Загрузка первой страницы - параметры пагинации не нужны.
         bus.emit(ScoreboardEvents.LoadPage, '');
 
+        this.profileBar.show();
+
         return this;
     }
 

@@ -38,6 +38,7 @@ export class MultiplayerPage extends Page {
     render(attrs) {
         super.render(attrs);
         this.push.renderShared({level: PushLevels.Success});
+        this.profileBar.hide();
         return this;
     }
 

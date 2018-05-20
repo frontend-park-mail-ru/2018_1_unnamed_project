@@ -179,14 +179,17 @@ export class User {
      * Осуществляет выход пользователя.
      */
     public static logout() {
+        const logoutCallback = () => {
+            currentUser = null;
+            bus.emit(UserEvents.CurrentUserChanged, currentUser);
+            bus.emit(RouterEvents.NavigateToPage, '/');
+        };
+
         api
             .logout()
-            .then(() => {
-                currentUser = null;
-                bus.emit(UserEvents.CurrentUserChanged, currentUser);
-                bus.emit(RouterEvents.NavigateToPage, '/');
-            })
+            .then(logoutCallback)
             .catch((errors) => {
+                logoutCallback();
                 console.log(errors);
             });
     }

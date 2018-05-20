@@ -39,6 +39,7 @@ export class ProfilePage extends Page {
     render(attrs) {
         super.render(Object.assign({}, attrs, User.currentUser));
         this.push.renderShared({level: PushLevels.Success});
+        this.profileBar.show();
         return this;
     }
 

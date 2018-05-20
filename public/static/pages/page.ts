@@ -1,3 +1,4 @@
+import {ProfileBar} from "../components/profile-bar/profile-bar";
 import {Push} from "../components/push/push";
 
 export enum PageAccessTypes {
@@ -10,6 +11,7 @@ export class Page {
     protected attrs: object;
     protected element: Element;
     protected templateFunction: (locals) => any;
+    protected profileBar: ProfileBar;
     protected push: Push;
     private _active: boolean;
 
@@ -19,6 +21,7 @@ export class Page {
     constructor(templateFunction?: (locals) => any) {
         this.templateFunction = templateFunction;
         this.attrs = {};
+        this.profileBar = new ProfileBar();
         this.push = new Push();
 
         this._active = false;

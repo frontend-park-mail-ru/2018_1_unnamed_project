@@ -42,6 +42,17 @@ export class MenuPage extends Page {
 
     /**
      * @override
+     * @param {object} attrs
+     * @returns {Page}
+     */
+    render(attrs: object): MenuPage {
+        super.render(attrs);
+        this.profileBar.show();
+        return this;
+    }
+
+    /**
+     * @override
      * @return {string}
      */
     accessType() {

@@ -91,6 +91,8 @@ export class SigninPage extends Page {
 
         this.push.renderShared({level: PushLevels.Error});
 
+        this.profileBar.hide();
+
         return this;
     }
 

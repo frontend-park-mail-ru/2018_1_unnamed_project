@@ -150,6 +150,9 @@ export class SingleplayerPage extends Page {
 
         const opponentsCountMenu = new OpponentsCountMenu({element: pcm, attrs: {maxOpponentsCount: 4}} as any);
         opponentsCountMenu.render({gameMode: GameModes.Offline});
+
+        this.profileBar.hide();
+
         return this;
     }
 
