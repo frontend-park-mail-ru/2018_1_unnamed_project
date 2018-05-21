@@ -5,7 +5,7 @@ MAINTAINER Kirill Kucherov
 MAINTAINER Oleg Venger
 
 RUN apt -y update
-RUN apt -y install curl nginx
+RUN apt -y install curl 
 RUN curl -sL https://deb.nodesource.com/setup_9.x -o /tmp/nodesource_setup.sh
 RUN bash /tmp/nodesource_setup.sh
 RUN apt install -y nodejs
