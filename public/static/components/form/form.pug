@@ -6,10 +6,9 @@ form.js-form.form(novalidate=true)
 
     div.form__controls-container
         button.form__control--bordered(type="reset") #{resetText}
-        div.space
+        div.form__space
         button.form__control--bordered(type="submit") #{submitText}
 
     if formFooterLink
         a.form__link(href=`${formFooterLink.href}`)
-            | #{formFooterLink.question}
             u #{formFooterLink.title}

@@ -1,6 +1,8 @@
 import {Page, PageAccessTypes} from '../page';
 import menuPageTemplate from './menu-page.pug';
 
+import './menu-page.scss';
+
 export class MenuPage extends Page {
     /**
      *

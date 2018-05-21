@@ -1,0 +1,11 @@
+@media screen and (max-height: 1366px) {
+    .menu__item {
+        margin: 10px;
+    }
+}
+
+@media screen and (min-height: 1367px) {
+    .menu__item {
+        margin: 0 auto;
+    }
+}
