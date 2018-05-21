@@ -1,3 +1,4 @@
+import {Loader} from "../components/loader/loader";
 import {Push} from "../components/push/push";
 import {User} from "../models/user";
 import {Page, PageAccessTypes} from "../pages/page";
@@ -13,6 +14,7 @@ export class Router {
     private static _Instance: Router;
 
     private _activePage: Page;
+    private _loader: Loader;
     private _nextRoute: string;
     private _push: Push;
     private readonly _root: Element;
@@ -30,7 +32,7 @@ export class Router {
         this._root = root;
         this._routes = new Map<string, Page>();
         this._activePage = null;
-
+        this._loader = new Loader();
         this._nextRoute = null;
 
         this._push = new Push();
@@ -79,6 +81,8 @@ export class Router {
             window.history.pushState(null, null, route);
         }
 
+        this._loader.hide();
+
         return this;
     }
 
@@ -93,6 +97,8 @@ export class Router {
             bus.emit(RouterEvents.Navigated, null);
             return this;
         }
+
+        this._loader.show();
 
         User.checkCurrentUser()
             .then(() => {

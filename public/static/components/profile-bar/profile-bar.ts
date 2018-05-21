@@ -81,22 +81,4 @@ export class ProfileBar extends Component {
         this.logoutAvailable = false;
         return this;
     }
-
-    /**
-     * Скрывает компонент.
-     * @return {ProfileBar}
-     */
-    hide() {
-        this.element.setAttribute('hidden', 'hidden');
-        return this;
-    }
-
-    /**
-     * Показывает компонент
-     * @return {ProfileBar}
-     */
-    show() {
-        this.element.removeAttribute('hidden');
-        return this;
-    }
 }

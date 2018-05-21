@@ -1,5 +1,7 @@
+import {Loader} from "./components/loader/loader";
 import {ProfileBar} from "./components/profile-bar/profile-bar";
 import {Push} from "./components/push/push";
+import {Root} from "./components/root/root";
 import {GameEvents} from "./game/events";
 import gameBus from "./game/game-bus";
 import {User, UserEvents} from "./models/user";
@@ -20,15 +22,19 @@ import registerServiceWorker from "./utils/add-sw";
 document.addEventListener('DOMContentLoaded', () => {
     registerServiceWorker();
 
-    const root = document.querySelector('#application');
+    const root = new Root();
 
     const pushRoot = document.createElement('div');
     pushRoot.id = 'push-root';
-    root.insertAdjacentElement('beforebegin', pushRoot);
+    root.htmlElement.insertAdjacentElement('beforebegin', pushRoot);
 
     const profileBarRoot = document.createElement('div');
     profileBarRoot.id = 'profile-bar-root';
-    root.insertAdjacentElement('afterbegin', profileBarRoot);
+    root.htmlElement.insertAdjacentElement('afterbegin', profileBarRoot);
+
+    const loaderRoot = document.createElement('div');
+    loaderRoot.id = 'loader-root';
+    root.htmlElement.insertAdjacentElement('beforebegin', loaderRoot);
 
     const profileBar = new ProfileBar({element: profileBarRoot});
     bus.on(UserEvents.CurrentUserChanged, (newUser: User) => {
@@ -39,7 +45,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    new Router(root)
+    // noinspection JSUnusedLocalSymbols
+    const loader = new Loader({element: loaderRoot});
+
+    new Router(root.htmlElement)
         .addRoute(ApplicationRoutes.Menu, MenuPage)
         .addRoute(ApplicationRoutes.Multiplayer, MultiplayerPage)
         .addRoute(ApplicationRoutes.Profile, ProfilePage)

@@ -24,20 +24,6 @@ export class Score extends Component {
     }
 
     /**
-     *
-     */
-    show() {
-        this.element.removeAttribute('hidden');
-    }
-
-    /**
-     *
-     */
-    hide() {
-        this.element.setAttribute('hidden', 'hidden');
-    }
-
-    /**
      * @override
      * @param {Object} attrs
      */
