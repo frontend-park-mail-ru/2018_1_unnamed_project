@@ -4,9 +4,9 @@
   "description": "Multi-player version of sea battle",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
-    "build:dev": "webpack-dev-server",
-    "start": "npm run build && npm run sw && npm run start:raw",
+    "build": "webpack && npm run sw",
+    "build:dev": "webpack-dev-server --port 5000",
+    "start": "npm run build && npm run start:raw",
     "start:raw": "DEBUG=* node server/server.js",
     "sw": "node generate-sw.js"
   },

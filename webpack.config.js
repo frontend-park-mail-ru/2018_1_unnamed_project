@@ -8,7 +8,7 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
 
 const pathsToClean = [
-    'dist/*.*',
+    'dist',
 ];
 
 module.exports = {
@@ -44,7 +44,9 @@ module.exports = {
         extensions: ['.ts', '.tsx', '.js', '.css', '.pug'],
     },
     plugins: [
-        new CleanWebpackPlugin(pathsToClean, {verbose: true}),
+        new CleanWebpackPlugin(pathsToClean, {
+            verbose: true,
+        }),
         new ExtractTextPlugin({
             filename: '[name]-[hash].css',
         }),
