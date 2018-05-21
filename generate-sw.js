@@ -15,7 +15,7 @@ recursive('dist')
             '/',
             '/multiplayer',
             '/profile',
-            '/profile/settings',
+            '/settings',
             '/rules',
             '/scoreboard',
             '/signin',

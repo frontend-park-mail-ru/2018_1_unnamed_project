@@ -112,6 +112,7 @@ export class Http {
 
         return fetch(uri, options)
             .then((response: Response) => {
+                console.log(response);
                 return response.json();
             })
             .then((response: any) => {
