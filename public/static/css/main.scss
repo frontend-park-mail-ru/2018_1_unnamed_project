@@ -102,9 +102,15 @@ a:hover {
 
 .back {
     margin: auto;
-    padding: auto;
+    padding: 10px;
     color: #99c2ff7c;
     font-size: 30px;
+}
+
+@media screen and (max-height: 380px) {
+    .back {
+        font-size: 21px;
+    }
 }
 
 .uxui td {

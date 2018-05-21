@@ -1,6 +1,8 @@
+import {Loader} from "../../components/loader/loader";
 import {Scoreboard, ScoreboardEvents} from '../../components/scoreboard/scoreboard';
 import {API} from '../../modules/api';
 import bus from '../../modules/bus';
+import {deviceHeight, deviceWidth} from "../../utils/screen-params";
 import {Page, PageAccessTypes} from "../page";
 import scoreboardPageTemplate from './scoreboard-page.pug';
 
@@ -9,7 +11,24 @@ import scoreboardPageTemplate from './scoreboard-page.pug';
  */
 
 export class ScoreboardPage extends Page {
+    /**
+     * Вычисляет подходящий размер строки таблицы для пагинации, чтобы влезало на экран.
+     * @returns {number}
+     */
+    private static computeSuitablePageSize() {
+        const currentWidth = deviceWidth();
+        const currentHeight = deviceHeight();
+
+        switch (true) {
+            case currentHeight < 400 || currentWidth < 500 && currentHeight < 820:
+                return 5;
+            default:
+                return 10;
+        }
+    }
+
     private _api: API;
+    private _loader: Loader;
 
     private _scoreboardRoot;
     private _scoreboard;
@@ -21,6 +40,7 @@ export class ScoreboardPage extends Page {
         super(scoreboardPageTemplate);
 
         this._api = new API();
+        this._loader = new Loader();
 
         this.setLoadPageHandler();
     }
@@ -37,7 +57,7 @@ export class ScoreboardPage extends Page {
         this._scoreboard = new Scoreboard({element: this._scoreboardRoot, attrs: this.attrs});
 
         // Загрузка первой страницы - параметры пагинации не нужны.
-        bus.emit(ScoreboardEvents.LoadPage, '');
+        bus.emit(ScoreboardEvents.LoadPage, `?limit=${ScoreboardPage.computeSuitablePageSize()}`);
 
         this.profileBar.show();
 
@@ -58,6 +78,7 @@ export class ScoreboardPage extends Page {
      */
     private setLoadPageHandler() {
         bus.on(ScoreboardEvents.LoadPage, (pagination) => {
+            this._loader.show();
             this._api
                 .scoreboard(pagination)
                 .then((response) => {
@@ -65,8 +86,9 @@ export class ScoreboardPage extends Page {
                         this._scoreboard.clear();
                         this._scoreboard.render(response);
                     }
+                    this._loader.hide();
                 })
-                .catch(() => null);
+                .catch(() => this._loader.hide());
         });
 
         return this;
