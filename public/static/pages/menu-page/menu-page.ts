@@ -33,7 +33,7 @@ export class MenuPage extends Page {
                     href: '/scoreboard',
                 },
                 {
-                    title: 'Правила',
+                    title: 'Как играть',
                     href: '/rules',
                 },
             ],
