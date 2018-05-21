@@ -1,8 +1,8 @@
-import bus from "../../modules/bus";
-import {Component} from "../component";
-import scoreboardTemplate from "./scoreboard.pug";
+import bus from '../../modules/bus';
+import {Component} from '../component';
+import scoreboardTemplate from './scoreboard.pug';
 
-import "./scoreboard.css";
+import './scoreboard.scss';
 
 export enum ScoreboardEvents {
     LoadPage = 'load_page',

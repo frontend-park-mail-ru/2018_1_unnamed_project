@@ -1,0 +1,31 @@
+.profile-page__img-with-text {
+    float: left;
+    text-align: center;
+    width: 128px;
+
+    img {
+        display: block;
+        margin: -14px 0 4px 0;
+    }
+}
+
+.profile-page__avatar {
+    object-fit: cover;
+    width: 128px;
+    height: 128px;
+    border: 2px solid #fffff8;
+    border-radius: 100%;
+}
+
+.profile-page__info {
+    margin: 0 0 0 145px;
+
+    i {
+        color: rgba(255, 255, 255, 0.685);
+    }
+
+    h4 {
+        text-align: left;
+        font-size: 17px;
+    }
+}

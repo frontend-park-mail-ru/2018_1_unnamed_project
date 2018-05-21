@@ -6,7 +6,7 @@ import {ValidatorFactory} from "../../modules/validator-factory";
 import {Page, PageAccessTypes} from "../page";
 import settingsPageTemplate from "./settings-page.pug";
 
-import "./settings-page.css";
+import "./settings-page.scss";
 
 export class SettingsPage extends Page {
     private _deleteAvatarButton;
@@ -120,6 +120,8 @@ export class SettingsPage extends Page {
         this._form = new Form({element: this._formRoot, attrs: this.attrs});
 
         this.setAvatarHandlers();
+
+        this.profileBar.show();
 
         return this;
     }

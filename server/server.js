@@ -5,18 +5,16 @@ const debug = require('debug');
 const express = require('express');
 const app = express();
 const logger = debug('mylogger');
+const fs = require('fs');
 
 const publicDir = `${__dirname}/../public/`;
+
+const DIST_DIR = `${__dirname}/../dist/`;
 
 app.use(body.json());
 app.use(cookie());
 
-app.use('/sw.js', express.static(path.join(__dirname, '/../dist/sw.js')));
-
-app.get('/dist/*', (req, res) => {
-    logger(`BUNDLE: ${req.url} ${req.method}`);
-    res.sendFile(path.join(__dirname, '/../', req.url));
-});
+app.use('/sw.js', express.static(path.join(DIST_DIR, 'sw.js')));
 
 app.get('/media/*', (req, res) => {
     logger(`STATIC FILE: ${req.url} ${req.method} ${path.join(publicDir, 'static', req.url)}`);
@@ -25,7 +23,15 @@ app.get('/media/*', (req, res) => {
 
 app.get('/*', (req, res) => {
     logger(`${req.url} ${req.method}`);
-    res.sendFile(path.join(publicDir, 'index.html'));
+
+    const fileName = (req.url === '/') ? 'index.html' : req.url;
+    let filePath = path.join(DIST_DIR, fileName);
+
+    if (!fs.existsSync(filePath)) {
+        filePath = path.join(DIST_DIR, 'index.html');
+    }
+
+    res.sendFile(filePath);
 });
 
 // noinspection ES6ModulesDependencies

@@ -1,0 +1,45 @@
+.opponents-count-menu__button {
+    margin-bottom: 5px;
+}
+
+@media screen and (min-width: 200px) {
+    .opponents-1 {
+        opacity: 1;
+    }
+
+    .opponents-2 {
+        opacity: 0;
+    }
+
+    .opponents-3 {
+        opacity: 0;
+    }
+}
+
+@media screen and (min-width: 500px) {
+    .opponents-1 {
+        opacity: 1;
+    }
+
+    .opponents-2 {
+        opacity: 1;
+    }
+
+    .opponents-3 {
+        opacity: 0;
+    }
+}
+
+@media screen and (min-width: 1300px) {
+    .opponents-1 {
+        opacity: 1;
+    }
+
+    .opponents-2 {
+        opacity: 1;
+    }
+
+    .opponents-3 {
+        opacity: 1;
+    }
+}

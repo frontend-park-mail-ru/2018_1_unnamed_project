@@ -1,15 +1,16 @@
-import {GameOver} from "../../components/game-over/game-over";
-import {OpponentsCountMenu} from "../../components/opponents-count-menu/opponents-count-menu";
-import {Score} from "../../components/score/score";
-import {GameEvents} from "../../game/events";
-import {Game} from "../../game/game";
-import gameBus from "../../game/game-bus";
-import {GameModes} from "../../game/game-modes";
-import bus from "../../modules/bus";
-import {Page, PageAccessTypes} from "../page";
-import singleplayerPageTemplate from "./singleplayer-page.pug";
+import {GameOver} from '../../components/game-over/game-over';
+import {OpponentsCountMenu} from '../../components/opponents-count-menu/opponents-count-menu';
+import {Score} from '../../components/score/score';
+import {GameEvents} from '../../game/events';
+import {Game} from '../../game/game';
+import gameBus from '../../game/game-bus';
+import {GameModes} from '../../game/game-modes';
+import bus from '../../modules/bus';
+import {Page, PageAccessTypes} from '../page';
+import singleplayerPageTemplate from './singleplayer-page.pug';
 
-import "./singleplayer-page.css";
+import {deviceHeight, deviceWidth} from "../../utils/screen-params";
+import './singleplayer-page.scss';
 
 export class SingleplayerPage extends Page {
     /**
@@ -17,8 +18,19 @@ export class SingleplayerPage extends Page {
      * @return {*[]}
      */
     private static computeCanvasSize() {
-        const size = (window.innerWidth > window.innerHeight) ? window.innerHeight : window.innerWidth;
-        return [size * 0.75, size * 0.75];
+        const currentWidth = deviceWidth();
+        const currentHeight = deviceHeight();
+
+        const size = (currentWidth > currentHeight) ? currentWidth : currentWidth;
+
+        switch (true) {
+            case size > 1600:
+                return [size * 0.4, size * 0.4];
+            case size > 640:
+                return [size * 0.5, size * 0.5];
+            default:
+                return [size * 0.99, size * 0.99];
+        }
     }
 
     private _gameStarted;
@@ -150,6 +162,9 @@ export class SingleplayerPage extends Page {
 
         const opponentsCountMenu = new OpponentsCountMenu({element: pcm, attrs: {maxOpponentsCount: 4}} as any);
         opponentsCountMenu.render({gameMode: GameModes.Offline});
+
+        this.profileBar.hide();
+
         return this;
     }
 

@@ -1,7 +1,7 @@
-import {Component} from "../component";
-import scoreTemplate from "./score.pug";
+import {Component} from '../component';
+import scoreTemplate from './score.pug';
 
-import "./score.css";
+import './score.scss';
 
 export class Score extends Component {
     private readonly _active: boolean;
@@ -21,20 +21,6 @@ export class Score extends Component {
     set score(score) {
         if (!this._active) return;
         this._value.innerText = `Очков ${score}`;
-    }
-
-    /**
-     *
-     */
-    show() {
-        this.element.removeAttribute('hidden');
-    }
-
-    /**
-     *
-     */
-    hide() {
-        this.element.setAttribute('hidden', 'hidden');
     }
 
     /**

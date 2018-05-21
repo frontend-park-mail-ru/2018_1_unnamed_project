@@ -1,5 +1,7 @@
+import {Loader} from "./components/loader/loader";
 import {ProfileBar} from "./components/profile-bar/profile-bar";
 import {Push} from "./components/push/push";
+import {Root} from "./components/root/root";
 import {GameEvents} from "./game/events";
 import gameBus from "./game/game-bus";
 import {User, UserEvents} from "./models/user";
@@ -20,17 +22,33 @@ import registerServiceWorker from "./utils/add-sw";
 document.addEventListener('DOMContentLoaded', () => {
     registerServiceWorker();
 
-    const root = document.querySelector('#application');
+    const root = new Root();
 
     const pushRoot = document.createElement('div');
     pushRoot.id = 'push-root';
-    root.insertAdjacentElement('beforebegin', pushRoot);
+    root.htmlElement.insertAdjacentElement('beforebegin', pushRoot);
 
     const profileBarRoot = document.createElement('div');
     profileBarRoot.id = 'profile-bar-root';
-    root.insertAdjacentElement('afterbegin', profileBarRoot);
+    root.htmlElement.insertAdjacentElement('afterbegin', profileBarRoot);
 
-    new Router(root)
+    const loaderRoot = document.createElement('div');
+    loaderRoot.id = 'loader-root';
+    root.htmlElement.insertAdjacentElement('beforebegin', loaderRoot);
+
+    const profileBar = new ProfileBar({element: profileBarRoot});
+    bus.on(UserEvents.CurrentUserChanged, (newUser: User) => {
+        if (newUser) {
+            profileBar.setAuthorized(newUser.username);
+        } else {
+            profileBar.setUnauthorized();
+        }
+    });
+
+    // noinspection JSUnusedLocalSymbols
+    const loader = new Loader({element: loaderRoot});
+
+    new Router(root.htmlElement)
         .addRoute(ApplicationRoutes.Menu, MenuPage)
         .addRoute(ApplicationRoutes.Multiplayer, MultiplayerPage)
         .addRoute(ApplicationRoutes.Profile, ProfilePage)
@@ -42,15 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
         .addRoute(ApplicationRoutes.Singleplayer, SingleplayerPage)
         .start();
 
-    const profileBar = new ProfileBar({element: profileBarRoot});
-    bus.on(UserEvents.CurrentUserChanged, (newUser: User) => {
-        if (newUser) {
-            profileBar.setAuthorized(newUser.username);
-        } else {
-            profileBar.setUnauthorized();
-        }
-    });
-
     const push = new Push();
     // Если пользователь переходит на другую страницу во время игры, мы заканчиваем игру, то есть
     // посылаем по игровой шине сигнал "принудительно заверши игру".
@@ -58,11 +67,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // this.push.sharedSize проверяется из-за того, что возможен редирект
         // типа /profile -> /signin. Если sharedMessages заполнены, то второй раз писать туда не надо.
         if (!route || route === ApplicationRoutes.Singleplayer || push.sharedSize) {
-            profileBar.hide();
             return;
         }
 
         gameBus.emit(GameEvents.Terminate);
-        profileBar.show();
     });
 });

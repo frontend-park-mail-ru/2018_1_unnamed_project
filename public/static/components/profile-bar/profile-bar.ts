@@ -1,9 +1,9 @@
-import {User} from "../../models/user";
-import {Component} from "../component";
-import {Push} from "../push/push";
-import profileBarTemplate from "./profile-bar.pug";
+import {User} from '../../models/user';
+import {Component} from '../component';
+import {Push} from '../push/push';
+import profileBarTemplate from './profile-bar.pug';
 
-import "./profile-bar.css";
+import './profile-bar.scss';
 
 export class ProfileBar extends Component {
     static _Instance: ProfileBar;
@@ -11,7 +11,7 @@ export class ProfileBar extends Component {
     /**
      *
      */
-    constructor({element}) {
+    constructor({element = null} = {}) {
         if (ProfileBar._Instance) {
             return ProfileBar._Instance;
         }
@@ -79,24 +79,6 @@ export class ProfileBar extends Component {
         this.username = 'войти';
         this.href = '/signin';
         this.logoutAvailable = false;
-        return this;
-    }
-
-    /**
-     * Скрывает компонент.
-     * @return {ProfileBar}
-     */
-    hide() {
-        this.element.setAttribute('hidden', 'hidden');
-        return this;
-    }
-
-    /**
-     * Показывает компонент
-     * @return {ProfileBar}
-     */
-    show() {
-        this.element.removeAttribute('hidden');
         return this;
     }
 }

@@ -1,3 +1,4 @@
+import {Loader} from "../components/loader/loader";
 import {Push, PushLevels} from "../components/push/push";
 import {API} from "../modules/api";
 import bus from "../modules/bus";
@@ -121,9 +122,14 @@ export class User {
      * @param {*} data
      */
     public static update(data: any) {
+        const loader = new Loader();
+        loader.show();
+
         api
             .updateProfile(data)
             .then((response) => {
+                loader.hide();
+
                 const push = new Push();
                 push.addMessage('Настройки обновлены');
                 push.render({level: PushLevels.Info});
@@ -132,6 +138,7 @@ export class User {
                 bus.emit(UserEvents.CurrentUserChanged, currentUser);
             })
             .catch((errors) => {
+                loader.hide();
                 renderErrors(errors);
             });
     }
@@ -141,9 +148,14 @@ export class User {
      * @param {*} form
      */
     public static changeAvatar(form: any) {
+        const loader = new Loader();
+        loader.show();
+
         api
             .uploadAvatar(form)
             .then((response) => {
+                loader.hide();
+
                 const push = new Push();
                 push.addMessage('Аватар обновлен');
                 push.render({level: PushLevels.Info});
@@ -152,6 +164,7 @@ export class User {
                 bus.emit(UserEvents.CurrentUserChanged, currentUser);
             })
             .catch((errors) => {
+                loader.hide();
                 renderErrors(errors);
             });
     }
@@ -160,9 +173,14 @@ export class User {
      * Удаляет аватар пользователя.
      */
     public static deleteAvatar() {
+        const loader = new Loader();
+        loader.show();
+
         api
             .deleteAvatar()
             .then((response) => {
+                loader.hide();
+
                 const push = new Push();
                 push.addMessage('Аватар пользователя удален');
                 push.render({level: PushLevels.Error});
@@ -171,6 +189,7 @@ export class User {
                 bus.emit(UserEvents.CurrentUserChanged, currentUser);
             })
             .catch((errors) => {
+                loader.hide();
                 console.log(errors);
             });
     }
@@ -179,14 +198,17 @@ export class User {
      * Осуществляет выход пользователя.
      */
     public static logout() {
+        const logoutCallback = () => {
+            currentUser = null;
+            bus.emit(UserEvents.CurrentUserChanged, currentUser);
+            bus.emit(RouterEvents.NavigateToPage, '/');
+        };
+
         api
             .logout()
-            .then(() => {
-                currentUser = null;
-                bus.emit(UserEvents.CurrentUserChanged, currentUser);
-                bus.emit(RouterEvents.NavigateToPage, '/');
-            })
+            .then(logoutCallback)
             .catch((errors) => {
+                logoutCallback();
                 console.log(errors);
             });
     }

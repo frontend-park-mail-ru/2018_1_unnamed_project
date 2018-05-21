@@ -1,0 +1,81 @@
+@import "../../css/constants";
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form__fields-container {
+    display: block;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+%field {
+    display: block;
+    width: 100%;
+    margin: 10px auto;
+}
+
+.form__input {
+    @extend %field;
+
+    border: 40px;
+    background-color: #cccccc;
+    height: 32pt;
+    font-size: 27px;
+    text-align: center;
+
+    &[type="submit"] {
+        background-color: transparent;
+    }
+
+    &::placeholder {
+        color: #26547C;
+    }
+}
+
+.form__controls-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+%control {
+    width: 100%;
+    height: 100%;
+    color: #fffff8;
+    font-family: system-ui, serif;
+    font-size: 27px;
+    text-align: center;
+    background-color: transparent;
+}
+
+.form__control {
+    @extend %control;
+}
+
+.form__control--bordered {
+    @extend %control;
+
+    border: 2px solid #fffff8;
+
+    &:hover {
+        border-color: #EF476F;
+        text-decoration-color: #EF476F;
+        color: #EF476F;
+        cursor: pointer;
+    }
+}
+
+.form__link {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+}
+
+.form__space {
+    border: transparent;
+    width: 10px;
+}

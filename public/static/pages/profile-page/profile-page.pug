@@ -1,15 +1,16 @@
 section(class="menu profile-page")
     include ../../components/menu-ref/menu-ref.pug
-    div.img-with-text
-        img.avatar(src=`${avatarLink}`)
-        a#settings(href="/profile/settings") Settings
-    div.profile-info
+    div.profile-page__img-with-text
+        if avatarLink
+            img.profile-page__avatar(src=`${avatarLink}`)
+        a(href="/profile/settings") Настройки
+    div.profile-page__info
         h4
-            i= 'Username: '
+            i= 'Имя пользователя: '
             b= `${username}`
         h4
             i= 'Email: '
             b= `${email}`
         h4
-            i= 'Game rank: '
+            i= 'Количество очков: '
             b= `${rank}`

@@ -1,8 +1,10 @@
-import {Component} from "../component";
-import "./game-over.css";
-import gameOverTemplate from "./game-over.pug";
+import {Component} from '../component';
+import gameOverTemplate from './game-over.pug';
+
+import './game-over.scss';
 
 export class GameOver extends Component {
+    private PLAY_AGAIN_BUTTON_SELECTOR = '.game-over__play-again-button';
 
     /**
      * @param {object}   element          Элемент, в котором рендерить.
@@ -20,7 +22,7 @@ export class GameOver extends Component {
      */
     render(attrs: object) {
         super.render(attrs);
-        const playAgain = this.element.querySelector('.game__game_over__play_again__button');
+        const playAgain = this.element.querySelector(this.PLAY_AGAIN_BUTTON_SELECTOR);
         playAgain.addEventListener('click', (evt) => {
             evt.preventDefault();
             this.element.parentElement.querySelector('.ocm').hidden = false;

@@ -33,4 +33,22 @@ export class Component {
         this.element.innerHTML = this.templateFunction(renderAttrs);
         return this;
     }
+
+    /**
+     * Скрывает компонент.
+     * @return {Component}
+     */
+    hide() {
+        this.element.setAttribute('hidden', 'hidden');
+        return this;
+    }
+
+    /**
+     * Показывает компонент
+     * @return {Component}
+     */
+    show() {
+        this.element.removeAttribute('hidden');
+        return this;
+    }
 }
