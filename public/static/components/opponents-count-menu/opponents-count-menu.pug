@@ -3,4 +3,4 @@ p Выберите количество противников
 div.opponentsCounts
     - var n = 1;
     while n < this.attrs.maxOpponentsCount
-        button.opponents-count-menu__button.form__control--bordered(type='button' value=`${n}`) #{n++}
+        button.opponents-count-menu__button.form__control--bordered(class=`opponents-${n}` type='button' value=`${n}`) #{n++}

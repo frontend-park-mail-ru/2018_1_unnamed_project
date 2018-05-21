@@ -9,6 +9,7 @@ import bus from '../../modules/bus';
 import {Page, PageAccessTypes} from '../page';
 import singleplayerPageTemplate from './singleplayer-page.pug';
 
+import {deviceHeight, deviceWidth} from "../../utils/screen-params";
 import './singleplayer-page.scss';
 
 export class SingleplayerPage extends Page {
@@ -17,8 +18,17 @@ export class SingleplayerPage extends Page {
      * @return {*[]}
      */
     private static computeCanvasSize() {
-        const size = (window.innerWidth > window.innerHeight) ? window.innerHeight : window.innerWidth;
-        return [size * 0.75, size * 0.75];
+        const currentWidth = deviceWidth();
+        const currentHeight = deviceHeight();
+
+        const size = (currentWidth > currentHeight) ? currentWidth : currentWidth;
+
+        switch (true) {
+            case size > 640:
+                return [size * 0.75, size * 0.75];
+            default:
+                return [size * 0.99, size * 0.99];
+        }
     }
 
     private _gameStarted;
