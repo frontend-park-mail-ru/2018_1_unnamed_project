@@ -22,18 +22,22 @@
     }
 }
 
-.settings-page__btn {
+%btn {
     background-color: transparent;
     border: transparent;
     font-size: 17px;
     font-weight: bold;
     cursor: pointer;
+}
 
+.settings-page__btn {
     &--delete {
+        @extend %btn;
         color: #ff6262;
     }
-
+    
     &--update {
+        @extend %btn;
         color: #62ff7c;
     }
 }
