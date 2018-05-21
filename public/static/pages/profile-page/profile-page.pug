@@ -1,16 +1,17 @@
 section(class="menu profile-page")
     include ../../components/menu-ref/menu-ref.pug
-    div.profile-page__img-with-text
-        if avatarLink
-            img.profile-page__avatar(src=`${avatarLink}`)
-        a(href="/settings") Настройки
-    div.profile-page__info
-        h4
-            i= 'Имя пользователя: '
-            b= `${username}`
-        h4
-            i= 'Email: '
-            b= `${email}`
-        h4
-            i= 'Количество очков: '
-            b= `${rank}`
+    div.profile-page__container
+        div.profile-page__img-with-text
+            if avatarLink
+                img.profile-page__avatar(src=`${avatarLink}`)
+            a.profile-page__link(href="/settings") Настройки
+        div.profile-page__info
+            h4
+                i= 'Имя пользователя: '
+                b= `${username}`
+            h4
+                i= 'Email: '
+                b= `${email}`
+            h4
+                i= 'Количество очков: '
+                b= `${rank}`
