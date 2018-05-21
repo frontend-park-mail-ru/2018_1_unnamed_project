@@ -24,8 +24,10 @@ export class SingleplayerPage extends Page {
         const size = (currentWidth > currentHeight) ? currentWidth : currentWidth;
 
         switch (true) {
+            case size > 1600:
+                return [size * 0.4, size * 0.4];
             case size > 640:
-                return [size * 0.75, size * 0.75];
+                return [size * 0.5, size * 0.5];
             default:
                 return [size * 0.99, size * 0.99];
         }

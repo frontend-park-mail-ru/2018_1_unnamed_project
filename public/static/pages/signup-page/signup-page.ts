@@ -30,7 +30,7 @@ export class SignupPage extends Page {
                 {
                     type: 'text',
                     name: 'username',
-                    placeholder: 'Username',
+                    placeholder: 'Имя пользователя',
                     validator: ValidatorFactory.buildUsernameValidator(),
                 },
                 {

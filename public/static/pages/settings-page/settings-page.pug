@@ -5,9 +5,9 @@ section(class="menu settings-page")
             img.profile-page__avatar.settings-page__img-with-text--center(src=`${avatarLink}`)
         form(action=`${uploadAvatarLink}` method="post" id="upload-avatar" enctype="multipart/form-messages")
             span.settings-page__upload-button
-                button.settings-page__btn--update Update
+                button.settings-page__btn--update Обновить
                 input(type="file" name="avatar")
-        button.settings-page__btn--delete#delete-avatar Delete
+        button.settings-page__btn--delete#delete-avatar Удалить
         hr
     div.js-settings-form-root
         include ../../components/form/form.pug
