@@ -1,9 +1,10 @@
+@import "colors";
 @import "constants";
 @import "system-font.scss";
 
 html {
-    min-width: 300px;
-    min-height: 300px;
+    min-width: $min-width;
+    min-height: $min-height;
 }
 
 html,
@@ -18,13 +19,13 @@ body {
     flex-direction: column;
     text-align: center;
     font-family: Comfortaa-Light, serif;
-    background: linear-gradient(to bottom right, #000000, rgb(0, 44, 58));
+    background: $background-color;
     background-size: cover;
-    color: white;
+    color: $primary-content-color;
 }
 
 a {
-    color: white;
+    color: $primary-content-color;
 }
 
 ul {
@@ -86,17 +87,17 @@ a {
 }
 
 [data-section] {
-    color: #FFFCF9;
+    color: $link-color;
 }
 
 li:hover {
-    text-decoration-color: #EF476F;
-    color: #EF476F;
+    text-decoration-color: $primary-color;
+    color: $primary-color;
 }
 
 a:hover {
-    text-decoration-color: #EF476F;
-    color: #EF476F;
+    text-decoration-color: $primary-color;
+    color: $primary-color;
 }
 
 .back {
