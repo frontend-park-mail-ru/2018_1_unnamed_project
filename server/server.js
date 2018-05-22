@@ -34,5 +34,47 @@ app.get('/*', (req, res) => {
     res.sendFile(filePath);
 });
 
+const players = new Map();
+
+const games = new Map();
+games.set(2, []);
+games.set(3, []);
+games.set(4, []);
+
+app.ws('/game', (ws, req) => {
+    const id = Math.round(Math.random() * 100);
+    players[id] = ws;
+
+    logger(`WS: новое соединение, id=${id}`);
+
+    ws.on('close', () => {
+        logger(`WS: соединение закрыто, id=${id}`);
+        delete players[id];
+    });
+
+    ws.on('message', (message) => {
+        const {type, payload} = JSON.parse(message);
+        logger(`WS: сообщение ${type}, ${payload}`);
+
+        switch (type) {
+        case 'JOIN_GAME':
+            const {count, field} = payload;
+
+            if (! 1 <= count <= 3) {
+                return;
+            }
+
+            games.set(count, {
+                field,
+                id,
+            });
+        case 'MAKE_MOVE':
+            break;
+        default:
+            break;
+        }
+    });
+});
+
 // noinspection ES6ModulesDependencies
 app.listen(process.env.PORT || 5000);
