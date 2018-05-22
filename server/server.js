@@ -6,10 +6,17 @@ const express = require('express');
 const app = express();
 const logger = debug('mylogger');
 const fs = require('fs');
+const uuid = require('uuid/v1');
+const ws = require('express-ws');
+
+const {MessageTypes} = require('./game-session.js');
+const GameMechanics = require('./game-mechanics.js');
 
 const publicDir = `${__dirname}/../public/`;
 
 const DIST_DIR = `${__dirname}/../dist/`;
+
+ws(app);
 
 app.use(body.json());
 app.use(cookie());
@@ -34,22 +41,26 @@ app.get('/*', (req, res) => {
     res.sendFile(filePath);
 });
 
-const players = new Map();
+const users = new Map();
+const gm = new GameMechanics();
 
-const games = new Map();
-games.set(2, []);
-games.set(3, []);
-games.set(4, []);
+setInterval(() => gm.gmStep(), 50);
 
-app.ws('/game', (ws, req) => {
-    const id = Math.round(Math.random() * 100);
-    players[id] = ws;
+app.ws('/game', (ws) => {
+    const id = uuid();
+    const playerInfo = {
+        uuid: id,
+        player: {},
+        ws,
+    };
+
+    users.set(id, playerInfo);
 
     logger(`WS: новое соединение, id=${id}`);
 
     ws.on('close', () => {
         logger(`WS: соединение закрыто, id=${id}`);
-        delete players[id];
+        delete users.delete(id);
     });
 
     ws.on('message', (message) => {
@@ -57,18 +68,14 @@ app.ws('/game', (ws, req) => {
         logger(`WS: сообщение ${type}, ${payload}`);
 
         switch (type) {
-        case 'JOIN_GAME':
+        case MessageTypes.JOIN_GAME:
             const {count, field} = payload;
-
-            if (! 1 <= count <= 3) {
-                return;
-            }
-
-            games.set(count, {
-                field,
-                id,
-            });
-        case 'MAKE_MOVE':
+            playerInfo.player.field = field;
+            gm.addWaiter(count, playerInfo);
+            break;
+        case MessageTypes.MAKE_MOVE:
+            const {cell} = payload;
+            gm.makeMove(playerInfo.player, cell);
             break;
         default:
             break;

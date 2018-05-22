@@ -1,4 +1,4 @@
-const WSService = require('ws-service');
+const WSService = require('./ws-service.js');
 
 const CellStatus = {
     EMPTY: 0,
@@ -15,10 +15,14 @@ const FieldDim = {
 };
 
 const MessageTypes = {
+    START_GAME: 'START_GAME',
+    MOVE_ENABLED: 'MOVE_ENABLED',
     MAKE_MOVE: 'MAKE_MOVE',
     MOVE_RESULT: 'MOVE_RESULT',
     DRAW_CELL: 'DRAW_CELL',
     GAME_MESSAGE: 'GAME_MESSAGE',
+    GAME_OVER: 'GAME_OVER',
+    JOIN_GAME: 'JOIN_GAME',
 };
 
 /**
@@ -96,6 +100,10 @@ class GameSession {
         }
 
         player.uuid = uuid;
+        player.score = 0;
+
+        const sum = (acc, val) => acc + val;
+        player.shipsAliveCount = player.field.map((x) => x.reduce(sum)).reduce(sum);
 
         this._players.set(uuid, player);
         this._playerUuids.push(uuid);
@@ -124,7 +132,19 @@ class GameSession {
             });
         }
 
+        // TODO: проверять, остались ли корабли.
         this._currentPlayerIdx = (this._currentPlayerIdx + 1) % this._playersCount;
+
+        if (this.gameIsStarted) {
+            this._wsService.send({
+                forConnection: this.currentPlayer.uuid,
+                type: MessageTypes.MOVE_ENABLED,
+                payload: {},
+            });
+
+            this._currentStepExpires = (+ new Date()) + SECONDS_TO_MOVE;
+        }
+
         return this;
     }
 
@@ -227,6 +247,12 @@ class GameSession {
             return;
         }
 
+        this._wsService.send({
+            forConnection: this.currentPlayer.uuid,
+            type: MessageTypes.START_GAME,
+            payload: {},
+        });
+
         // https://stackoverflow.com/a/221297
         this._currentStepExpires = (+ new Date()) + SECONDS_TO_MOVE;
     }
@@ -234,7 +260,7 @@ class GameSession {
     /**
      *
      */
-    sync() {
+    syncStep() {
         // https://stackoverflow.com/a/221297
         const currentTs = + new Date();
 
@@ -264,7 +290,7 @@ class GameSession {
                     status: CellStatus.DESTROYED,
                 },
             });
-            this._players.map((p) => p.id).reduce((id) => id === player.uuid).forEach((id) => {
+            this._players.map((p) => p.id).filter((id) => id !== player.uuid).forEach((id) => {
                 moveResult.messages.push({
                     forConnection: id,
                     type: MessageTypes.GAME_MESSAGE,
@@ -358,12 +384,21 @@ class GameSession {
      *
      */
     endGame() {
-
+        this._players.forEach((p) => {
+            const message = (p.shipsAliveCount) ? 'Победа!' : 'Вы проиграли';
+            this._wsService.send({
+                forConnection: p.uuid,
+                type: MessageTypes.GAME_OVER,
+                payload: {
+                    message,
+                },
+            });
+        });
     }
 }
 
-module.exports = [
+module.exports = {
     CellStatus,
     GameSession,
     MessageTypes,
-];
+};

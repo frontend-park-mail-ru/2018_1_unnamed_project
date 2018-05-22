@@ -54,4 +54,4 @@ class WSService {
     }
 }
 
-module.export = WSService;
+module.exports = WSService;

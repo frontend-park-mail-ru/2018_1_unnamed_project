@@ -1,6 +1,6 @@
-const uuid = require('uuid');
+const uuid = require('uuid/v1');
 
-const GameSession = require('game-session');
+const GameSession = require('./game-session.js');
 
 /**
  * Игровая механика.
@@ -35,7 +35,7 @@ class GameMechanics {
         this._waiters.forEach((waitersQueue, wantedPlayersCount) => {
             while (waitersQueue.size >= wantedPlayersCount) {
                 const gs = new GameSession(wantedPlayersCount);
-                const gsUuid = uuid.v1();
+                const gsUuid = uuid();
 
                 while (!gs.gameIsFilled) {
                     const {uuid, player, ws} = waitersQueue.pop();
@@ -53,16 +53,17 @@ class GameMechanics {
      *
      */
     gmStep() {
-        this._gameSessions
-            .values()
-            .filter((gs) => gs.gameIsStarted && !gs.gameIsOver)
-            .forEach((gs) => gs.sync());
-        this._gameSessions
-            .values()
-            .filter((gs) => gs.gameIsStarted && gs.gameIsOver)
-            .forEach((gs) => gs.endGame());
-
-        this._gameSessions = this._gameSessions.values().reduce((gs) => gs.gameIsStarted && gs.gameIsOver);
+        this._gameSessions.forEach((gs) => {
+            if (gs.gameIsStarted) {
+                gs.syncStep();
+            }
+        });
+        this._gameSessions.forEach((gs, uuid) => {
+            if (gs.gameIsOver) {
+                gs.endGame();
+                this._gameSessions.delete(uuid);
+            }
+        });
 
         this.tryStartGames();
     }
@@ -80,4 +81,4 @@ class GameMechanics {
     }
 }
 
-module.export = GameMechanics;
+module.exports = GameMechanics;
