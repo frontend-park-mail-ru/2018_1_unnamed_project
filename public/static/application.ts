@@ -51,8 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    bus.on(RouterEvents.Navigated, () => profileBar.show());
-    
     const push = new Push();
     // Если пользователь переходит на другую страницу во время игры, мы заканчиваем игру, то есть
     // посылаем по игровой шине сигнал "принудительно заверши игру".
@@ -60,9 +58,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // this.push.sharedSize проверяется из-за того, что возможен редирект
         // типа /profile -> /signin. Если sharedMessages заполнены, то второй раз писать туда не надо.
         if (!route || route === ApplicationRoutes.Singleplayer || push.sharedSize) {
+            profileBar.hide()
             return;
         }
         
         gameBus.emit(GameEvents.Terminate);
+        profileBar.show()
     });
 });

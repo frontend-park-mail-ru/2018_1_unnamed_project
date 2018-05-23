@@ -39,7 +39,7 @@ export class GameBot {
     }
 
     /**
-     * @note РЕФАКТОРИНГ бля!
+     * @note РЕФАКТОРИНГ
      * @return {*[]}
      */
     makeMove() {

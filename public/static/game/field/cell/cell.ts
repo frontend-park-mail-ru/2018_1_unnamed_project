@@ -14,7 +14,6 @@ export class Cell extends Rectangle {
      */
     constructor(ctx, {width = 0, height = 0} = {}) {
         super(ctx, {width, height});
-
         this._enabled = true;
         this.changeStatus(CellStatus.Empty);
     }
@@ -39,5 +38,14 @@ export class Cell extends Rectangle {
         this.fillColor = colors.fillColor;
 
         return this;
+    }
+
+    /**
+     * Builds status from existing cell
+     * @param status 
+     */
+    setStatusFromExisting(status = {}){
+        this.status = status;
+        this.changeStatus()
     }
 }

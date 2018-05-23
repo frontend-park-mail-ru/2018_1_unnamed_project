@@ -55,7 +55,8 @@ export class SignupPage extends Page {
                 },
             ],
             formFooterLink: {
-                title: 'Уже есть аккаунт? Войдите!',
+                question: 'Уже есть аккаунт?',
+                title: 'Войдите!',
                 href:  '/signin',
             },
             resetText:      'Очистить',

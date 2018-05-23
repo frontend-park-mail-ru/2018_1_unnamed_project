@@ -46,10 +46,10 @@ export class SingleplayerPage extends Page {
      * @return {SingleplayerPage}
      */
     setWindowResizeHandler() {
-        window.addEventListener('resize', () => {
+        window.addEventListener('resize', (evt) => {
             if (!(this._canvas && this._gameStarted)) return;
             [this._canvas.width, this._canvas.height] = SingleplayerPage.computeCanvasSize();
-            this._game.gameField.init();
+            this._game.gameField.init(null, true);
         });
         return this;
     }
