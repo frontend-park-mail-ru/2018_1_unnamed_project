@@ -53,7 +53,7 @@ export class Router {
      * @param {Page} PageClass
      * @return {Router}
      */
-    public addRoute(route: string, PageClass: typeof Page): Router {
+    public addRoute(route: string, PageClass): Router {
         this._routes.set(route, new PageClass().renderTo(this._root));
         return this;
     }

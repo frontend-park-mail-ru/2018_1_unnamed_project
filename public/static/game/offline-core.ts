@@ -1,6 +1,7 @@
 import {PushLevels} from "../components/push/push";
 import {GameBot} from "./bots/bot";
 import {Core, GameFieldData} from "./core";
+import {IPlayer, MAX_SECONDS_TO_MOVE, PlayersArray} from "./datatypes";
 import {GameEvents} from "./events";
 import {CellStatus} from "./field/cell/status";
 import {SetupValidator} from "./field/setup-validator";
@@ -8,18 +9,6 @@ import gameBus from "./game-bus";
 import {MoveTimeHandler} from "./move-time-hanlder";
 
 const BOT_MOVE_SECONDS = 1;
-const MAX_SECONDS_TO_MOVE = 20;
-
-interface IPlayer {
-    username: string;
-    gameField: GameFieldData;
-    score: number;
-    shipsAliveCount: number;
-    isUser: boolean;
-    bot?: GameBot;
-}
-
-type PlayersArray = IPlayer[];
 
 interface IMoveResult {
     isUserMove: boolean;
@@ -377,6 +366,10 @@ export class OfflineCore extends Core {
     }
 
     start(username: string, gameField: GameFieldData, playersCount: number) {
+        console.log('START');
+
+        gameBus.emit(GameEvents.EnableScene);
+
         const shipsLimit = SetupValidator.computeShipsLimit(gameField.length);
 
         this._players = [
