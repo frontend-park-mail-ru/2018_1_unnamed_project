@@ -5,6 +5,8 @@ export enum GameEvents {
     Draw = 'draw',
     LClick = 'lclick',
     RClick = 'rclick',
+    Hover = 'hover',
+    Unhover = 'unhover',
     RequestGamePermission = 'request_game_permission',
     RequestSetupPermission = 'request_setup_permission',
     RequestFreePermission = 'request_free_permission',

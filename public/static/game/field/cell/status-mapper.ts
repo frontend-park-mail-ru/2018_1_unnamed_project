@@ -1,5 +1,17 @@
 import {CellStatus} from "./status";
 
+enum Color {
+    Black = '#000000',
+    Grey = '#B0B0B0',
+    White = '#FFFFFF',
+    DarkerGrey = '#4F4F4F',
+    PrimaryRed = '#FF98B1',
+    DarkerRed = '#B23553',
+    AlmostPink = '#EF476F',
+    Yellow = '#FFCD1F',
+    SmokerYellow = '#D6A31A',
+}
+
 export class StatusMapper {
     /**
      * Отображает статус ячейки в цвета для отрисовки.
@@ -7,71 +19,89 @@ export class StatusMapper {
      * @return {*}
      */
     static mapStatus(cellStatus) {
-        enum colors {
-            black = '#000000',
-            grey = '#B0B0B0',
-            white = '#FFFFFF',
-            darkerGrey = '#4F4F4F',
-            darkerRed = '#B23553',
-            almostPink = '#EF476F',
-            yellow = '#FFCD1F',
-            smokerSyellow = '#D6A31A',
-        }
-
         switch (cellStatus) {
             case CellStatus.Empty:
                 return {
                     disabled: {
-                        borderColor: colors.grey,
-                        fillColor: colors.darkerGrey,
+                        borderColor: Color.Grey,
+                        fillColor: Color.DarkerGrey,
                     },
                     enabled: {
-                        borderColor: colors.white,
-                        fillColor: colors.black,
+                        borderColor: Color.White,
+                        fillColor: Color.Black,
                     },
                 };
             case CellStatus.Busy:
                 return {
                     disabled: {
-                        borderColor: colors.grey,
-                        fillColor: colors.grey,
+                        borderColor: Color.Grey,
+                        fillColor: Color.Grey,
                     },
                     enabled: {
-                        borderColor: colors.white,
-                        fillColor: colors.white,
+                        borderColor: Color.White,
+                        fillColor: Color.White,
                     },
                 };
             case CellStatus.Destroyed:
                 return {
                     disabled: {
-                        borderColor: colors.darkerRed,
-                        fillColor: colors.darkerRed,
+                        borderColor: Color.DarkerRed,
+                        fillColor: Color.DarkerRed,
                     },
                     enabled: {
-                        borderColor: colors.almostPink,
-                        fillColor: colors.almostPink,
+                        borderColor: Color.AlmostPink,
+                        fillColor: Color.AlmostPink,
                     },
                 };
             case CellStatus.DestroyedOther:
                 return {
                     disabled: {
-                        borderColor: colors.darkerRed,
-                        fillColor: colors.darkerRed,
+                        borderColor: Color.DarkerRed,
+                        fillColor: Color.DarkerRed,
                     },
                     enabled: {
-                        borderColor: colors.darkerRed,
-                        fillColor: colors.darkerRed,
+                        borderColor: Color.DarkerRed,
+                        fillColor: Color.DarkerRed,
                     },
                 };
             case CellStatus.Missed:
                 return {
                     disabled: {
-                        borderColor: colors.smokerSyellow,
-                        fillColor: colors.smokerSyellow,
+                        borderColor: Color.SmokerYellow,
+                        fillColor: Color.SmokerYellow,
                     },
                     enabled: {
-                        borderColor: colors.yellow,
-                        fillColor: colors.yellow,
+                        borderColor: Color.Yellow,
+                        fillColor: Color.Yellow,
+                    },
+                };
+            default:
+                return null;
+        }
+    }
+
+    static mapHover(cellStatus) {
+        switch (cellStatus) {
+            case CellStatus.Busy:
+                return {
+                    enabled: {
+                        borderColor: Color.PrimaryRed,
+                        fillColor: Color.PrimaryRed,
+                    },
+                    disabled: {
+                        borderColor: Color.PrimaryRed,
+                        fillColor: Color.PrimaryRed,
+                    },
+                };
+            case CellStatus.Empty:
+                return {
+                    enabled: {
+                        borderColor: Color.PrimaryRed,
+                        fillColor: Color.PrimaryRed,
+                    },
+                    disabled: {
+                        borderColor: Color.PrimaryRed,
+                        fillColor: Color.PrimaryRed,
                     },
                 };
             default:
