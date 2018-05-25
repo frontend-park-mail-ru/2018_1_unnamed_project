@@ -96,7 +96,7 @@ export class Push extends Component {
      * @param {Object} level
      * @return {Push}
      */
-    render({level = PushLevels.Info}) {
+    render({level = PushLevels.Info} = {}) {
         if ((this._messages as any).em) return this;
 
         super.render({
