@@ -1,6 +1,6 @@
 const uuid = require('uuid/v1');
 
-const GameSession = require('./game-session.js');
+const {GameSession} = require('./game-session.js');
 
 /**
  * Игровая механика.

@@ -15,14 +15,32 @@ const FieldDim = {
 };
 
 const MessageTypes = {
-    START_GAME: 'START_GAME',
-    MOVE_ENABLED: 'MOVE_ENABLED',
-    MAKE_MOVE: 'MAKE_MOVE',
-    MOVE_RESULT: 'MOVE_RESULT',
-    DRAW_CELL: 'DRAW_CELL',
-    GAME_MESSAGE: 'GAME_MESSAGE',
-    GAME_OVER: 'GAME_OVER',
-    JOIN_GAME: 'JOIN_GAME',
+    // Сделать сцену активной для игрока. payload = {}.
+    // Генерится, когда челик должен ходить, не важно, начало или середина игры.
+    ENABLE_SCENE: 'enable_scene',
+    // Запросить разрешения на ход. payload: {cell: {i: 1, j: 2}}
+    REQUEST_GAME_PERMISSION: 'request_game_permission',
+    // Сказать клиенту, как нарисовать клетку. payload = {status: CELL_STATUS}
+    DRAW: 'draw',
+    // Сказать клиенту, сколько очков установить. payload = {score: 100500}
+    SET_SCORE: 'set_score',
+    // Сообщение для вывода в push-уведомлениях. payload = {level: 'error|warning|info|success', message: 'message'}
+    GAME_MESSAGE: 'game_message',
+    // Сообщение на присоединение к игре. payload = {count: 3, field: [[], [], ...]}
+    JOIN_GAME: 'join_game',
+    // Сообщение о том, что игра начата. Должны получать все игроки, чтобы прекратить
+    // показывать состояние "ожидание подключения".
+    GAME_STARTED: 'game_started',
+    // Сообщение о том, что игра закончилась.
+    // payload = {win: true|false, score: 2, scoreboard: {username: score, username: score, ...}
+    GAME_OVER: 'game_over',
+};
+
+const GameMessageLevels = {
+    ERROR: 'error',
+    WARNING: 'warning',
+    INFO: 'info',
+    SUCCESS: 'success',
 };
 
 /**
@@ -40,7 +58,7 @@ class GameSession {
      * @param {number} playersCount
      */
     constructor(playersCount) {
-        if (![2, 3, 4].includes(playersCount)) {
+        if (!FieldDim[playersCount]) {
             throw new Error('Неверное количество игроков');
         }
 
@@ -74,14 +92,15 @@ class GameSession {
      * @return {boolean}
      */
     get gameIsStarted() {
-        return this._currentStepExpires !== 0;
+        return !!this._currentStepExpires;
     }
 
     /**
      * @return {boolean}
      */
     get gameIsOver() {
-        return this._players.values().filter((p) => p.shipsAliveCount !== 0).length === 1;
+        const players = [...this._players.values()];
+        return players.filter((p) => p.shipsAliveCount !== 0).length === 1;
     }
 
     /**
@@ -109,6 +128,7 @@ class GameSession {
         this._playerUuids.push(uuid);
         this._wsService.addConnection(uuid, ws);
 
+        // Вызывается для увеличения _currentPlayerIdx.
         this.toNextPlayer();
 
         return this;
@@ -122,27 +142,32 @@ class GameSession {
      */
     toNextPlayer() {
         if (this.gameIsStarted) {
+            if (this.gameIsOver) {
+                return this;
+            }
+
             this._wsService.send({
                 forConnection: this.currentPlayer.uuid,
                 type: MessageTypes.GAME_MESSAGE,
                 payload: {
-                    level: 'info',
+                    level: GameMessageLevels.INFO,
                     message: 'Время хода истекло, ходят другие игроки',
                 },
             });
-        }
 
-        // TODO: проверять, остались ли корабли.
-        this._currentPlayerIdx = (this._currentPlayerIdx + 1) % this._playersCount;
+            do {
+                this._currentPlayerIdx = (this._currentPlayerIdx + 1) % this._playersCount;
+            } while (!this.currentPlayer.shipsAliveCount);
 
-        if (this.gameIsStarted) {
             this._wsService.send({
                 forConnection: this.currentPlayer.uuid,
-                type: MessageTypes.MOVE_ENABLED,
+                type: MessageTypes.ENABLE_SCENE,
                 payload: {},
             });
 
             this._currentStepExpires = (+ new Date()) + SECONDS_TO_MOVE;
+        } else {
+            this._currentPlayerIdx = (this._currentPlayerIdx + 1) % this._playersCount;
         }
 
         return this;
@@ -160,7 +185,7 @@ class GameSession {
                 forConnection: player.uuid,
                 type: MessageTypes.GAME_MESSAGE,
                 payload: {
-                    level: 'error',
+                    level: GameMessageLevels.ERROR,
                     message: 'Такой клетки нет на поле',
                 },
             });
@@ -174,7 +199,7 @@ class GameSession {
                     forConnection: player.uuid,
                     type: MessageTypes.GAME_MESSAGE,
                     payload: {
-                        level: 'error',
+                        level: GameMessageLevels.ERROR,
                         message: 'Выбранная клетка недоступна для выстрела',
                     },
                 });
@@ -200,32 +225,33 @@ class GameSession {
         for (const current of this._players) {
             switch (current.field[i][j]) {
             case CellStatus.BUSY:
-                current.field[i][j] = CellStatus.DESTROYED;
-                moveResult.messages.push({
-                    forConnection: current.uuid,
-                    type: MessageTypes.GAME_MESSAGE,
-                    payload: {
-                        level: 'error',
-                        message: `Игрок ${player.username} попал по вам!`,
-                    },
-                });
-                moveResult.messages.push({
-                    forConnection: current.uuid,
-                    type: MessageTypes.DRAW_CELL,
-                    payload: {
-                        status: current.field[i][j],
-                    },
-                });
+                if (current.uuid === player.uuid) {
+                    moveResult.isDestroyedSelf = true;
 
+                    moveResult.messages.push({
+                        forConnection: current.uuid,
+                        type: MessageTypes.GAME_MESSAGE,
+                        payload: {
+                            level: GameMessageLevels.ERROR,
+                            message: `Игрок ${player.username} попал по вам!`,
+                        },
+                    });
+                    moveResult.messages.push({
+                        forConnection: current.uuid,
+                        type: MessageTypes.DRAW,
+                        payload: {
+                            i,
+                            j,
+                            status: current.field[i][j],
+                        },
+                    });
+                }
+
+                current.field[i][j] = CellStatus.DESTROYED;
                 player.field[i][j] = CellStatus.DESTROYED_OTHER;
 
                 current.shipsAliveCount -= 1;
-
-                if (current.uuid === player.uuid) {
-                    moveResult.isDestroyedSelf = true;
-                } else {
-                    moveResult.destroyedShipsCount++;
-                }
+                moveResult.destroyedShipsCount++;
 
                 break;
             case CellStatus.EMPTY:
@@ -234,6 +260,14 @@ class GameSession {
             default:
                 break;
             }
+        }
+
+        if (moveResult.isDestroyedSelf && player.field[i][j] !== CellStatus.DESTROYED_OTHER) {
+            player.field[i][j] = CellStatus.DESTROYED;
+        }
+
+        if (!moveResult.destroyedShipsCount) {
+            player.field[i][j] = CellStatus.MISSED;
         }
 
         return moveResult;
@@ -247,9 +281,17 @@ class GameSession {
             return;
         }
 
+        this._players.forEach((p) => {
+            this._wsService.send({
+                forConnection: p.uuid,
+                type: MessageTypes.GAME_STARTED,
+                payload: {},
+            });
+        });
+
         this._wsService.send({
             forConnection: this.currentPlayer.uuid,
-            type: MessageTypes.START_GAME,
+            type: MessageTypes.ENABLE_SCENE,
             payload: {},
         });
 
@@ -258,10 +300,10 @@ class GameSession {
     }
 
     /**
-     *
+     * Проверяем каждый тик, что время хода текущего игрока еще не истекло.
+     * Если истекло, то делаем текущим следующего игрока.
      */
     syncStep() {
-        // https://stackoverflow.com/a/221297
         const currentTs = + new Date();
 
         if (currentTs >= this._currentStepExpires) {
@@ -279,23 +321,18 @@ class GameSession {
                 forConnection: player.uuid,
                 type: MessageTypes.GAME_MESSAGE,
                 payload: {
-                    level: 'error',
+                    level: GameMessageLevels.ERROR,
                     message: 'Вы попали только по себе. Дизлайк, отписка :(',
                 },
             });
-            moveResult.messages.push({
-                forConnection: player.uuid,
-                type: MessageTypes.DRAW_CELL,
-                payload: {
-                    status: CellStatus.DESTROYED,
-                },
-            });
-            this._players.map((p) => p.id).filter((id) => id !== player.uuid).forEach((id) => {
+
+            const players = [...this._players.values()];
+            players.map((p) => p.id).filter((id) => id !== player.uuid).forEach((id) => {
                 moveResult.messages.push({
                     forConnection: id,
                     type: MessageTypes.GAME_MESSAGE,
                     payload: {
-                        level: 'info',
+                        level: GameMessageLevels.INFO,
                         message: `Игрок ${player.username} попал только по себе`,
                     },
                 });
@@ -303,38 +340,43 @@ class GameSession {
         } else if (moveResult.isDestroyedSelf && moveResult.destroyedShipsCount) {
             const scoreIncrease = 2 * moveResult.destroyedShipsCount;
             player.score += scoreIncrease;
-            moveResult.messages.push({
-                forConnection: player.uuid,
-                type: MessageTypes.GAME_MESSAGE,
-                payload: {
-                    level: 'success',
-                    message: `Кораблей поражено: ${moveResult.destroyedShipsCount}, очков +${scoreIncrease}`,
+
+            moveResult.messages.push(...[
+                {
+                    forConnection: player.uuid,
+                    type: MessageTypes.GAME_MESSAGE,
+                    payload: {
+                        level: GameMessageLevels.SUCCESS,
+                        message: `Кораблей поражено: ${moveResult.destroyedShipsCount}, очков +${scoreIncrease}`,
+                    },
                 },
-            });
-            moveResult.messages.push({
-                forConnection: player.uuid,
-                type: MessageTypes.DRAW_CELL,
-                payload: {
-                    status: CellStatus.DESTROYED_OTHER,
+                {
+                    forConnection: player.uuid,
+                    type: MessageTypes.SET_SCORE,
+                    payload: {
+                        score: player.score,
+                    },
                 },
-            });
+            ]);
         } else if (moveResult.destroyedShipsCount) {
             player.score += moveResult.destroyedShipsCount;
-            moveResult.messages.push({
-                forConnection: player.uuid,
-                type: MessageTypes.GAME_MESSAGE,
-                payload: {
-                    level: 'success',
-                    message: `Кораблей поражено: ${moveResult.destroyedShipsCount}`,
+            moveResult.messages.push(...[
+                {
+                    forConnection: player.uuid,
+                    type: MessageTypes.GAME_MESSAGE,
+                    payload: {
+                        level: 'success',
+                        message: `Кораблей поражено: ${moveResult.destroyedShipsCount}`,
+                    },
                 },
-            });
-            moveResult.messages.push({
-                forConnection: player.uuid,
-                type: MessageTypes.DRAW_CELL,
-                payload: {
-                    status: CellStatus.DESTROYED_OTHER,
+                {
+                    forConnection: player.uuid,
+                    type: MessageTypes.SET_SCORE,
+                    payload: {
+                        score: player.score,
+                    },
                 },
-            });
+            ]);
         } else {
             moveResult.messages.push({
                 forConnection: player.uuid,
@@ -342,13 +384,6 @@ class GameSession {
                 payload: {
                     level: 'warning',
                     message: 'Вы никуда не попали',
-                },
-            });
-            moveResult.messages.push({
-                forConnection: player.uuid,
-                type: MessageTypes.DRAW_CELL,
-                payload: {
-                    status: CellStatus.MISSED,
                 },
             });
         }
@@ -384,16 +419,25 @@ class GameSession {
      *
      */
     endGame() {
+        if (!this.gameIsStarted) {
+            return;
+        }
+
         this._players.forEach((p) => {
-            const message = (p.shipsAliveCount) ? 'Победа!' : 'Вы проиграли';
+            const win = !!p.shipsAliveCount;
+            const scoreboard = [...this._players].sort((a, b) => a.score - b.score);
             this._wsService.send({
                 forConnection: p.uuid,
                 type: MessageTypes.GAME_OVER,
                 payload: {
-                    message,
+                    win,
+                    score: p.score,
+                    scoreboard,
                 },
             });
         });
+
+        this._currentStepExpires = 0;
     }
 }
 
