@@ -3,8 +3,9 @@
 .msgf {
     @include center;
 
-    margin: auto;
+    width: auto;
     padding: 12px;
+    white-space: nowrap;
 
     &--info {
         color: #00529B;

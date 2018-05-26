@@ -46,7 +46,7 @@ export class Score extends Component {
 
     set timeLeft(timeLeft) {
         if (!this._active) return;
-        this._timeLeft.innerText = `На ход осталось ${timeLeft} секунд`;
+        this._timeLeft.innerText = `Осталось ${timeLeft} секунд`;
     }
 
     set shipsToPlace(shipsLeft) {

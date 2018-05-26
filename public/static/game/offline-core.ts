@@ -80,6 +80,8 @@ export class OfflineCore extends Core {
     beginUserMove() {
         if (this._userMoveInProgress) return;
 
+        this.push.clear();
+
         const secPassed = () => {
             this._moveTimeCounter--;
 

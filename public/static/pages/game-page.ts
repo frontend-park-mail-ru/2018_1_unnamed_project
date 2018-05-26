@@ -99,6 +99,7 @@ export abstract class GamePage extends Page {
             if (this.gameStarted) return;
 
             this.startGameButton.setAttribute('hidden', 'hidden');
+            this.push.clear();
             this.score.show();
             this.score.setGameMode();
 
