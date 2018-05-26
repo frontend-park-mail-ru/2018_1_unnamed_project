@@ -93,7 +93,7 @@ export class OnlineCore extends Core {
         this._moveTimeCounter = MAX_SECONDS_TO_MOVE;
         this._lastInterval = setInterval(() => {
             if (--this._moveTimeCounter) {
-                this._moveTimeHandler.renderProgress(this._moveTimeCounter);
+                MoveTimeHandler.renderProgress(this._moveTimeCounter);
             } else {
                 clearInterval(this._lastInterval);
             }

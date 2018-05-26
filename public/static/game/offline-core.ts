@@ -8,7 +8,7 @@ import {SetupValidator} from "./field/setup-validator";
 import gameBus from "./game-bus";
 import {MoveTimeHandler} from "./move-time-hanlder";
 
-const BOT_MOVE_SECONDS = 1;
+const BOT_MOVE_SECONDS = 2;
 
 interface IMoveResult {
     isUserMove: boolean;
@@ -28,10 +28,6 @@ export class OfflineCore extends Core {
 
     private _player: IPlayer;
     private _bots: PlayersArray;
-
-    // Объект, который умеет красиво показывать пользователю фидбек
-    // о времени хода.
-    private _moveTimeHandler: MoveTimeHandler;
     // Последний результат выполняния setTimeout для того,
     // чтобы его можно было отменить.
     private _lastTimeout;
@@ -49,8 +45,6 @@ export class OfflineCore extends Core {
         super();
 
         this._players = [];
-
-        this._moveTimeHandler = new MoveTimeHandler();
 
         this._lastTimeout = null;
         this._moveTimeCounter = MAX_SECONDS_TO_MOVE;
@@ -71,8 +65,6 @@ export class OfflineCore extends Core {
      * Управляет рендерингом сообщения об окончании игры.
      */
     emitGameOver() {
-        this.push.clear();
-
         const scoreboard = this._players.map((p) => {
             return {username: p.username, rank: p.score};
         }).sort((a, b) => a.rank - b.rank);
@@ -92,18 +84,17 @@ export class OfflineCore extends Core {
             this._moveTimeCounter--;
 
             if (this._moveTimeCounter > 0) {
-                this._moveTimeHandler.renderProgress(this._moveTimeCounter);
+                MoveTimeHandler.renderProgress(this._moveTimeCounter);
                 this._userMoveInProgress = true;
                 this._lastTimeout = setTimeout(secPassed, 1000);
             } else {
                 this._userMoveInProgress = false;
-                this.push.clear();
                 this.doBotsMove();
             }
         };
 
         this._moveTimeCounter = MAX_SECONDS_TO_MOVE;
-        this._moveTimeHandler.renderProgress(this._moveTimeCounter);
+        MoveTimeHandler.renderProgress(this._moveTimeCounter);
         this._userMoveInProgress = true;
         this._lastTimeout = setTimeout(secPassed, 1000);
     }
@@ -115,6 +106,8 @@ export class OfflineCore extends Core {
      */
     endUserMove({i, j}) {
         gameBus.emit(GameEvents.DisableScene);
+
+        MoveTimeHandler.renderProgress(MAX_SECONDS_TO_MOVE);
 
         this._moveEnabled = false;
         this._userMoveInProgress = false;
@@ -132,7 +125,6 @@ export class OfflineCore extends Core {
 
             if (this.isGameOver()) {
                 this.emitGameOver();
-                this.push.clear();
                 return;
             }
 
@@ -362,12 +354,12 @@ export class OfflineCore extends Core {
             gameBus.emit(GameEvents.SetScore, this._player.score);
         }
 
+        gameBus.emit(GameEvents.SetShipsLeft, this._player.shipsAliveCount);
+
         return resolveMoveResult;
     }
 
     start(username: string, gameField: GameFieldData, playersCount: number) {
-        console.log('START');
-
         gameBus.emit(GameEvents.EnableScene);
 
         const shipsLimit = SetupValidator.computeShipsLimit(gameField.length);
@@ -404,6 +396,9 @@ export class OfflineCore extends Core {
         this._bots = this._players.slice(1);
 
         this.beginUserMove();
+
+        this.push.clear();
+        gameBus.emit(GameEvents.SetShipsLeft, this._player.shipsAliveCount);
 
         gameBus.on(GameEvents.RequestGamePermission, ({i, j}) => {
             if (!this._moveEnabled) {

@@ -100,9 +100,40 @@ export abstract class GamePage extends Page {
 
             this.startGameButton.setAttribute('hidden', 'hidden');
             this.score.show();
+            this.score.setGameMode();
+
+            gameBus.emit(GameEvents.SetScore, 0);
 
             this.gameStarted = true;
             this.game.startGame();
+        });
+        return this;
+    }
+
+    protected setSetScoreHandler() {
+        gameBus.on(GameEvents.SetScore, (playerScore) => {
+            this.score.score = playerScore;
+        });
+        return this;
+    }
+
+    protected setSetTimeLeftHandler() {
+        gameBus.on(GameEvents.SetTimeLeft, (timeLeft) => {
+            this.score.timeLeft = timeLeft;
+        });
+        return this;
+    }
+
+    protected setSetShipsHandler() {
+        gameBus.on(GameEvents.SetShipsLeft, (shipsLeft) => {
+            this.score.shipsLeft = shipsLeft;
+        });
+        return this;
+    }
+
+    protected setSetShipsLeftHandler() {
+        gameBus.on(GameEvents.SetShipsToPlace, (shipsToPlace) => {
+            this.score.shipsToPlace = shipsToPlace;
         });
         return this;
     }
@@ -137,10 +168,16 @@ export abstract class GamePage extends Page {
 
         this.canvas.removeAttribute('hidden');
         this.opponentsCountMenu.hide();
-        this.score.show();
+        this.score
+            .show()
+            .setDisposalMode();
         this.setOpponentsCountSelectedHandler()
             .setDisableSceneHandler()
             .setGameStartedHandler()
+            .setSetScoreHandler()
+            .setSetShipsHandler()
+            .setSetShipsLeftHandler()
+            .setSetTimeLeftHandler()
             .setGameOverHandler();
 
         this.game = new Game(this.canvas, playersCount);

@@ -5,7 +5,7 @@ enum Color {
     Grey = '#B0B0B0',
     White = '#FFFFFF',
     DarkerGrey = '#4F4F4F',
-    PrimaryRed = '#FF98B1',
+    PrimaryRed = '#FFD2D2',
     DarkerRed = '#B23553',
     AlmostPink = '#EF476F',
     Yellow = '#FFCD1F',
