@@ -1,12 +1,12 @@
-import {Form, FormEvents} from "../../components/form/form";
-import {PushLevels} from "../../components/push/push";
-import {User, UserEvents} from "../../models/user";
-import bus from "../../modules/bus";
-import {ValidatorFactory} from "../../modules/validator-factory";
-import {Page, PageAccessTypes} from "../page";
-import settingsPageTemplate from "./settings-page.pug";
+import {Form, FormEvents} from '../../components/form/form';
+import {PushLevels} from '../../components/message-container';
+import {User, UserEvents} from '../../models/user';
+import bus from '../../modules/bus';
+import {ValidatorFactory} from '../../modules/validator-factory';
+import {Page, PageAccessTypes} from '../page';
+import settingsPageTemplate from './settings-page.pug';
 
-import "./settings-page.scss";
+import './settings-page.scss';
 
 export class SettingsPage extends Page {
     private _deleteAvatarButton;
@@ -38,32 +38,29 @@ export class SettingsPage extends Page {
 
             const notEmptyFieldsCount = Object.values(data).filter((element) => element !== '').length;
 
-            if (notEmptyFieldsCount === 0 && !errors) {
+            if (!(notEmptyFieldsCount === 0 && !errors)) {
+                if ((data as any).password !== data['password-confirmation']) {
+                    errors = errors || [];
+                    errors.push('Пароль и подтверждение не совпадают');
+                    this.push.addMessage('Пароль и подтверждение не совпадают');
+                }
+                if (errors) {
+                    errors.forEach((err) => {
+                        this.push.addMessage(err);
+                        console.log(err);
+                    });
+                    this.push.render({level: PushLevels.Error});
+                    return;
+                }
+                console.log(Object.keys(data).forEach((key) => {
+                    return (!data[key] && data[key] !== undefined) && delete data[key];
+                }));
+                User.update(data);
+            } else {
                 this.push.addMessage('Поля формы пусты');
                 this.push.render({level: PushLevels.Warning});
                 return;
             }
-
-            if ((data as any).password !== data['password-confirmation']) {
-                errors = errors || [];
-                errors.push('Пароль и подтверждение не совпадают');
-                this.push.addMessage('Пароль и подтверждение не совпадают');
-            }
-
-            if (errors) {
-                errors.forEach((err) => {
-                    this.push.addMessage(err);
-                    console.log(err);
-                });
-                this.push.render({level: PushLevels.Error});
-                return;
-            }
-
-            console.log(Object.keys(data).forEach((key) => {
-                return (!data[key] && data[key] !== undefined) && delete data[key];
-            }));
-
-            User.update(data);
         });
 
         return this;

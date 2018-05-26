@@ -1,4 +1,4 @@
-import {Http, HttpResponse} from "./http";
+import {Http, HttpResponse} from './http';
 
 const BACKEND_URI = 'https://dev-api-shipcollision.herokuapp.com';
 

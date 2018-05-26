@@ -1,6 +1,6 @@
-import {Rectangle} from "../../graphics/rectangle";
-import {CellStatus} from "./status";
-import {StatusMapper} from "./status-mapper";
+import {Rectangle} from '../../graphics/rectangle';
+import {CellStatus} from './status';
+import {StatusMapper} from './status-mapper';
 
 export class Cell extends Rectangle {
     private _status: CellStatus;

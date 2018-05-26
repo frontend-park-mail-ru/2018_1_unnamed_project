@@ -1,4 +1,4 @@
-import {PushLevels} from '../../components/push/push';
+import {PushLevels} from '../../components/message-container';
 import {User, UserEvents} from '../../models/user';
 import bus from '../../modules/bus';
 import {Page, PageAccessTypes} from '../page';

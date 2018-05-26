@@ -1,10 +1,10 @@
-import {User} from "../models/user";
-import {Controllers} from "./controllers";
-import {Core} from "./core";
-import {GameField} from "./field/field";
-import {GameModes} from "./game-modes";
-import {OfflineCore} from "./offline-core";
-import {OnlineCore} from "./online-core";
+import {User} from '../models/user';
+import {Controllers} from './controllers';
+import {Core} from './core';
+import {GameField} from './field/field';
+import {GameModes} from './game-modes';
+import {OfflineCore} from './offline-core';
+import {OnlineCore} from './online-core';
 
 export class Game {
     public gameField;

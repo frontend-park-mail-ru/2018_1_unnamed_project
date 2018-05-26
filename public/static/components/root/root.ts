@@ -1,5 +1,5 @@
-import noop from "../../utils/noop";
-import {Component} from "../component";
+import noop from '../../utils/noop';
+import {Component} from '../component';
 
 export class Root extends Component {
     private static _Instance: Root;

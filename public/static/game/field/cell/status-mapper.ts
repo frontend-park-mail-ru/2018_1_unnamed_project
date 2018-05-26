@@ -1,4 +1,4 @@
-import {CellStatus} from "./status";
+import {CellStatus} from './status';
 
 enum Color {
     Black = '#000000',

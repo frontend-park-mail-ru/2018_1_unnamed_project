@@ -1,7 +1,8 @@
-import {Component} from "../component";
-import {Push} from "../push/push";
-import {Root} from "../root/root";
+import {Component} from '../component';
+import {Push} from '../push/push';
+import {Root} from '../root/root';
 import loaderTemplate from './loader.pug';
+
 import './loader.scss';
 
 export class Loader extends Component {

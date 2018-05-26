@@ -1,4 +1,8 @@
-.msg {
+@import "../../css/mixins";
+
+.msgf {
+    @include center;
+
     margin: auto;
     padding: 12px;
 

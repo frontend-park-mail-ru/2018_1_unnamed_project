@@ -1,5 +1,5 @@
-import {GameEvents} from "./events";
-import gameBus from "./game-bus";
+import {GameEvents} from './events';
+import gameBus from './game-bus';
 
 export class MoveTimeHandler {
     /**

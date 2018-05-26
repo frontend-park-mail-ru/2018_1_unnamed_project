@@ -1,7 +1,8 @@
-import {Push, PushLevels} from "../../components/push/push";
-import {GameEvents} from "../events";
-import gameBus from "../game-bus";
-import {CellStatus} from "./cell/status";
+import {PushLevels} from "../../components/message-container";
+import {Push} from '../../components/push/push';
+import {GameEvents} from '../events';
+import gameBus from '../game-bus';
+import {CellStatus} from './cell/status';
 
 export class SetupValidator {
     /**

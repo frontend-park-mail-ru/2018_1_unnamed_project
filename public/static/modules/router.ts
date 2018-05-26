@@ -1,8 +1,8 @@
-import {Loader} from "../components/loader/loader";
-import {Push} from "../components/push/push";
-import {User} from "../models/user";
-import {Page, PageAccessTypes} from "../pages/page";
-import bus from "./bus";
+import {Loader} from '../components/loader/loader';
+import {Push} from '../components/push/push';
+import {User} from '../models/user';
+import {Page, PageAccessTypes} from '../pages/page';
+import bus from './bus';
 
 export enum RouterEvents {
     NavigateToPage = 'navigate_to',

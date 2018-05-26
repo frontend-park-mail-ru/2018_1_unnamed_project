@@ -1,10 +1,10 @@
-import {GameEvents} from "../events";
-import gameBus from "../game-bus";
-import {Scene} from "../graphics/scene";
-import {CalcDelegate} from "./calc-delegate";
-import {Cell} from "./cell/cell";
-import {CellStatus} from "./cell/status";
-import {SetupValidator} from "./setup-validator";
+import {GameEvents} from '../events';
+import gameBus from '../game-bus';
+import {Scene} from '../graphics/scene';
+import {CalcDelegate} from './calc-delegate';
+import {Cell} from './cell/cell';
+import {CellStatus} from './cell/status';
+import {SetupValidator} from './setup-validator';
 
 export class GameField {
     public gameStarted;

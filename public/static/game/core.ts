@@ -1,13 +1,13 @@
-import {Push} from "../components/push/push";
-import {CellStatus} from "./field/cell/status";
+import {FloatingPush} from '../components/floating-push/floating-push';
+import {CellStatus} from './field/cell/status';
 
 export type GameFieldData = CellStatus[][];
 
 export class Core {
-    protected push: Push;
+    protected push: FloatingPush;
 
     constructor() {
-        this.push = new Push();
+        this.push = new FloatingPush();
     }
 
     /**

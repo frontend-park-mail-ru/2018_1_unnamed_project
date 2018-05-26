@@ -1,3 +1,4 @@
+import {FloatingPush} from "./components/floating-push/floating-push";
 import {Loader} from "./components/loader/loader";
 import {ProfileBar} from "./components/profile-bar/profile-bar";
 import {Push} from "./components/push/push";
@@ -24,9 +25,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const root = new Root();
 
+    const PUSH_ROOT_ID = 'push-root';
+    const FLOATING_PUSH_ROOT_ID = 'floating-push-root';
+
     const pushRoot = document.createElement('div');
-    pushRoot.id = 'push-root';
+    pushRoot.id = PUSH_ROOT_ID;
     root.htmlElement.insertAdjacentElement('beforebegin', pushRoot);
+
+    const floatingPushRoot = document.createElement('div');
+    floatingPushRoot.id = FLOATING_PUSH_ROOT_ID;
+    root.htmlElement.insertAdjacentElement('beforebegin', floatingPushRoot);
 
     const profileBarRoot = document.createElement('div');
     profileBarRoot.id = 'profile-bar-root';
@@ -35,6 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const loaderRoot = document.createElement('div');
     loaderRoot.id = 'loader-root';
     root.htmlElement.insertAdjacentElement('beforebegin', loaderRoot);
+
+    const push = new Push(`#${PUSH_ROOT_ID}`);
+    // noinspection JSUnusedLocalSymbols
+    const floatingPush = new FloatingPush(`#${FLOATING_PUSH_ROOT_ID}`);
 
     const profileBar = new ProfileBar({element: profileBarRoot});
     bus.on(UserEvents.CurrentUserChanged, (newUser: User) => {
@@ -60,7 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
         .addRoute(ApplicationRoutes.Singleplayer, SingleplayerPage)
         .start();
 
-    const push = new Push();
     // Если пользователь переходит на другую страницу во время игры, мы заканчиваем игру, то есть
     // посылаем по игровой шине сигнал "принудительно заверши игру".
     bus.on(RouterEvents.Navigated, (route: string) => {

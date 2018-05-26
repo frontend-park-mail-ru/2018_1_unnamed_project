@@ -1,12 +1,12 @@
-import {PushLevels} from "../components/push/push";
-import {WS} from "../modules/ws";
-import {Core, GameFieldData} from "./core";
-import {IPlayer, MAX_SECONDS_TO_MOVE} from "./datatypes";
-import {GameEvents} from "./events";
-import {CellStatus} from "./field/cell/status";
-import {SetupValidator} from "./field/setup-validator";
-import gameBus from "./game-bus";
-import {MoveTimeHandler} from "./move-time-hanlder";
+import {PushLevels} from '../components/message-container';
+import {WS} from '../modules/ws';
+import {Core, GameFieldData} from './core';
+import {IPlayer, MAX_SECONDS_TO_MOVE} from './datatypes';
+import {GameEvents} from './events';
+import {CellStatus} from './field/cell/status';
+import {SetupValidator} from './field/setup-validator';
+import gameBus from './game-bus';
+import {MoveTimeHandler} from './move-time-hanlder';
 
 export class OnlineCore extends Core {
     private _player: IPlayer;

@@ -1,5 +1,5 @@
-import {GameBot} from "./bots/bot";
-import {GameFieldData} from "./core";
+import {GameBot} from './bots/bot';
+import {GameFieldData} from './core';
 
 export interface IPlayer {
     username: string;

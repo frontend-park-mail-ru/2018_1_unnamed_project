@@ -1,5 +1,5 @@
 import {GameEvents} from '../../game/events';
-import gameBus from "../../game/game-bus";
+import gameBus from '../../game/game-bus';
 import {Component} from '../component';
 import opponentsCountMenuTemplate from './opponents-count-menu.pug';
 

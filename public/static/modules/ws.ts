@@ -1,7 +1,7 @@
-import {Push} from "../components/push/push";
-import {GameEvents} from "../game/events";
-import gameBus from "../game/game-bus";
-import {API} from "./api";
+import {Push} from '../components/push/push';
+import {GameEvents} from '../game/events';
+import gameBus from '../game/game-bus';
+import {API} from './api';
 
 export class WS {
     private static _Instance: WS;

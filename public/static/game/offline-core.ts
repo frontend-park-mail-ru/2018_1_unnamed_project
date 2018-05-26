@@ -1,12 +1,12 @@
-import {PushLevels} from "../components/push/push";
-import {GameBot} from "./bots/bot";
-import {Core, GameFieldData} from "./core";
-import {IPlayer, MAX_SECONDS_TO_MOVE, PlayersArray} from "./datatypes";
-import {GameEvents} from "./events";
-import {CellStatus} from "./field/cell/status";
-import {SetupValidator} from "./field/setup-validator";
-import gameBus from "./game-bus";
-import {MoveTimeHandler} from "./move-time-hanlder";
+import {PushLevels} from '../components/message-container';
+import {GameBot} from './bots/bot';
+import {Core, GameFieldData} from './core';
+import {IPlayer, MAX_SECONDS_TO_MOVE, PlayersArray} from './datatypes';
+import {GameEvents} from './events';
+import {CellStatus} from './field/cell/status';
+import {SetupValidator} from './field/setup-validator';
+import gameBus from './game-bus';
+import {MoveTimeHandler} from './move-time-hanlder';
 
 const BOT_MOVE_SECONDS = 2;
 
