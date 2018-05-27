@@ -109,8 +109,6 @@ export class OfflineCore extends Core {
     endUserMove({i, j}) {
         gameBus.emit(GameEvents.DisableScene);
 
-        MoveTimeHandler.renderProgress(MAX_SECONDS_TO_MOVE);
-
         this._moveEnabled = false;
         this._userMoveInProgress = false;
 
@@ -147,6 +145,8 @@ export class OfflineCore extends Core {
      */
     doBotsMove() {
         gameBus.emit(GameEvents.DisableScene);
+
+        MoveTimeHandler.renderProgress(MAX_SECONDS_TO_MOVE);
 
         if (this._lastTimeout) {
             clearTimeout(this._lastTimeout);

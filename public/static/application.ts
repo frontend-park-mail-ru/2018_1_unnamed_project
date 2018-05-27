@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const floatingPushRoot = document.createElement('div');
     floatingPushRoot.id = FLOATING_PUSH_ROOT_ID;
-    root.htmlElement.insertAdjacentElement('beforebegin', floatingPushRoot);
+    root.htmlElement.insertAdjacentElement('afterbegin', floatingPushRoot);
 
     const profileBarRoot = document.createElement('div');
     profileBarRoot.id = 'profile-bar-root';

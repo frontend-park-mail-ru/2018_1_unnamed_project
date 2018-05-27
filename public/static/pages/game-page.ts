@@ -48,7 +48,7 @@ export abstract class GamePage extends Page {
         this._onSelectedEvent = onSelectedEvent;
 
         window.addEventListener('resize', () => {
-            if (!this.canvas || this.gameStarted) return;
+            if (!this.canvas || this.gameStarted || !this.game) return;
             [this.canvas.width, this.canvas.height] = GamePage.computeCanvasSize();
             this.game.gameField.init(null, true);
         });
