@@ -1,5 +1,5 @@
 import {Form, FormEvents} from '../../components/form/form';
-import {PushLevels} from '../../components/push/push';
+import {PushLevels} from '../../components/message-container';
 import {User} from '../../models/user';
 import bus from '../../modules/bus';
 import {ValidatorFactory} from '../../modules/validator-factory';

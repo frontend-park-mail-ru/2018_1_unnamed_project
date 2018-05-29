@@ -55,3 +55,9 @@
         font-size: 60px;
     }
 }
+
+@media screen and (max-height: 420px), (max-width: 420px) {
+    .scoreboard__table {
+        font-size: 22px;
+    }
+}

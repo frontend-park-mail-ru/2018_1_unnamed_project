@@ -7,7 +7,7 @@ export enum PageAccessTypes {
     NotLoggedInUser = 'not_logged_in_user',
 }
 
-export class Page {
+export abstract class Page {
     protected attrs: object;
     protected element: Element;
     protected templateFunction: (locals) => any;
@@ -18,7 +18,7 @@ export class Page {
     /**
      * @param {function} templateFunction Функция отрисовки pug.
      */
-    constructor(templateFunction?: (locals) => any) {
+    protected constructor(templateFunction?: (locals) => any) {
         this.templateFunction = templateFunction;
         this.attrs = {};
         this.profileBar = new ProfileBar();
@@ -110,7 +110,5 @@ export class Page {
      * @abstract
      * @return {string}
      */
-    public accessType(): PageAccessTypes {
-        throw new Error('This method must be overridden');
-    }
+    public abstract accessType();
 }

@@ -1,6 +1,6 @@
-import rand from "../../utils/rand";
-import {CellStatus} from "../field/cell/status";
-import {SetupValidator} from "../field/setup-validator";
+import rand from '../../utils/rand';
+import {CellStatus} from '../field/cell/status';
+import {SetupValidator} from '../field/setup-validator';
 
 export class GameBot {
     public ships: CellStatus[][];

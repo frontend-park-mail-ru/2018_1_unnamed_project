@@ -1,4 +1,4 @@
-import {PlayersCount} from "../players-count";
+import {PlayersCount} from '../players-count';
 
 export class CalcDelegate {
     public fieldDim;

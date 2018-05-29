@@ -32,10 +32,10 @@ export class MenuPage extends Page {
                     title: 'Таблица лидеров',
                     href: '/scoreboard',
                 },
-                {
-                    title: 'Как играть',
-                    href: '/rules',
-                },
+                // {
+                //     title: 'Как играть',
+                //     href: '/rules',
+                // },
             ],
         };
     }

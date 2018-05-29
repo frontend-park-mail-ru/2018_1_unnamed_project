@@ -1,9 +1,10 @@
-import {GameEvents} from "../events";
-import gameBus from "../game-bus";
-import {Scene} from "../graphics/scene";
-import {CalcDelegate} from "./calc-delegate";
-import {Cell} from "./cell/cell";
-import {SetupValidator} from "./setup-validator";
+import {GameEvents} from '../events';
+import gameBus from '../game-bus';
+import {Scene} from '../graphics/scene';
+import {CalcDelegate} from './calc-delegate';
+import {Cell} from './cell/cell';
+import {CellStatus} from './cell/status';
+import {SetupValidator} from './setup-validator';
 
 export class GameField {
     public gameStarted;
@@ -14,6 +15,7 @@ export class GameField {
     private _cells: Cell[];
     private _enabled: boolean;
     private _fieldParams;
+    private _lastHoveredCellCoords;
     private _scene;
 
     /**
@@ -37,7 +39,9 @@ export class GameField {
 
         this.setCoordMapper(GameEvents.LClick)
             .setCoordMapper(GameEvents.RClick)
+            .setCoordMapper(GameEvents.Hover)
             .setDrawHandler()
+            .setUnhoverHandler()
             .setEnableSceneHandler()
             .setDisableSceneHandler();
 
@@ -49,8 +53,8 @@ export class GameField {
      */
     computeCellParams() {
         return [
-            Math.round(this.canvas.width * .99 / this._fieldParams.dim),
-            Math.round(this.canvas.height * .99 / this._fieldParams.dim),
+            Math.floor(this.canvas.width * .99 / this._fieldParams.dim),
+            Math.floor(this.canvas.height * .99 / this._fieldParams.dim),
         ];
     }
 
@@ -67,7 +71,8 @@ export class GameField {
             const j = Math.floor(x / cellWidth);
             const i = Math.floor(y / cellHeight);
 
-            console.log(i, j);
+            if (i >= this._fieldParams.dim || j >= this._fieldParams.dim) return;
+
             switch (event) {
                 case GameEvents.LClick:
                     if (this.gameStarted) {
@@ -80,6 +85,14 @@ export class GameField {
                     if (!this.gameStarted) {
                         gameBus.emit(GameEvents.RequestFreePermission, {i, j});
                     }
+                    break;
+                case GameEvents.Hover:
+                    if (this._lastHoveredCellCoords) {
+                        gameBus.emit(GameEvents.Unhover);
+                    }
+
+                    this._lastHoveredCellCoords = {i, j};
+                    gameBus.emit(GameEvents.Draw, {i, j, status: CellStatus.Hovered});
                     break;
                 default:
                     break;
@@ -98,7 +111,26 @@ export class GameField {
             // поэтому по i, j можно найти id фигуры.
             const idx = j * this._fieldParams.dim + i;
             const cell = this._cells[idx];
+
+            if (!cell) return;
+
             cell.changeStatus(status);
+            this.renderScene();
+        });
+        return this;
+    }
+
+    setUnhoverHandler() {
+        gameBus.on(GameEvents.Unhover, () => {
+            if (!this._lastHoveredCellCoords) return;
+
+            const {i, j} = this._lastHoveredCellCoords;
+            const idx = j * this._fieldParams.dim + i;
+            const cell = this._cells[idx];
+
+            if (!cell) return;
+
+            cell.changeStatus();
             this.renderScene();
         });
         return this;
@@ -110,7 +142,6 @@ export class GameField {
      */
     setEnableSceneHandler() {
         gameBus.on(GameEvents.EnableScene, () => {
-            console.log('ENABLE HANDLER');
             this.changeEnabledStatus(true);
         });
         return this;
@@ -122,7 +153,6 @@ export class GameField {
      */
     setDisableSceneHandler() {
         gameBus.on(GameEvents.DisableScene, () => {
-            console.log('DISABLE SCENE');
             this.changeEnabledStatus(false);
         });
         return this;

@@ -1,9 +1,10 @@
-import {Loader} from "../components/loader/loader";
-import {Push, PushLevels} from "../components/push/push";
-import {API} from "../modules/api";
-import bus from "../modules/bus";
-import {HttpResponse} from "../modules/http";
-import {RouterEvents} from "../modules/router";
+import {Loader} from '../components/loader/loader';
+import {PushLevels} from '../components/message-container';
+import {Push} from '../components/push/push';
+import {API} from '../modules/api';
+import bus from '../modules/bus';
+import {HttpResponse} from '../modules/http';
+import {RouterEvents} from '../modules/router';
 
 export type UserResponse = Promise<User>;
 
