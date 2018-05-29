@@ -1,6 +1,6 @@
 import {Http, HttpResponse} from './http';
 
-const BACKEND_URI = 'https://dev-api-shipcollision.herokuapp.com';
+const BACKEND_URI = 'http://localhost:8080'; // 'https://dev-api-shipcollision.herokuapp.com';
 
 interface IRouteMappings {
     me: string;

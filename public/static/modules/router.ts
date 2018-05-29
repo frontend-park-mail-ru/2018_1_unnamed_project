@@ -1,5 +1,6 @@
 import {Loader} from '../components/loader/loader';
 import {Push} from '../components/push/push';
+import gameBus from '../game/game-bus';
 import {User} from '../models/user';
 import {Page, PageAccessTypes} from '../pages/page';
 import bus from './bus';
@@ -98,6 +99,8 @@ export class Router {
             return this;
         }
 
+        gameBus.clear();
+
         this._loader.show();
 
         User.checkCurrentUser()
@@ -137,7 +140,10 @@ export class Router {
      * Запуск роутера.
      */
     public start(): void {
-        window.addEventListener('popstate', () => this.navigateTo(window.location.pathname));
+        window.addEventListener('popstate', () => {
+            gameBus.clear();
+            this.navigateTo(window.location.pathname);
+        });
 
         this._root.addEventListener('click', (evt) => {
             if ((evt.target as any).tagName.toLowerCase() === 'a') {

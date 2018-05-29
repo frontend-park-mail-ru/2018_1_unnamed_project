@@ -69,6 +69,10 @@ export class OfflineCore extends Core {
             return {username: p.username, rank: p.score};
         }).sort((a, b) => a.rank - b.rank);
 
+        this.push
+            .clear()
+            .clearSharedMessages();
+
         const isWinner: boolean = !!this._player.shipsAliveCount;
         gameBus.emit(GameEvents.GameOver, {scoreboard, isWinner});
     }
@@ -416,8 +420,6 @@ export class OfflineCore extends Core {
                 clearTimeout(this._lastTimeout);
                 this._lastTimeout = null;
             }
-
-            setTimeout(() => this.push.clear(), 4000);
 
             this.emitGameOver();
         });

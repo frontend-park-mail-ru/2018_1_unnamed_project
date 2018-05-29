@@ -1,5 +1,9 @@
 section(class="menu singleplayer-page")
-    div.ocm
-    div.score__root
-    canvas#singleplayer-page__canvas(height=100 width=100 hidden)
-    a.singleplayer-page__start-game-button(href="#" hidden) >
+    include ../../components/menu-ref/menu-ref.pug
+    div.singleplayer-page__orientation
+        p Переверните устройство для большего удобства
+    div.singleplayer-page__container
+        div.ocm
+        div.score__root
+        canvas#singleplayer-page__canvas(height=100 width=100 hidden)
+        a.singleplayer-page__start-game-button(href="#" hidden) >

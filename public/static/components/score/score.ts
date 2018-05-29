@@ -57,8 +57,9 @@ export class Score extends Component {
     setDisposalMode() {
         if (!this._active) return;
 
-        this._mainContainer.setAttribute('hidden', 'hidden');
+        this._shipsLeft.setAttribute('hidden', 'hidden');
         this._timeLeft.setAttribute('hidden', 'hidden');
+        this._score.setAttribute('hidden', 'hidden');
         this._shipsToPlace.removeAttribute('hidden');
 
         return this;
@@ -68,8 +69,9 @@ export class Score extends Component {
         if (!this._active) return;
 
         this._shipsToPlace.setAttribute('hidden', 'hidden');
-        this._mainContainer.removeAttribute('hidden');
+        this._shipsLeft.removeAttribute('hidden');
         this._timeLeft.removeAttribute('hidden');
+        this._score.removeAttribute('hidden');
 
         return this;
     }

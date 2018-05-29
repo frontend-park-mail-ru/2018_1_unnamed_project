@@ -14,15 +14,13 @@ export abstract class GamePage extends Page {
         const currentWidth = deviceWidth();
         const currentHeight = deviceHeight();
 
-        const size = (currentWidth > currentHeight) ? currentWidth : currentWidth;
+        const size = (currentWidth > currentHeight) ? currentHeight : currentWidth;
 
         switch (true) {
-            case size > 1600:
-                return [size * 0.4, size * 0.4];
-            case size > 640:
-                return [size * 0.5, size * 0.5];
+            case size > 750:
+                return [size * 0.75, size * 0.75];
             default:
-                return [size * 0.99, size * 0.99];
+                return [size * 0.9, size * 0.9];
         }
     }
 
@@ -170,8 +168,8 @@ export abstract class GamePage extends Page {
         this.canvas.removeAttribute('hidden');
         this.opponentsCountMenu.hide();
         this.score
-            .show()
-            .setDisposalMode();
+            .setDisposalMode()
+            .show();
         this.setOpponentsCountSelectedHandler()
             .setDisableSceneHandler()
             .setGameStartedHandler()

@@ -1,5 +1,7 @@
 @import "../../css/constants";
 
+$font-size: 27px;
+
 .form {
     display: flex;
     flex-direction: column;
@@ -24,7 +26,7 @@
     border: 40px;
     background-color: #cccccc;
     height: 32pt;
-    font-size: 27px;
+    font-size: $font-size;
     text-align: center;
 
     &[type="submit"] {
@@ -47,7 +49,7 @@
     height: 100%;
     color: #fffff8;
     font-family: system-ui, serif;
-    font-size: 27px;
+    font-size: $font-size;
     text-align: center;
     background-color: transparent;
 }
@@ -78,4 +80,45 @@
 .form__space {
     border: transparent;
     width: 10px;
+}
+
+@media screen and (max-height: 400px) {
+    .form__input {
+        border: 20px;
+        height: 28pt;
+        font-size: $font-size - 3;
+    }
+
+    .form__control {
+        font-size: $font-size - 3;
+    }
+
+    .form__control--bordered {
+        font-size: $font-size - 3;
+    }
+
+    .form__link {
+        font-size: $font-size - 3;
+    }
+}
+
+@media screen and (max-width: 350px), (max-height: 350px) {
+    .form__input {
+        border: 20px;
+        height: 26pt;
+        font-size: $font-size - 5;
+    }
+
+    .form__control {
+        font-size: $font-size - 5;
+    }
+
+    .form__control--bordered {
+        font-size: $font-size - 5;
+    }
+
+    .form__link {
+        font-size: $font-size - 5;
+        margin-top: 5px;
+    }
 }

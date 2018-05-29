@@ -21,6 +21,8 @@ export class SettingsPage extends Page {
     constructor() {
         super(settingsPageTemplate);
 
+        this.profileBar.hide();
+
         this
             .setFormDataSubmittedHandler()
             .setCurrentUserChangedHandler();

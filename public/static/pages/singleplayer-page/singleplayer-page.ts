@@ -4,6 +4,7 @@ import {GameModes} from '../../game/game-modes';
 import {GamePage} from "../game-page";
 import {PageAccessTypes} from "../page";
 import singleplayerPageTemplate from './singleplayer-page.pug';
+
 import './singleplayer-page.scss';
 
 export class SingleplayerPage extends GamePage {

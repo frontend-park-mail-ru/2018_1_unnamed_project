@@ -20,7 +20,7 @@ export class ScoreboardPage extends Page {
         const currentHeight = deviceHeight();
 
         switch (true) {
-            case currentHeight < 400 || currentWidth < 500 && currentHeight < 820:
+            case currentHeight < 500 || currentWidth < 500 && currentHeight < 860:
                 return 5;
             default:
                 return 10;
