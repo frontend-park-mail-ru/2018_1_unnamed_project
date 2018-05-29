@@ -1,0 +1,59 @@
+.opponents-count-menu__button {
+    margin-bottom: 5px;
+}
+
+@media screen and (orientation: portrait) and (min-width: 0px), (orientation: landscape) and (min-height: 0px) {
+    .opponents-1 {
+        opacity: 0;
+    }
+
+    .opponents-2 {
+        opacity: 0;
+    }
+
+    .opponents-3 {
+        opacity: 0;
+    }
+}
+
+@media screen and (orientation: portrait) and (min-width: 200px), (orientation: landscape) and (min-height: 200px) {
+    .opponents-1 {
+        opacity: 1;
+    }
+
+    .opponents-2 {
+        opacity: 0;
+    }
+
+    .opponents-3 {
+        opacity: 0;
+    }
+}
+
+@media screen and (orientation: portrait) and (min-width: 640px), (orientation: landscape) and (min-height: 640px) {
+    .opponents-1 {
+        opacity: 1;
+    }
+
+    .opponents-2 {
+        opacity: 1;
+    }
+
+    .opponents-3 {
+        opacity: 0;
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    .opponents-1 {
+        opacity: 1;
+    }
+
+    .opponents-2 {
+        opacity: 1;
+    }
+
+    .opponents-3 {
+        opacity: 1;
+    }
+}

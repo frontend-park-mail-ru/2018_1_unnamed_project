@@ -1,6 +1,8 @@
-import {Http, HttpResponse} from "./http";
+import {Http, HttpResponse} from './http';
 
-const BACKEND_URI = 'https://dev-api-shipcollision.herokuapp.com';
+const LOCALHOST = 'http://localhost:8080';
+const HEROKU = 'https://dev-api-shipcollision.herokuapp.com';
+const BACKEND_URI = HEROKU;
 
 interface IRouteMappings {
     me: string;
@@ -21,12 +23,12 @@ export class API {
     constructor() {
         this._http = Http;
         this._routeMappings = {
-            me:         `${BACKEND_URI}/me`,
-            signIn:     `${BACKEND_URI}/signin`,
-            signUp:     `${BACKEND_URI}/users`,
-            logout:     `${BACKEND_URI}/signout`,
+            me: `${BACKEND_URI}/me`,
+            signIn: `${BACKEND_URI}/signin`,
+            signUp: `${BACKEND_URI}/users`,
+            logout: `${BACKEND_URI}/signout`,
             scoreboard: `${BACKEND_URI}/users/scoreboard`,
-            avatar:     `${BACKEND_URI}/me/avatar`,
+            avatar: `${BACKEND_URI}/me/avatar`,
         };
     }
 
@@ -105,7 +107,7 @@ export class API {
          * браузер сам коректно выставил boundaries для multipart/form-messages.
          */
         return this._http.doPost({
-            uri:         this._routeMappings.avatar,
+            uri: this._routeMappings.avatar,
             contentType: null,
             data,
         });

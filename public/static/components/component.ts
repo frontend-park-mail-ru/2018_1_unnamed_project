@@ -1,4 +1,4 @@
-export class Component {
+export abstract class Component {
     protected attrs;
     protected element;
     protected templateFunction;
@@ -8,7 +8,7 @@ export class Component {
      * @param {function} templateFunction Функция отрисовки pug.
      * @param {Object}   attrs            Параметры отрисовки.
      */
-    constructor({element, templateFunction, attrs = {}}) {
+    protected constructor({element, templateFunction, attrs = {}}) {
         this.element = element;
         this.templateFunction = templateFunction;
         this.attrs = attrs;
@@ -31,6 +31,24 @@ export class Component {
 
         const renderAttrs = attrs || this.attrs;
         this.element.innerHTML = this.templateFunction(renderAttrs);
+        return this;
+    }
+
+    /**
+     * Скрывает компонент.
+     * @return {Component}
+     */
+    hide() {
+        this.element.setAttribute('hidden', 'hidden');
+        return this;
+    }
+
+    /**
+     * Показывает компонент
+     * @return {Component}
+     */
+    show() {
+        this.element.removeAttribute('hidden');
         return this;
     }
 }

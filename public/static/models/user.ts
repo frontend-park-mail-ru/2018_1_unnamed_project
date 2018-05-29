@@ -1,8 +1,10 @@
-import {Push, PushLevels} from "../components/push/push";
-import {API} from "../modules/api";
-import bus from "../modules/bus";
-import {HttpResponse} from "../modules/http";
-import {RouterEvents} from "../modules/router";
+import {Loader} from '../components/loader/loader';
+import {PushLevels} from '../components/message-container';
+import {Push} from '../components/push/push';
+import {API} from '../modules/api';
+import bus from '../modules/bus';
+import {HttpResponse} from '../modules/http';
+import {RouterEvents} from '../modules/router';
 
 export type UserResponse = Promise<User>;
 
@@ -52,7 +54,7 @@ export class User {
     public static get currentUser(): User {
         return currentUser;
     }
-    
+
     /**
      * Проверяет авторизацию пользователя.
      * @return {Promise<Object>}
@@ -71,7 +73,7 @@ export class User {
                 throw new Error();
             });
     }
-    
+
     /**
      * Авторизует пользователя.
      * @param {*} credentials
@@ -82,7 +84,7 @@ export class User {
             .then((response: HttpResponse) => {
                 currentUser = new User(response);
                 renderHello(currentUser.username);
-                
+
                 bus.emit(UserEvents.CurrentUserChanged, currentUser);
                 bus.emit(UserEvents.AuthenticationDone, currentUser);
                 bus.emit(RouterEvents.NavigateToNextPageOrRoot, null);
@@ -93,7 +95,7 @@ export class User {
                 bus.emit(UserEvents.CurrentUserChanged, currentUser);
             });
     }
-    
+
     /**
      * Создает пользователя.
      * @param {*} credentials
@@ -104,7 +106,7 @@ export class User {
             .then((response: HttpResponse) => {
                 currentUser = new User(response);
                 renderHello(currentUser.username);
-                
+
                 bus.emit(UserEvents.CurrentUserChanged, currentUser);
                 bus.emit(UserEvents.AuthenticationDone, currentUser);
                 bus.emit(RouterEvents.NavigateToNextPageOrRoot, null);
@@ -115,82 +117,103 @@ export class User {
                 bus.emit(UserEvents.CurrentUserChanged, currentUser);
             });
     }
-    
+
     /**
      * Обновляет данные пользователя.
      * @param {*} data
      */
     public static update(data: any) {
+        const loader = new Loader();
+        loader.show();
+
         api
             .updateProfile(data)
             .then((response) => {
+                loader.hide();
+
                 const push = new Push();
                 push.addMessage('Настройки обновлены');
                 push.render({level: PushLevels.Info});
-                
+
                 currentUser = new User(response);
                 bus.emit(UserEvents.CurrentUserChanged, currentUser);
             })
             .catch((errors) => {
+                loader.hide();
                 renderErrors(errors);
             });
     }
-    
+
     /**
      * Изменяет аватар пользователя.
      * @param {*} form
      */
     public static changeAvatar(form: any) {
+        const loader = new Loader();
+        loader.show();
+
         api
             .uploadAvatar(form)
             .then((response) => {
+                loader.hide();
+
                 const push = new Push();
                 push.addMessage('Аватар обновлен');
                 push.render({level: PushLevels.Info});
-                
+
                 currentUser = new User(response);
                 bus.emit(UserEvents.CurrentUserChanged, currentUser);
             })
             .catch((errors) => {
+                loader.hide();
                 renderErrors(errors);
             });
     }
-    
+
     /**
      * Удаляет аватар пользователя.
      */
     public static deleteAvatar() {
+        const loader = new Loader();
+        loader.show();
+
         api
             .deleteAvatar()
             .then((response) => {
+                loader.hide();
+
                 const push = new Push();
                 push.addMessage('Аватар пользователя удален');
                 push.render({level: PushLevels.Error});
-                
+
                 currentUser = new User(response);
                 bus.emit(UserEvents.CurrentUserChanged, currentUser);
             })
             .catch((errors) => {
+                loader.hide();
                 console.log(errors);
             });
     }
-    
+
     /**
      * Осуществляет выход пользователя.
      */
     public static logout() {
+        const logoutCallback = () => {
+            currentUser = null;
+            bus.emit(UserEvents.CurrentUserChanged, currentUser);
+            bus.emit(RouterEvents.NavigateToPage, '/');
+        };
+
         api
             .logout()
-            .then(() => {
-                currentUser = null;
-                bus.emit(UserEvents.CurrentUserChanged, currentUser);
-                bus.emit(RouterEvents.NavigateToPage, '/');
-            })
+            .then(logoutCallback)
             .catch((errors) => {
+                logoutCallback();
                 console.log(errors);
             });
     }
-    
+
     public username: string;
     public email: string;
     public rank: number;

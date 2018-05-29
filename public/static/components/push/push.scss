@@ -1,0 +1,39 @@
+.msg {
+    margin: auto;
+    padding: 12px;
+    font-size: 20px;
+
+    &--info {
+        color: #00529B;
+        background-color: #BDE5F8;
+    }
+
+    &--success {
+        color: #4F8A10;
+        background-color: #DFF2BF;
+    }
+
+    &--warning {
+        color: #9F6000;
+        background-color: #FEEFB3;
+    }
+
+    &--error {
+        color: #D8000C;
+        background-color: #FFD2D2;
+    }
+}
+
+@media screen and (max-height: 420px) {
+    .msg {
+        padding: 8px;
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 350px), (max-height: 350px) {
+    .msg {
+        padding: 6px;
+        font-size: 14px;
+    }
+}

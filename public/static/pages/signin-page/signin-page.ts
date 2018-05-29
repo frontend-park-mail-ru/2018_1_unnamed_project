@@ -1,12 +1,10 @@
-import {Form, FormEvents} from "../../components/form/form";
-import {PushLevels} from "../../components/push/push";
-import {User} from "../../models/user";
-import bus from "../../modules/bus";
-import {ValidatorFactory} from "../../modules/validator-factory";
-import {Page, PageAccessTypes} from "../page";
-import signinPageTemplate from "./signin-page.pug";
-
-import "./signin-page.css";
+import {Form, FormEvents} from '../../components/form/form';
+import {PushLevels} from '../../components/message-container';
+import {User} from '../../models/user';
+import bus from '../../modules/bus';
+import {ValidatorFactory} from '../../modules/validator-factory';
+import {Page, PageAccessTypes} from '../page';
+import signinPageTemplate from './signin-page.pug';
 
 export class SigninPage extends Page {
     private _formRoot;
@@ -29,27 +27,27 @@ export class SigninPage extends Page {
      */
     static get defaultAttrs() {
         return {
-            fields:         [
+            fields: [
                 {
-                    type:        'email',
-                    name:        'email',
+                    type: 'email',
+                    name: 'email',
                     placeholder: 'Email',
-                    validator:   ValidatorFactory.buildEmailValidator(),
+                    validator: ValidatorFactory.buildEmailValidator(),
                 },
                 {
-                    type:        'password',
-                    name:        'password',
+                    type: 'password',
+                    name: 'password',
                     placeholder: 'Пароль',
-                    validator:   ValidatorFactory.buildPasswordValidator(),
+                    validator: ValidatorFactory.buildPasswordValidator(),
                 },
             ],
             formFooterLink: {
                 question: 'Нет аккаунта?',
                 title: 'Зарегистрируйтесь!',
-                href:  '/signup',
+                href: '/signup',
             },
-            resetText:      'Очистить',
-            submitText:     'Вход',
+            resetText: 'Очистить',
+            submitText: 'Вход',
         };
     }
 
@@ -90,6 +88,8 @@ export class SigninPage extends Page {
         this._form = new Form({element: this._formRoot, attrs: this.attrs});
 
         this.push.renderShared({level: PushLevels.Error});
+
+        this.profileBar.hide();
 
         return this;
     }

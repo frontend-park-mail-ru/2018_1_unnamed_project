@@ -1,12 +1,10 @@
-import {Form, FormEvents} from "../../components/form/form";
-import {PushLevels} from "../../components/push/push";
-import {User} from "../../models/user";
-import bus from "../../modules/bus";
-import {ValidatorFactory} from "../../modules/validator-factory";
-import {Page, PageAccessTypes} from "../page";
-import signupPageTemplate from "./signup-page.pug";
-
-import "./signup-page.css";
+import {Form, FormEvents} from '../../components/form/form';
+import {PushLevels} from '../../components/message-container';
+import {User} from '../../models/user';
+import bus from '../../modules/bus';
+import {ValidatorFactory} from '../../modules/validator-factory';
+import {Page, PageAccessTypes} from '../page';
+import signupPageTemplate from './signup-page.pug';
 
 export class SignupPage extends Page {
     private _formRoot;
@@ -28,39 +26,39 @@ export class SignupPage extends Page {
      */
     static get defaultAttrs() {
         return {
-            fields:         [
+            fields: [
                 {
-                    type:        'text',
-                    name:        'username',
-                    placeholder: 'Username',
-                    validator:   ValidatorFactory.buildUsernameValidator(),
+                    type: 'text',
+                    name: 'username',
+                    placeholder: 'Имя пользователя',
+                    validator: ValidatorFactory.buildUsernameValidator(),
                 },
                 {
-                    type:        'email',
-                    name:        'email',
+                    type: 'email',
+                    name: 'email',
                     placeholder: 'Email',
-                    validator:   ValidatorFactory.buildEmailValidator(),
+                    validator: ValidatorFactory.buildEmailValidator(),
                 },
                 {
-                    type:        'password',
-                    name:        'password',
+                    type: 'password',
+                    name: 'password',
                     placeholder: 'Пароль',
-                    validator:   ValidatorFactory.buildPasswordValidator(),
+                    validator: ValidatorFactory.buildPasswordValidator(),
                 },
                 {
-                    type:        'password',
-                    name:        'password-confirmation',
+                    type: 'password',
+                    name: 'password-confirmation',
                     placeholder: 'Подтверждение пароля',
-                    validator:   ValidatorFactory.buildPasswordConfirmationValidator(),
+                    validator: ValidatorFactory.buildPasswordConfirmationValidator(),
                 },
             ],
             formFooterLink: {
                 question: 'Уже есть аккаунт?',
                 title: 'Войдите!',
-                href:  '/signin',
+                href: '/signin',
             },
-            resetText:      'Очистить',
-            submitText:     'Регистрация',
+            resetText: 'Очистить',
+            submitText: 'Регистрация',
         };
     }
 
@@ -105,6 +103,8 @@ export class SignupPage extends Page {
 
         this._formRoot = this.element.querySelector('.js-signup-form-root');
         this._form = new Form({element: this._formRoot, attrs: this.attrs});
+
+        this.profileBar.hide();
 
         return this;
     }

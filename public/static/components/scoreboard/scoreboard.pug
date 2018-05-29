@@ -2,11 +2,11 @@ if users
     table.scoreboard__table
         tbody
             each user in users
-                tr.scoreboard__row
-                    td= user.email
-                    td= user.username
-                    td= user.rank
+                tr.scoreboard__table-row
+                    td.scoreboard__table-col= user.email
+                    td.scoreboard__table-col= user.username
+                    td.scoreboard__table-col= user.rank
 
-    div.pagination
-        a#prev(href="#") <
-        a#next(href="#") >
+    div
+        a.scoreboard__pagination-link#prev(href="#") <
+        a.scoreboard__pagination-link#next(href="#") >

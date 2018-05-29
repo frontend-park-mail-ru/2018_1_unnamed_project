@@ -1,18 +1,18 @@
 const validators = {
-    username:             {
-        regex:       /^([a-zA-Z0-9]{3,})+$/,
+    username: {
+        regex: /^([a-zA-Z0-9]{3,})+$/,
         description: 'минимальная длина - 3 символа, разрешены латинские символы и цифры',
     },
-    password:             {
-        regex:       /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+    password: {
+        regex: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
         description: 'минимальная длина - 6, только латинские символы и как минимум 1 цифра',
     },
     passwordConfirmation: {
-        regex:       /.+/,
+        regex: /.+/,
         description: 'минимальная длина - 6, только латинские символы и как минимум 1 цифра',
     },
-    email:                {
-        regex:       /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/,
+    email: {
+        regex: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/,
         description: 'некорректная форма email',
     },
 };
@@ -22,9 +22,9 @@ const validators = {
  * @note Допускает только строгое соответствие.
  */
 class Validator {
-    private _description: string;
+    private readonly _description: string;
     private _lastError: string = null;
-    private _regex: RegExp;
+    private readonly _regex: RegExp;
 
     /**
      * @param {RegExp} regex       Регулярное выражение для валидации.

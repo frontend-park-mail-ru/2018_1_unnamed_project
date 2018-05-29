@@ -1,0 +1,43 @@
+.settings__sc-form {
+    margin: 0 0 45px 0;
+}
+
+.settings-page__img-with-text--center {
+    text-align: center;
+}
+
+.settings-page__upload-button {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    cursor: pointer;
+
+    input[type=file] {
+        font-size: 100px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        cursor: pointer;
+    }
+}
+
+%btn {
+    background-color: transparent;
+    border: transparent;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.settings-page__btn {
+    &--delete {
+        @extend %btn;
+        color: #ff6262;
+    }
+    
+    &--update {
+        @extend %btn;
+        color: #62ff7c;
+    }
+}

@@ -1,4 +1,4 @@
-import {Figure} from "./figure";
+import {Figure} from './figure';
 
 export class Scene {
     protected ctx;
@@ -54,7 +54,7 @@ export class Scene {
         this._id = 0;
         return this;
     }
-    
+
     /**
      * Возвращает новый id для фигуры.
      * @private

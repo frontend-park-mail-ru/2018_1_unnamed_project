@@ -1,8 +1,8 @@
-import bus from "../../modules/bus";
-import {Component} from "../component";
-import formTemplate from "./form.pug";
+import bus from '../../modules/bus';
+import {Component} from '../component';
+import formTemplate from './form.pug';
 
-import "./form.css";
+import './form.scss';
 
 export enum FormEvents {
     FormDataSubmitted = 'form_data_submitted',

@@ -1,3 +1,4 @@
+import {ProfileBar} from "../components/profile-bar/profile-bar";
 import {Push} from "../components/push/push";
 
 export enum PageAccessTypes {
@@ -6,19 +7,21 @@ export enum PageAccessTypes {
     NotLoggedInUser = 'not_logged_in_user',
 }
 
-export class Page {
+export abstract class Page {
     protected attrs: object;
     protected element: Element;
     protected templateFunction: (locals) => any;
+    protected profileBar: ProfileBar;
     protected push: Push;
     private _active: boolean;
 
     /**
      * @param {function} templateFunction Функция отрисовки pug.
      */
-    constructor(templateFunction?: (locals) => any) {
+    protected constructor(templateFunction?: (locals) => any) {
         this.templateFunction = templateFunction;
         this.attrs = {};
+        this.profileBar = new ProfileBar();
         this.push = new Push();
 
         this._active = false;
@@ -107,7 +110,5 @@ export class Page {
      * @abstract
      * @return {string}
      */
-    public accessType(): PageAccessTypes {
-        throw new Error('This method must be overridden');
-    }
+    public abstract accessType();
 }

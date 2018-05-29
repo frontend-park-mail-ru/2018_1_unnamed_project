@@ -1,8 +1,9 @@
-import {Push} from "../components/push/push";
-import gameBus from "../game/game-bus";
-import {User} from "../models/user";
-import {Page, PageAccessTypes} from "../pages/page";
-import bus from "./bus";
+import {Loader} from '../components/loader/loader';
+import {Push} from '../components/push/push';
+import gameBus from '../game/game-bus';
+import {User} from '../models/user';
+import {Page, PageAccessTypes} from '../pages/page';
+import bus from './bus';
 
 export enum RouterEvents {
     NavigateToPage = 'navigate_to',
@@ -12,11 +13,12 @@ export enum RouterEvents {
 
 export class Router {
     private static _Instance: Router;
-    
+
     private _activePage: Page;
+    private _loader: Loader;
     private _nextRoute: string;
     private _push: Push;
-    private _root: Element;
+    private readonly _root: Element;
     private _routes: Map<string, Page>;
 
     /**
@@ -31,7 +33,7 @@ export class Router {
         this._root = root;
         this._routes = new Map<string, Page>();
         this._activePage = null;
-
+        this._loader = new Loader();
         this._nextRoute = null;
 
         this._push = new Push();
@@ -52,7 +54,7 @@ export class Router {
      * @param {Page} PageClass
      * @return {Router}
      */
-    public addRoute(route: string, PageClass: typeof Page): Router {
+    public addRoute(route: string, PageClass): Router {
         this._routes.set(route, new PageClass().renderTo(this._root));
         return this;
     }
@@ -80,6 +82,8 @@ export class Router {
             window.history.pushState(null, null, route);
         }
 
+        this._loader.hide();
+
         return this;
     }
 
@@ -94,6 +98,10 @@ export class Router {
             bus.emit(RouterEvents.Navigated, null);
             return this;
         }
+
+        gameBus.clear();
+
+        this._loader.show();
 
         User.checkCurrentUser()
             .then(() => {
@@ -132,7 +140,10 @@ export class Router {
      * Запуск роутера.
      */
     public start(): void {
-        window.addEventListener('popstate', () => this.navigateTo(window.location.pathname));
+        window.addEventListener('popstate', () => {
+            gameBus.clear();
+            this.navigateTo(window.location.pathname);
+        });
 
         this._root.addEventListener('click', (evt) => {
             if ((evt.target as any).tagName.toLowerCase() === 'a') {

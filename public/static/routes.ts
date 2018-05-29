@@ -1,8 +1,8 @@
 export enum ApplicationRoutes {
-    Menu= '/',
+    Menu = '/',
     Multiplayer = '/multiplayer',
     Profile = '/profile',
-    Settings = '/profile/settings',
+    Settings = '/settings',
     Rules = '/rules',
     Scoreboard = '/scoreboard',
     Signin = '/signin',

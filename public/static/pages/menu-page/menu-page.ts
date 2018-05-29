@@ -1,7 +1,7 @@
-import {Page, PageAccessTypes} from "../page";
-import menuPageTemplate from "./menu-page.pug";
+import {Page, PageAccessTypes} from '../page';
+import menuPageTemplate from './menu-page.pug';
 
-import "./menu-page.css";
+import './menu-page.scss';
 
 export class MenuPage extends Page {
     /**
@@ -22,22 +22,33 @@ export class MenuPage extends Page {
             navItems: [
                 {
                     title: 'Мультиплеер',
-                    href:  '/multiplayer',
+                    href: '/multiplayer',
                 },
                 {
                     title: 'Одиночная игра',
-                    href:  '/singleplayer',
+                    href: '/singleplayer',
                 },
                 {
                     title: 'Таблица лидеров',
-                    href:  '/scoreboard',
+                    href: '/scoreboard',
                 },
-                {
-                    title: 'Правила',
-                    href:  '/rules',
-                },
+                // {
+                //     title: 'Как играть',
+                //     href: '/rules',
+                // },
             ],
         };
+    }
+
+    /**
+     * @override
+     * @param {object} attrs
+     * @returns {Page}
+     */
+    render(attrs: object): MenuPage {
+        super.render(attrs);
+        this.profileBar.show();
+        return this;
     }
 
     /**

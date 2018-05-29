@@ -1,7 +1,8 @@
-import {Push, PushLevels} from "../../components/push/push";
-import {GameEvents} from "../events";
-import gameBus from "../game-bus";
-import {CellStatus} from "./cell/status";
+import {PushLevels} from "../../components/message-container";
+import {Push} from '../../components/push/push';
+import {GameEvents} from '../events';
+import gameBus from '../game-bus';
+import {CellStatus} from './cell/status';
 
 export class SetupValidator {
     /**
@@ -20,9 +21,10 @@ export class SetupValidator {
                 return 10;
         }
     }
-    
+
     private _battlefield;
     private _push;
+    private _setupStarted;
     private _setupFinished;
     private _shipsLimit;
 
@@ -31,6 +33,7 @@ export class SetupValidator {
      */
     constructor() {
         this._push = new Push();
+        this._setupStarted = false;
         this._setupFinished = false;
 
         gameBus.on(GameEvents.CreateBattlefield, (fieldSize) => this.prepareField(fieldSize));
@@ -48,22 +51,21 @@ export class SetupValidator {
 
         return this._battlefield;
     }
-    
+
     /**
      *
      */
     private renderShipCount() {
         this._push.clearMessages();
-        
+
         if (this._shipsLimit) {
-            this._push.addMessage(`Доступно кораблей для расстановки: ${this._shipsLimit}`);
-            this._push.render({level: PushLevels.Info});
+            this.notifyShipsLimit();
         } else {
             this._setupFinished = true;
-            
+
             this._push.addMessage('Корабли расставлены! Нажмите > , чтобы начать игру');
             this._push.render({level: PushLevels.Warning});
-            
+
             gameBus.emit(GameEvents.DisableScene);
         }
     }
@@ -73,11 +75,16 @@ export class SetupValidator {
      * @param {*} fieldSize
      */
     private prepareField(fieldSize) {
+        if (this._setupStarted || this._setupFinished) {
+            return;
+        }
+
         this._shipsLimit = SetupValidator.computeShipsLimit(fieldSize);
 
         this._push.addMessage('Расставьте корабли на поле. ЛКМ - поставить, ПКМ - убрать.');
-        this._push.addMessage(`Доступно кораблей для расстановки: ${this._shipsLimit}`);
         this._push.render({level: PushLevels.Info});
+
+        this.notifyShipsLimit();
 
         this._battlefield = Array.from(Array(fieldSize), () => (new Array(fieldSize)).fill(CellStatus.Empty));
     }
@@ -90,6 +97,8 @@ export class SetupValidator {
     private fillCell(i, j) {
         if (this._setupFinished) return;
 
+        this._setupStarted = true;
+
         switch (this._battlefield[i][j]) {
             case CellStatus.Empty:
                 if (this._shipsLimit === 0) {
@@ -99,7 +108,8 @@ export class SetupValidator {
                 this._battlefield[i][j] = CellStatus.Busy;
                 this._shipsLimit--;
                 gameBus.emit(GameEvents.Draw, {i, j, status: CellStatus.Busy});
-                this.renderShipCount();
+                this.notifyShipsLimit()
+                    .renderShipCount();
                 return;
             case CellStatus.Busy:
                 this._push.addMessage('Ячейка уже занята!');
@@ -121,6 +131,8 @@ export class SetupValidator {
     private freeCell(i, j) {
         if (this._setupFinished) return;
 
+        this._setupStarted = true;
+
         switch (this._battlefield[i][j]) {
             case CellStatus.Empty:
                 this._push.addMessage('Ячейка уже свободна!');
@@ -129,7 +141,8 @@ export class SetupValidator {
                 this._battlefield[i][j] = CellStatus.Empty;
                 this._shipsLimit++;
                 gameBus.emit(GameEvents.Draw, {i, j, status: CellStatus.Empty});
-                this.renderShipCount();
+                this.notifyShipsLimit()
+                    .renderShipCount();
                 return;
             case CellStatus.Destroyed:
                 this._push.addMessage('Ячейка уничтожена! (как ты вообще умудрился?)');
@@ -138,5 +151,10 @@ export class SetupValidator {
                 break;
         }
         this._push.render({level: PushLevels.Error});
+    }
+
+    private notifyShipsLimit() {
+        gameBus.emit(GameEvents.SetShipsToPlace, this._shipsLimit);
+        return this;
     }
 }

@@ -1,0 +1,21 @@
+.score {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.score__main-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin: auto;
+}
+
+.score__text {
+    margin: 5px;
+    align-self: center;
+    flex-grow: 1;
+}

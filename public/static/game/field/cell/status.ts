@@ -9,4 +9,6 @@ export enum CellStatus {
     DestroyedOther = 3,
     // Игрок промахнулся.
     Missed = 4,
+    // Ховер игрока на поле.
+    Hovered = 5,
 }

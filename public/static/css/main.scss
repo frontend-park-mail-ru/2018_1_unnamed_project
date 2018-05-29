@@ -1,0 +1,142 @@
+@import "colors";
+@import "constants";
+@import "system-font.scss";
+
+html {
+    min-width: 100%;
+    min-height: 100%;
+
+    margin: 0;
+
+    text-align: center;
+    font-family: Comfortaa-Light, serif;
+    background: $background-color;
+    background-size: cover;
+}
+
+html,
+body {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: $primary-content-color;
+}
+
+body {
+    margin: 0;
+    min-height: 100%;
+    min-width: 100%;
+}
+
+a {
+    color: $primary-content-color;
+}
+
+ul {
+    padding: 0;
+    list-style-type: none;
+    display: block;
+    margin: 0 auto;
+}
+
+.header {
+    line-height: 92%;
+    font-family: Righteous-Regular, serif;
+}
+
+@media screen and (min-width: 200px){
+    .header {
+        font-size: 55px;
+    }
+}
+
+@media screen and (min-width: 370px){
+    .header {
+        font-size: 65px;
+    }
+}
+
+@media screen and (min-width: 700px){
+    .header {
+        font-size: 75px;
+    }
+}
+
+@media screen and (min-width: 1200px){
+    .header {
+        font-size: 80px;
+    }
+}
+
+@media screen and (max-height: 350px){
+    .header {
+        font-size: 50px;
+    }
+}
+
+a {
+    text-decoration: none;
+    min-width: $touch-control-min-width;
+    min-height: $touch-control-min-height;
+}
+
+.menu {
+    margin: auto;
+    font-size: 26px;
+    text-decoration: none;
+}
+
+.menu-item {
+    margin-bottom: 3px;
+}
+
+[data-section] {
+    color: $link-color;
+}
+
+li:hover {
+    text-decoration-color: $primary-color;
+    color: $primary-color;
+}
+
+a:hover {
+    text-decoration-color: $primary-color;
+    color: $primary-color;
+}
+
+.back {
+    margin: auto;
+    padding: 10px;
+    color: #99c2ff7c;
+    font-size: 30px;
+}
+
+@media screen and (max-height: 380px), (max-width: 380px) {
+    .back {
+        font-size: 24px;
+    }
+}
+
+.uxui td {
+    outline: thin solid;
+    padding: 19px;
+}
+
+[data-section='uxui']:not(:hover) {
+    opacity: 0;
+}
+
+#application {
+    margin-left: 15px;
+    margin-right: 15px;
+    align-items: center;
+}
+
+@media screen and (max-width: 430px) {
+    #application {
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+}

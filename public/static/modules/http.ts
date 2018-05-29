@@ -83,13 +83,13 @@ export class Http {
      * @return {Promise<Response>}
      */
     private static doRequest({method = 'GET', uri = '/', contentType = 'application/json', data = null} = {}):
-    HttpResponse  {
+        HttpResponse {
         const options: RequestInit = {
             method,
-            headers:     {
+            headers: {
                 'Access-Control-Request-Method': method,
             },
-            mode:        'cors',
+            mode: 'cors',
             credentials: 'include',
         };
 
@@ -109,7 +109,7 @@ export class Http {
             default:
                 break;
         }
-        
+
         return fetch(uri, options)
             .then((response: Response) => {
                 return response.json();

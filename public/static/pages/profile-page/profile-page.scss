@@ -1,0 +1,51 @@
+.profile-page__container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    flex-wrap: wrap;
+}
+
+.profile-page__img-with-text {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-content: center;
+    align-self: center;
+    text-align: center;
+
+    img {
+        margin: auto;
+    }
+}
+
+.profile-page__avatar {
+    flex-grow: 1;
+
+    object-fit: cover;
+    width: 117px;
+    height: 117px;
+    border: 2px solid #fffff8;
+    border-radius: 100%;
+}
+
+.profile-page__link {
+    margin-top: 10px;
+}
+
+.profile-page__info {
+    margin: 15px;
+
+    align-items: center;
+    flex-grow: 1;
+
+    i {
+        color: rgba(255, 255, 255, 0.685);
+    }
+
+    h4 {
+        font-size: 17px;
+    }
+}

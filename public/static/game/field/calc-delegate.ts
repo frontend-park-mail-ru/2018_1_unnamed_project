@@ -1,4 +1,4 @@
-import {PlayersCount} from "../players-count";
+import {PlayersCount} from '../players-count';
 
 export class CalcDelegate {
     public fieldDim;
@@ -10,9 +10,9 @@ export class CalcDelegate {
     constructor(playersCount: number = 2) {
         this.playersCount = playersCount;
         this.fieldDim = {
-            TWO_PLAYERS:   10,
+            TWO_PLAYERS: 10,
             THREE_PLAYERS: 15,
-            FOUR_PLAYERS:  20,
+            FOUR_PLAYERS: 20,
         };
     }
 
@@ -38,7 +38,7 @@ export class CalcDelegate {
         }
 
         return {
-            dim:  fieldDim,
+            dim: fieldDim,
             size: fieldDim * fieldDim,
         };
     }
