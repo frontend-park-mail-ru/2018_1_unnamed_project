@@ -4,7 +4,7 @@
   "description": "Multi-player version of sea battle",
   "main": "index.js",
   "scripts": {
-    "build": "webpack && npm run sw",
+    "build": "webpack && npm run sw && cp public/favicon.ico dist/",
     "build:dev": "webpack-dev-server --port 5000",
     "start": "npm run build && npm run start:raw",
     "start:raw": "DEBUG=* node server/server.js",
