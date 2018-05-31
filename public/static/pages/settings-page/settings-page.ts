@@ -1,4 +1,4 @@
-import {Form, FormEvents} from '../../components/form/form';
+import {Form} from '../../components/form/form';
 import {PushLevels} from '../../components/message-container';
 import {User, UserEvents} from '../../models/user';
 import bus from '../../modules/bus';
@@ -23,17 +23,15 @@ export class SettingsPage extends Page {
 
         this.profileBar.hide();
 
-        this
-            .setFormDataSubmittedHandler()
-            .setCurrentUserChangedHandler();
+        this.setCurrentUserChangedHandler();
     }
 
     /**
      * @private
      * @return {SettingsPage}
      */
-    setFormDataSubmittedHandler() {
-        bus.on(FormEvents.FormDataSubmitted, ({data, errors}) => {
+    getFormDataSubmittedHandler() {
+        return ({data, errors}) => {
             if (!this.active) return;
 
             this.push.clear();
@@ -63,9 +61,7 @@ export class SettingsPage extends Page {
                 this.push.render({level: PushLevels.Warning});
                 return;
             }
-        });
-
-        return this;
+        };
     }
 
     /**
@@ -116,7 +112,11 @@ export class SettingsPage extends Page {
         super.render(renderAttrs);
 
         this._formRoot = this.element.querySelector('.js-settings-form-root');
-        this._form = new Form({element: this._formRoot, attrs: this.attrs});
+        this._form = new Form({
+            element: this._formRoot,
+            callback: this.getFormDataSubmittedHandler(),
+            attrs: this.attrs,
+        });
 
         this.setAvatarHandlers();
 

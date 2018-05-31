@@ -15,6 +15,7 @@ export class SingleplayerPage extends GamePage {
         super({
             pageTemplate: singleplayerPageTemplate,
             canvasSelector: '#singleplayer-page__canvas',
+            startButtonSelector: '.singleplayer-page__start-game-button',
             gameMode: GameModes.Offline,
             onSelectedEvent: GameEvents.OfflineOpponentsCountSelected,
         });

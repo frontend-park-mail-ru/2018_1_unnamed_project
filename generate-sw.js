@@ -21,6 +21,7 @@ recursive('dist')
             '/signin',
             '/signup',
             '/singleplayer',
+            '/favicon.ico',
         ];
         const swCode = `'use strict';
 const CACHE_NAME = 'ship-collision-cache-v2';

@@ -1,4 +1,3 @@
-import bus from '../../modules/bus';
 import {Component} from '../component';
 import formTemplate from './form.pug';
 
@@ -9,15 +8,17 @@ export enum FormEvents {
 }
 
 export class Form extends Component {
+    private readonly _callback;
     private _form;
 
     /**
      * @param {Object} element Элемент, в котором рендерить.
      * @param {Object} attrs   Параметры отрисовки.
      */
-    constructor({element, attrs = {}}) {
+    constructor({element, callback, attrs = {}}) {
         super({element, templateFunction: formTemplate, attrs});
 
+        this._callback = callback;
         this._form = null;
         this.init();
     }
@@ -29,6 +30,8 @@ export class Form extends Component {
         this._form = this.element.querySelector('.js-form');
 
         this._form.addEventListener('submit', (evt) => {
+            console.log('1');
+
             evt.preventDefault();
 
             const data = {};
@@ -45,7 +48,7 @@ export class Form extends Component {
                 }
             });
 
-            bus.emit(FormEvents.FormDataSubmitted, {data, errors});
+            this._callback({data, errors});
         });
     }
 }

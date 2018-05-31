@@ -291,13 +291,13 @@ export class OfflineCore extends Core {
             player.score -= 2;
 
             if (moveResult.isUserMove) {
-                message = 'Вы попали только по себе. Дизлайк, отписка :(';
+                message = 'Вы попали только по себе :(';
                 level = PushLevels.Error;
                 status = CellStatus.Destroyed;
 
                 gameBus.emit(GameEvents.SetScore, this._player.score);
             } else {
-                message = `Игрок ${player.username} попал только по себе`;
+                message = `${player.username} попал только по себе`;
                 level = PushLevels.Warning;
             }
         } else if (moveResult.isDestroyedSelf && moveResult.destroyedShipsCount) {
@@ -313,7 +313,7 @@ export class OfflineCore extends Core {
                 level = PushLevels.Error;
                 status = CellStatus.Destroyed;
             } else {
-                message = `Игрок ${player.username} выбил ${moveResult.destroyedShipsCount} X 2`;
+                message = `${player.username} выбил ${moveResult.destroyedShipsCount} X 2`;
                 level = PushLevels.Info;
             }
 
@@ -331,7 +331,7 @@ export class OfflineCore extends Core {
                 level = PushLevels.Error;
                 status = CellStatus.Destroyed;
             } else {
-                message = `Игрок ${player.username} выбил ${moveResult.destroyedShipsCount}`;
+                message = `${player.username} выбил ${moveResult.destroyedShipsCount}`;
                 level = PushLevels.Info;
             }
 
@@ -342,7 +342,7 @@ export class OfflineCore extends Core {
                 level = PushLevels.Info;
                 status = CellStatus.Missed;
             } else {
-                message = `Игрок ${player.username} никуда не попал`;
+                message = `${player.username} никуда не попал`;
                 level = PushLevels.Info;
             }
         }

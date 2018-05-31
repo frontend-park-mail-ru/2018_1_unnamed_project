@@ -18,6 +18,7 @@ export class WS {
     }
 
     private static resolveMessage(type, payload) {
+        console.log(type, payload);
         gameBus.emit(type as GameEvents, payload);
     }
 
@@ -30,7 +31,7 @@ export class WS {
         }
 
         const api = new API();
-        const address = `ws://${api.backendURI}/game`;
+        const address = `${api.backendURI.replace(/https?/, 'ws')}/game`;
 
         this._push = new Push();
         this._ws = new WebSocket(address);

@@ -6,7 +6,7 @@ section(class="menu settings-page")
         form(action=`${uploadAvatarLink}` method="post" id="upload-avatar" enctype="multipart/form-messages")
             span.settings-page__upload-button
                 button.settings-page__btn--update Обновить
-                input(type="file" name="avatar")
+                input(type="file" name="avatar" accept="image/*")
         button.settings-page__btn--delete#delete-avatar Удалить
         hr
     div.js-settings-form-root

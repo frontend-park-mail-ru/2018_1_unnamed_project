@@ -1,7 +1,6 @@
-import {Form, FormEvents} from '../../components/form/form';
+import {Form} from '../../components/form/form';
 import {PushLevels} from '../../components/message-container';
 import {User} from '../../models/user';
-import bus from '../../modules/bus';
 import {ValidatorFactory} from '../../modules/validator-factory';
 import {Page, PageAccessTypes} from '../page';
 import signupPageTemplate from './signup-page.pug';
@@ -17,8 +16,6 @@ export class SignupPage extends Page {
         super(signupPageTemplate);
 
         this.attrs = SignupPage.defaultAttrs;
-
-        this.setFormDataSubmittedHandler();
     }
 
     /**
@@ -66,8 +63,8 @@ export class SignupPage extends Page {
      * @private
      * @return {SignupPage}
      */
-    setFormDataSubmittedHandler() {
-        bus.on(FormEvents.FormDataSubmitted, ({data, errors}) => {
+    getFormDataSubmittedHandler() {
+        return ({data, errors}) => {
             if (!this.active) return;
 
             this.push.clear();
@@ -88,9 +85,7 @@ export class SignupPage extends Page {
             }
 
             User.signUp(data);
-        });
-
-        return this;
+        };
     }
 
     /**
@@ -102,7 +97,11 @@ export class SignupPage extends Page {
         super.render(attrs);
 
         this._formRoot = this.element.querySelector('.js-signup-form-root');
-        this._form = new Form({element: this._formRoot, attrs: this.attrs});
+        this._form = new Form({
+            element: this._formRoot,
+            callback: this.getFormDataSubmittedHandler(),
+            attrs: this.attrs,
+        });
 
         this.profileBar.hide();
 
