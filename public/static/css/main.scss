@@ -145,3 +145,18 @@ a:hover {
         margin-right: 5px;
     }
 }
+
+.container--flex {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+}
+
+@media screen and (max-height: 500px) {
+    .container--flex {
+        flex-direction: row;
+        flex-wrap: nowrap;
+    }
+}

@@ -18,9 +18,9 @@ export abstract class GamePage extends Page {
 
         switch (true) {
             case size > 750:
-                return [size * 0.75, size * 0.75];
+                return [size * 0.65, size * 0.65];
             default:
-                return [size * 0.9, size * 0.9];
+                return [size * 0.85, size * 0.85];
         }
     }
 
