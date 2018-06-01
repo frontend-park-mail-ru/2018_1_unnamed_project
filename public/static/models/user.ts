@@ -196,9 +196,10 @@ export class User {
 
                 const push = new Push();
                 push.addMessage('Аватар пользователя удален');
-                push.render({level: PushLevels.Error});
+                push.render({level: PushLevels.Info});
 
                 currentUser = new User(response);
+                currentUser.avatarLink = DEFAULT_AVATAR_LINK;
                 bus.emit(UserEvents.CurrentUserChanged, currentUser);
             })
             .catch((errors) => {
