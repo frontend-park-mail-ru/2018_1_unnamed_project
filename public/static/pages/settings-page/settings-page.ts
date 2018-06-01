@@ -1,4 +1,5 @@
-import {Form, FormEvents} from '../../components/form/form';
+import {Form} from '../../components/form/form';
+import {Loader} from "../../components/loader/loader";
 import {PushLevels} from '../../components/message-container';
 import {User, UserEvents} from '../../models/user';
 import bus from '../../modules/bus';
@@ -23,18 +24,18 @@ export class SettingsPage extends Page {
 
         this.profileBar.hide();
 
-        this
-            .setFormDataSubmittedHandler()
-            .setCurrentUserChangedHandler();
+        this.setCurrentUserChangedHandler();
     }
 
     /**
      * @private
      * @return {SettingsPage}
      */
-    setFormDataSubmittedHandler() {
-        bus.on(FormEvents.FormDataSubmitted, ({data, errors}) => {
+    getFormDataSubmittedHandler() {
+        return ({data, errors}) => {
             if (!this.active) return;
+
+            const loader = new Loader();
 
             this.push.clear();
 
@@ -49,23 +50,27 @@ export class SettingsPage extends Page {
                 if (errors) {
                     errors.forEach((err) => {
                         this.push.addMessage(err);
-                        console.log(err);
                     });
+                    loader.hide();
                     this.push.render({level: PushLevels.Error});
                     return;
                 }
-                console.log(Object.keys(data).forEach((key) => {
-                    return (!data[key] && data[key] !== undefined) && delete data[key];
-                }));
-                User.update(data);
+
+                const filtered = {};
+                Object.entries(data).forEach(([k, v]) => {
+                    if (!!v) {
+                        filtered[k] = v;
+                    }
+                });
+
+                User.update(filtered);
             } else {
+                loader.hide();
                 this.push.addMessage('Поля формы пусты');
                 this.push.render({level: PushLevels.Warning});
                 return;
             }
-        });
-
-        return this;
+        };
     }
 
     /**
@@ -116,11 +121,15 @@ export class SettingsPage extends Page {
         super.render(renderAttrs);
 
         this._formRoot = this.element.querySelector('.js-settings-form-root');
-        this._form = new Form({element: this._formRoot, attrs: this.attrs});
+        this._form = new Form({
+            element: this._formRoot,
+            callback: this.getFormDataSubmittedHandler(),
+            attrs: this.attrs,
+        });
 
         this.setAvatarHandlers();
 
-        this.profileBar.show();
+        this.profileBar.hide();
 
         return this;
     }

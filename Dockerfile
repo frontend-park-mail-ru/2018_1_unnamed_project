@@ -11,4 +11,4 @@ RUN bash /tmp/nodesource_setup.sh
 RUN apt install -y nodejs
 ADD ./ /opt
 WORKDIR /opt
-RUN ls -l
+RUN npm i npm@latest -g

@@ -33,8 +33,6 @@ export class GameBot {
             shipsCount++;
         }
 
-        console.log(this.ships);
-
         return this.ships;
     }
 
@@ -53,8 +51,7 @@ export class GameBot {
             }
 
             if (!--count) {
-                console.log('Бот слажал');
-                return null;
+                return [null, null];
             }
         }
     }

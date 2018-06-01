@@ -1,23 +1,22 @@
-import bus from '../../modules/bus';
 import {Component} from '../component';
+import {Loader} from "../loader/loader";
 import formTemplate from './form.pug';
 
 import './form.scss';
 
-export enum FormEvents {
-    FormDataSubmitted = 'form_data_submitted',
-}
-
 export class Form extends Component {
+    private readonly _callback;
     private _form;
 
     /**
      * @param {Object} element Элемент, в котором рендерить.
+     * @param {Object} callback Коллбек.
      * @param {Object} attrs   Параметры отрисовки.
      */
-    constructor({element, attrs = {}}) {
+    constructor({element, callback, attrs = {}}) {
         super({element, templateFunction: formTemplate, attrs});
 
+        this._callback = callback;
         this._form = null;
         this.init();
     }
@@ -30,6 +29,9 @@ export class Form extends Component {
 
         this._form.addEventListener('submit', (evt) => {
             evt.preventDefault();
+
+            const loader = new Loader();
+            loader.show();
 
             const data = {};
             let errors = null;
@@ -45,7 +47,9 @@ export class Form extends Component {
                 }
             });
 
-            bus.emit(FormEvents.FormDataSubmitted, {data, errors});
+            if (errors) loader.hide();
+
+            this._callback({data, errors});
         });
     }
 }

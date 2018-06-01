@@ -21,6 +21,8 @@ recursive('dist')
             '/signin',
             '/signup',
             '/singleplayer',
+            '/favicon.ico',
+            'https://cdn.weasyl.com/static/media/61/c0/6f/61c06fe056b415366fc32ed9914058a30098ba0264ffed0b9e1108610bd4f2f1.png',
         ];
         const swCode = `'use strict';
 const CACHE_NAME = 'ship-collision-cache-v2';

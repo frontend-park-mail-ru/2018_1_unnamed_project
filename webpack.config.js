@@ -5,6 +5,7 @@ const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
 
 const pathsToClean = [
@@ -53,6 +54,13 @@ module.exports = {
         new HTMLWebpackPlugin({
             title: 'Ship collision',
             template: path.join(__dirname, 'public', 'index.html'),
+        }),
+        new UglifyJsPlugin({
+            uglifyOptions: {
+                compress: {
+                    drop_console: true,
+                },
+            },
         }),
         new WebpackAssetsManifest(),
     ],

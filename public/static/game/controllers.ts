@@ -27,10 +27,6 @@ export class Controllers {
         };
         this._element.oncontextmenu = (evt) => {
             evt.preventDefault();
-            gameBus.emit(
-                GameEvents.RClick,
-                this.getMouseCoordsFromEvent(evt),
-            );
         };
 
         return this;

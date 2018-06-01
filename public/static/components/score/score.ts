@@ -51,7 +51,7 @@ export class Score extends Component {
 
     set shipsToPlace(shipsLeft) {
         if (!this._active) return;
-        this._shipsToPlace.innerText = `Доступно кораблей для расстановки ${shipsLeft}`;
+        this._shipsToPlace.innerText = `Доступно кораблей ${shipsLeft}`;
     }
 
     setDisposalMode() {

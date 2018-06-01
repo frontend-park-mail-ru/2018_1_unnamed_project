@@ -18,15 +18,16 @@ export abstract class GamePage extends Page {
 
         switch (true) {
             case size > 750:
-                return [size * 0.75, size * 0.75];
+                return [size * 0.65, size * 0.65];
             default:
-                return [size * 0.9, size * 0.9];
+                return [size * 0.85, size * 0.85];
         }
     }
 
     protected gameStarted: boolean;
     protected game: Game;
     protected canvasSelector: string;
+    protected startButtonSelector: string;
     protected canvas;
     protected scoreRoot;
     protected score: Score;
@@ -34,14 +35,16 @@ export abstract class GamePage extends Page {
     protected opponentsCountMenu: OpponentsCountMenu;
     protected startGameButton;
     protected gameOver: GameOver;
+    protected playersCount;
 
     private readonly _onSelectedEvent: string;
 
-    protected constructor({pageTemplate, canvasSelector, gameMode, onSelectedEvent}) {
+    protected constructor({pageTemplate, canvasSelector, startButtonSelector, gameMode, onSelectedEvent}) {
         super(pageTemplate);
 
         this.attrs = {gameMode};
         this.canvasSelector = canvasSelector;
+        this.startButtonSelector = startButtonSelector;
         this.gameStarted = false;
         this._onSelectedEvent = onSelectedEvent;
 
@@ -59,7 +62,7 @@ export abstract class GamePage extends Page {
         [this.canvas.width, this.canvas.height] = GamePage.computeCanvasSize();
         this.canvas.hidden = true;
 
-        this.startGameButton = this.element.querySelector('.singleplayer-page__start-game-button');
+        this.startGameButton = this.element.querySelector(this.startButtonSelector);
 
         this.scoreRoot = this.element.querySelector('.score__root');
         this.score = new Score(this.scoreRoot);
@@ -164,6 +167,8 @@ export abstract class GamePage extends Page {
 
     protected renderBattleField(playersCount) {
         gameBus.clear();
+
+        this.playersCount = playersCount;
 
         this.canvas.removeAttribute('hidden');
         this.opponentsCountMenu.hide();

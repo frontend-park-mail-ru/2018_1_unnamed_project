@@ -1,4 +1,5 @@
 import {Component} from '../component';
+import {Push} from "../push/push";
 import gameOverTemplate from './game-over.pug';
 
 import './game-over.scss';
@@ -21,7 +22,12 @@ export class GameOver extends Component {
      * @return {GameOver}
      */
     render(attrs: object) {
+        const push = new Push();
+        push.clearMessages()
+            .clearSharedMessages();
+
         super.render(attrs);
+
         const playAgain = this.element.querySelector(this.PLAY_AGAIN_BUTTON_SELECTOR);
         playAgain.addEventListener('click', (evt) => {
             evt.preventDefault();

@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     new Router(root.htmlElement)
         .addRoute(ApplicationRoutes.Menu, MenuPage)
-        .addRoute(ApplicationRoutes.Multiplayer, MultiplayerPage)
+        // .addRoute(ApplicationRoutes.Multiplayer, MultiplayerPage)
         .addRoute(ApplicationRoutes.Profile, ProfilePage)
         .addRoute(ApplicationRoutes.Settings, SettingsPage)
         .addRoute(ApplicationRoutes.Rules, RulesPage)

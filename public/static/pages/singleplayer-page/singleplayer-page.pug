@@ -1,9 +1,8 @@
 section(class="menu singleplayer-page")
-    include ../../components/menu-ref/menu-ref.pug
-    div.singleplayer-page__orientation
-        p Переверните устройство для большего удобства
-    div.singleplayer-page__container
-        div.ocm
-        div.score__root
+    div.singleplayer-page__container.container--flex
+        div.singleplayer-page__controls
+            include ../../components/menu-ref/menu-ref.pug
+            div.ocm
+            div.score__root
         canvas#singleplayer-page__canvas(height=100 width=100 hidden)
         a.singleplayer-page__start-game-button(href="#" hidden) >

@@ -12,11 +12,9 @@ export class SetupValidator {
     static computeShipsLimit(fieldSize) {
         switch (fieldSize) {
             case 10:
-                return 10;
             case 15:
-                return 30;
             case 20:
-                return 40;
+                return fieldSize;
             default:
                 return 10;
         }
@@ -56,15 +54,15 @@ export class SetupValidator {
      *
      */
     private renderShipCount() {
-        this._push.clearMessages();
-
         if (this._shipsLimit) {
             this.notifyShipsLimit();
         } else {
             this._setupFinished = true;
 
-            this._push.addMessage('Корабли расставлены! Нажмите > , чтобы начать игру');
-            this._push.render({level: PushLevels.Warning});
+            this._push
+                .clearMessages()
+                .addMessage('Корабли расставлены! Нажмите > , чтобы начать игру')
+                .render({level: PushLevels.Warning});
 
             gameBus.emit(GameEvents.DisableScene);
         }
@@ -81,7 +79,7 @@ export class SetupValidator {
 
         this._shipsLimit = SetupValidator.computeShipsLimit(fieldSize);
 
-        this._push.addMessage('Расставьте корабли на поле. ЛКМ - поставить, ПКМ - убрать.');
+        this._push.addMessage('Кликайте по полю, чтобы ставить и убирать корабли');
         this._push.render({level: PushLevels.Info});
 
         this.notifyShipsLimit();
@@ -112,8 +110,9 @@ export class SetupValidator {
                     .renderShipCount();
                 return;
             case CellStatus.Busy:
-                this._push.addMessage('Ячейка уже занята!');
-                break;
+                this.freeCell(i, j);
+                // this._push.addMessage('Ячейка уже занята!');
+                return;
             case CellStatus.Destroyed:
                 this._push.addMessage('Ячейка уничтожена! (как ты вообще умудрился?)');
                 break;
@@ -135,7 +134,8 @@ export class SetupValidator {
 
         switch (this._battlefield[i][j]) {
             case CellStatus.Empty:
-                this._push.addMessage('Ячейка уже свободна!');
+                this.fillCell(i, j);
+                // this._push.addMessage('Ячейка уже свободна!');
                 break;
             case CellStatus.Busy:
                 this._battlefield[i][j] = CellStatus.Empty;

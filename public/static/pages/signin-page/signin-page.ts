@@ -1,7 +1,6 @@
-import {Form, FormEvents} from '../../components/form/form';
+import {Form} from '../../components/form/form';
 import {PushLevels} from '../../components/message-container';
 import {User} from '../../models/user';
-import bus from '../../modules/bus';
 import {ValidatorFactory} from '../../modules/validator-factory';
 import {Page, PageAccessTypes} from '../page';
 import signinPageTemplate from './signin-page.pug';
@@ -17,8 +16,6 @@ export class SigninPage extends Page {
         super(signinPageTemplate);
 
         this.attrs = SigninPage.defaultAttrs;
-
-        this.setFormDataSubmittedHandler();
     }
 
     /**
@@ -55,8 +52,8 @@ export class SigninPage extends Page {
      * @private
      * @return {SigninPage}
      */
-    setFormDataSubmittedHandler() {
-        bus.on(FormEvents.FormDataSubmitted, ({data, errors}) => {
+    getFormDataSubmittedHandler() {
+        return ({data, errors}) => {
             if (!this.active) return;
 
             this.push.clear();
@@ -64,16 +61,13 @@ export class SigninPage extends Page {
             if (errors) {
                 errors.forEach((e) => {
                     this.push.addMessage(e);
-                    console.log(e);
                 });
                 this.push.render({level: PushLevels.Error});
                 return;
             }
 
             User.signIn(data);
-        });
-
-        return this;
+        };
     }
 
     /**
@@ -85,7 +79,11 @@ export class SigninPage extends Page {
         super.render(attrs);
 
         this._formRoot = this.element.querySelector('.js-signin-form-root');
-        this._form = new Form({element: this._formRoot, attrs: this.attrs});
+        this._form = new Form({
+            element: this._formRoot,
+            callback: this.getFormDataSubmittedHandler(),
+            attrs: this.attrs,
+        });
 
         this.push.renderShared({level: PushLevels.Error});
 

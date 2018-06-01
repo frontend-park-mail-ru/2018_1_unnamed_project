@@ -4,7 +4,7 @@
   "description": "Multi-player version of sea battle",
   "main": "index.js",
   "scripts": {
-    "build": "webpack && npm run sw",
+    "build": "webpack && npm run sw && cp public/favicon.ico dist/",
     "build:dev": "webpack-dev-server --port 5000",
     "start": "npm run build && npm run start:raw",
     "start:raw": "DEBUG=* node server/server.js",
@@ -46,6 +46,7 @@
     "sass-loader": "^7.0.1",
     "style-loader": "^0.20.3",
     "tslint": "^5.9.1",
+    "uglifyjs-webpack-plugin": "^1.2.5",
     "url-loader": "^1.0.1",
     "webpack": "^4.5.0",
     "webpack-assets-manifest": "^3.0.1",

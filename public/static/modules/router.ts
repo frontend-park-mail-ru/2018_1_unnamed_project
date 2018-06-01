@@ -1,5 +1,6 @@
 import {Loader} from '../components/loader/loader';
 import {Push} from '../components/push/push';
+import {GameEvents} from "../game/events";
 import gameBus from '../game/game-bus';
 import {User} from '../models/user';
 import {Page, PageAccessTypes} from '../pages/page';
@@ -99,6 +100,7 @@ export class Router {
             return this;
         }
 
+        gameBus.emit(GameEvents.Terminate);
         gameBus.clear();
 
         this._loader.show();

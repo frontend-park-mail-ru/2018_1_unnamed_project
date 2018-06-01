@@ -13,7 +13,7 @@ export class WS {
             const {type, payload} = JSON.parse(text);
             WS.resolveMessage(type, payload);
         } catch (e) {
-            console.log(e);
+            return;
         }
     }
 
@@ -30,17 +30,13 @@ export class WS {
         }
 
         const api = new API();
-        const address = `ws://${api.backendURI}/game`;
+        const address = `${api.backendURI.replace(/https?/, 'ws')}/game`;
 
         this._push = new Push();
         this._ws = new WebSocket(address);
 
         this._ws.onopen = () => {
-            console.log(`WS://  WebSocket on address ${address} opened`);
-            console.dir(this._ws);
-
             this._ws.onmessage = (msg) => WS.handleMessage(msg);
-            this._ws.onclose = () => console.log(`WS://  WebSocket on address ${address} closed`);
         };
 
         WS._Instance = this;
