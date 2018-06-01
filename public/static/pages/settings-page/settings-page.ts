@@ -1,4 +1,5 @@
 import {Form} from '../../components/form/form';
+import {Loader} from "../../components/loader/loader";
 import {PushLevels} from '../../components/message-container';
 import {User, UserEvents} from '../../models/user';
 import bus from '../../modules/bus';
@@ -34,6 +35,8 @@ export class SettingsPage extends Page {
         return ({data, errors}) => {
             if (!this.active) return;
 
+            const loader = new Loader();
+
             this.push.clear();
 
             const notEmptyFieldsCount = Object.values(data).filter((element) => element !== '').length;
@@ -49,6 +52,7 @@ export class SettingsPage extends Page {
                         this.push.addMessage(err);
                         console.log(err);
                     });
+                    loader.hide();
                     this.push.render({level: PushLevels.Error});
                     return;
                 }
@@ -57,6 +61,7 @@ export class SettingsPage extends Page {
                 }));
                 User.update(data);
             } else {
+                loader.hide();
                 this.push.addMessage('Поля формы пусты');
                 this.push.render({level: PushLevels.Warning});
                 return;

@@ -79,9 +79,13 @@ export class User {
      * @param {*} credentials
      */
     public static signIn(credentials: any) {
+        const loader = new Loader();
+
         api
             .signIn(credentials)
             .then((response: HttpResponse) => {
+                loader.hide();
+
                 currentUser = new User(response);
                 renderHello(currentUser.username);
 
@@ -90,6 +94,8 @@ export class User {
                 bus.emit(RouterEvents.NavigateToNextPageOrRoot, null);
             })
             .catch((errors: any) => {
+                loader.hide();
+
                 renderErrors(errors);
                 currentUser = null;
                 bus.emit(UserEvents.CurrentUserChanged, currentUser);
@@ -101,9 +107,13 @@ export class User {
      * @param {*} credentials
      */
     public static signUp(credentials: any) {
+        const loader = new Loader();
+
         api
             .signUp(credentials)
             .then((response: HttpResponse) => {
+                loader.hide();
+
                 currentUser = new User(response);
                 renderHello(currentUser.username);
 
@@ -112,6 +122,8 @@ export class User {
                 bus.emit(RouterEvents.NavigateToNextPageOrRoot, null);
             })
             .catch((errors: any) => {
+                loader.hide();
+
                 renderErrors(errors);
                 currentUser = null;
                 bus.emit(UserEvents.CurrentUserChanged, currentUser);

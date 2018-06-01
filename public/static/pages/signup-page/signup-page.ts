@@ -1,4 +1,5 @@
 import {Form} from '../../components/form/form';
+import {Loader} from "../../components/loader/loader";
 import {PushLevels} from '../../components/message-container';
 import {User} from '../../models/user';
 import {ValidatorFactory} from '../../modules/validator-factory';
@@ -67,6 +68,8 @@ export class SignupPage extends Page {
         return ({data, errors}) => {
             if (!this.active) return;
 
+            const loader = new Loader();
+
             this.push.clear();
 
             if ((data as any).password !== data['password-confirmation']) {
@@ -80,6 +83,7 @@ export class SignupPage extends Page {
                     this.push.addMessage(err);
                     console.log(err);
                 });
+                loader.hide();
                 this.push.render({level: PushLevels.Error});
                 return;
             }

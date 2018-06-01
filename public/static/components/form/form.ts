@@ -47,6 +47,8 @@ export class Form extends Component {
                 }
             });
 
+            if (errors) loader.hide();
+
             this._callback({data, errors});
         });
     }
