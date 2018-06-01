@@ -172,7 +172,12 @@ export class OfflineCore extends Core {
                 this.push.clearMessages();
                 return;
             }
-            this.push.addMessage(`Игрок ${this._bots[currentBotIdx].username} ходит`);
+
+            if (this._bots[currentBotIdx].shipsAliveCount) {
+                this.push.addMessage(`Игрок ${this._bots[currentBotIdx].username} ходит`);
+            } else {
+                this.push.addMessage(`Игрок ${this._bots[currentBotIdx].username} пропускает ход`);
+            }
             this.push.render({level: PushLevels.Info});
         };
 
@@ -180,9 +185,13 @@ export class OfflineCore extends Core {
             if (this._terminated) return;
 
             const current = this._bots[currentBotIdx];
-            const [i, j] = current.bot.makeMove();
+            if (current && current.shipsAliveCount) {
+                const [i, j] = current.bot.makeMove();
 
-            if (this.resolveMove({i, j, player: current}) === ResolveMoveResult.Missed) {
+                if (this.resolveMove({i, j, player: current}) === ResolveMoveResult.Missed) {
+                    ++currentBotIdx;
+                }
+            } else {
                 ++currentBotIdx;
             }
 
