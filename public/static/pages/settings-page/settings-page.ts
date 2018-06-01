@@ -125,7 +125,7 @@ export class SettingsPage extends Page {
 
         this.setAvatarHandlers();
 
-        this.profileBar.show();
+        this.profileBar.hide();
 
         return this;
     }
