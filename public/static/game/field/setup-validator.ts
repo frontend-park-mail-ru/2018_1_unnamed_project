@@ -14,9 +14,9 @@ export class SetupValidator {
             case 10:
                 return 10;
             case 15:
-                return 30;
+                return 15;
             case 20:
-                return 40;
+                return 20;
             default:
                 return 10;
         }
