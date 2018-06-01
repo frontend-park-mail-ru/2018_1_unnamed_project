@@ -1,11 +1,8 @@
 import {Component} from '../component';
+import {Loader} from "../loader/loader";
 import formTemplate from './form.pug';
 
 import './form.scss';
-
-export enum FormEvents {
-    FormDataSubmitted = 'form_data_submitted',
-}
 
 export class Form extends Component {
     private readonly _callback;
@@ -13,6 +10,7 @@ export class Form extends Component {
 
     /**
      * @param {Object} element Элемент, в котором рендерить.
+     * @param {Object} callback Коллбек.
      * @param {Object} attrs   Параметры отрисовки.
      */
     constructor({element, callback, attrs = {}}) {
@@ -30,9 +28,10 @@ export class Form extends Component {
         this._form = this.element.querySelector('.js-form');
 
         this._form.addEventListener('submit', (evt) => {
-            console.log('1');
-
             evt.preventDefault();
+
+            const loader = new Loader();
+            loader.show();
 
             const data = {};
             let errors = null;
