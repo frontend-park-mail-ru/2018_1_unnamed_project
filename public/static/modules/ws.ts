@@ -13,12 +13,11 @@ export class WS {
             const {type, payload} = JSON.parse(text);
             WS.resolveMessage(type, payload);
         } catch (e) {
-            console.log(e);
+            return;
         }
     }
 
     private static resolveMessage(type, payload) {
-        console.log(type, payload);
         gameBus.emit(type as GameEvents, payload);
     }
 
@@ -37,11 +36,7 @@ export class WS {
         this._ws = new WebSocket(address);
 
         this._ws.onopen = () => {
-            console.log(`WS://  WebSocket on address ${address} opened`);
-            console.dir(this._ws);
-
             this._ws.onmessage = (msg) => WS.handleMessage(msg);
-            this._ws.onclose = () => console.log(`WS://  WebSocket on address ${address} closed`);
         };
 
         WS._Instance = this;

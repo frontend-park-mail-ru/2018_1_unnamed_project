@@ -188,7 +188,9 @@ export class OfflineCore extends Core {
             if (current && current.shipsAliveCount) {
                 const [i, j] = current.bot.makeMove();
 
-                if (this.resolveMove({i, j, player: current}) === ResolveMoveResult.Missed) {
+                if (i === null ||
+                    j === null ||
+                    this.resolveMove({i, j, player: current}) === ResolveMoveResult.Missed) {
                     ++currentBotIdx;
                 }
             } else {
@@ -442,7 +444,6 @@ export class OfflineCore extends Core {
 
         gameBus.on(GameEvents.RequestGamePermission, ({i, j}) => {
             if (!this._moveEnabled) {
-                console.log('no move you bastard');
                 return;
             }
 

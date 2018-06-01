@@ -61,7 +61,6 @@ export class SigninPage extends Page {
             if (errors) {
                 errors.forEach((e) => {
                     this.push.addMessage(e);
-                    console.log(e);
                 });
                 this.push.render({level: PushLevels.Error});
                 return;

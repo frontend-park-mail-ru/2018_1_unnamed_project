@@ -204,7 +204,6 @@ export class User {
             })
             .catch((errors) => {
                 loader.hide();
-                console.log(errors);
             });
     }
 
@@ -223,7 +222,6 @@ export class User {
             .then(logoutCallback)
             .catch((errors) => {
                 logoutCallback();
-                console.log(errors);
             });
     }
 

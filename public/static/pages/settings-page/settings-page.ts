@@ -50,15 +50,11 @@ export class SettingsPage extends Page {
                 if (errors) {
                     errors.forEach((err) => {
                         this.push.addMessage(err);
-                        console.log(err);
                     });
                     loader.hide();
                     this.push.render({level: PushLevels.Error});
                     return;
                 }
-                console.log(Object.keys(data).forEach((key) => {
-                    return (!data[key] && data[key] !== undefined) && delete data[key];
-                }));
                 User.update(data);
             } else {
                 loader.hide();

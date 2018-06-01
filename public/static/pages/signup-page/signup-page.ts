@@ -81,7 +81,6 @@ export class SignupPage extends Page {
             if (errors) {
                 errors.forEach((err) => {
                     this.push.addMessage(err);
-                    console.log(err);
                 });
                 loader.hide();
                 this.push.render({level: PushLevels.Error});
