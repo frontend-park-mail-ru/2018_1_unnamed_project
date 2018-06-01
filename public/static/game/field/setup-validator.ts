@@ -12,11 +12,9 @@ export class SetupValidator {
     static computeShipsLimit(fieldSize) {
         switch (fieldSize) {
             case 10:
-                return 10;
             case 15:
-                return 15;
             case 20:
-                return 20;
+                return fieldSize;
             default:
                 return 10;
         }
