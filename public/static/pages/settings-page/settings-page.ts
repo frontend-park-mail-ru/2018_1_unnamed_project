@@ -55,7 +55,15 @@ export class SettingsPage extends Page {
                     this.push.render({level: PushLevels.Error});
                     return;
                 }
-                User.update(data);
+
+                const filtered = {};
+                Object.entries(data).forEach(([k, v]) => {
+                    if (!!v) {
+                        filtered[k] = v;
+                    }
+                });
+
+                User.update(filtered);
             } else {
                 loader.hide();
                 this.push.addMessage('Поля формы пусты');
